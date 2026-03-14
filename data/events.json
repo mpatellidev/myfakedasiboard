@@ -106,7 +106,8 @@
     "title": "Dojo Grace USP",
     "description": "Curso de Jargões, Debugging e Boas Práticas exclusivo para mulheres, ministrado por mulheres.",
     "type": "evento"
-    {
+  },
+  {
     "date": "2026-03-20",
     "title": "Dojo Grace USP",
     "description": "Curso de Leetcode e Roda de Conversa exclusivo para mulheres, ministrado por mulheres.",
