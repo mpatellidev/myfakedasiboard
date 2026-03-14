@@ -120,5 +120,17 @@
     "title": "Dojo Grace USP",
     "description": "Curso de Leetcode e Roda de Conversa exclusivo para mulheres, ministrado por mulheres.",
     "type": "evento"
+  },
+  {
+    "date": "2026-03-14",
+    "title": "Inscrições Semana de SI",
+    "description": "",
+    "type": "evento"
+  },
+  {
+    "date": "2026-03-27",
+    "title": "Fim das Inscrições Semana de SI",
+    "description": "",
+    "type": "deadline"
   }
 ]
