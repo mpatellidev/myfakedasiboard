@@ -1,50 +1,8 @@
 [
   {
-    "date": "2026-04-10",
-    "title": "Prova de Algoritmos",
-    "description": "Prova parcial — Algoritmos e Estruturas de Dados I",
-    "type": "prova"
-  },
-  {
-    "date": "2026-04-15",
-    "title": "Entrega Trabalho de BD",
-    "description": "Entrega do projeto de Bancos de Dados 1",
-    "type": "entrega"
-  },
-  {
-    "date": "2026-04-18",
-    "title": "Semana da Computação",
-    "description": "Evento anual da EACH — palestras e workshops",
-    "type": "evento"
-  },
-  {
-    "date": "2026-04-22",
-    "title": "Prova de Cálculo II",
-    "description": "Segunda avaliação parcial",
-    "type": "prova"
-  },
-  {
-    "date": "2026-04-28",
-    "title": "Apresentação de POO",
-    "description": "Apresentação do projeto final de Computação Orientada a Objetos",
-    "type": "apresentacao"
-  },
-  {
-    "date": "2026-05-05",
-    "title": "Workshop de IA",
-    "description": "Workshop extra-curricular sobre Machine Learning",
-    "type": "evento"
-  },
-  {
-    "date": "2026-05-12",
-    "title": "Prova de Redes",
-    "description": "Prova de Redes de Computadores",
-    "type": "prova"
-  },
-  {
-    "date": "2026-05-20",
-    "title": "Entrega TCC I",
-    "description": "Entrega do relatório parcial do Projeto de Graduação I",
+    "date": "2026-03-15",
+    "title": "Pesquisa 'A Terceira Onda'",
+    "description": "Fazer um resumo de no mínimo 3 páginas sobre a obra A terceira Onda de Alvin Toffler.",
     "type": "entrega"
   }
 ]
