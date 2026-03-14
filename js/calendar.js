@@ -6,14 +6,11 @@ let calMonth = new Date().getMonth();
 let calSelectedDate = null;
 
 async function initCalendar() {
-  const container = el('#calendar-page');
-  if (!container) return;
-
-  showLoadingIn(el('#calendar-page .calendar-main') || container);
-
-  const data = await fetchJSON('./data/events.json');
-  calEvents = data || [];
-
+  // Avoid re-fetching if already loaded
+  if (calEvents.length === 0) {
+    const data = await fetchJSON('./data/events.json');
+    calEvents = data || [];
+  }
   renderCalendar();
   renderCalendarSidebar(null);
 }

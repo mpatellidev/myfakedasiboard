@@ -1,5 +1,5 @@
 /* ===== DESIGN SYSTEM ===== */
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400&family=JetBrains+Mono:wght@300;400;500;600&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,300;1,9..144,500&display=swap');
 
 :root {
   --bg: #08080d;
@@ -26,9 +26,9 @@
   --radius: 12px;
   --radius-lg: 18px;
   --radius-sm: 8px;
-  --font-display: 'Syne', sans-serif;
-  --font-body: 'DM Sans', sans-serif;
-  --font-mono: 'DM Mono', monospace;
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
   --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-slow: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -106,9 +106,10 @@ body::before {
 
 .navbar-title {
   font-family: var(--font-display);
-  font-size: 18px;
-  font-weight: 800;
-  letter-spacing: -0.5px;
+  font-size: 19px;
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: -0.3px;
   background: linear-gradient(135deg, #fff 0%, var(--secondary) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -244,9 +245,10 @@ body::before {
 
 .page-header h1 {
   font-family: var(--font-display);
-  font-size: 32px;
-  font-weight: 800;
-  letter-spacing: -1px;
+  font-size: 34px;
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: -0.5px;
   line-height: 1.15;
   color: var(--text);
 }
@@ -305,10 +307,12 @@ body::before {
 
 /* ===== SECTION TITLE ===== */
 .section-title {
-  font-family: var(--font-display);
-  font-size: 16px;
+  font-family: var(--font-body);
+  font-size: 13px;
   font-weight: 700;
-  color: var(--text);
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  color: var(--text-muted);
   margin-bottom: 16px;
   display: flex;
   align-items: center;
@@ -569,8 +573,9 @@ body::before {
 .calendar-month-year {
   font-family: var(--font-display);
   font-size: 20px;
-  font-weight: 800;
-  letter-spacing: -0.5px;
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: -0.3px;
 }
 
 .calendar-nav {
@@ -828,12 +833,13 @@ body::before {
 }
 
 .course-name {
-  font-family: var(--font-display);
+  font-family: var(--font-body);
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--text);
   flex: 1;
   min-width: 0;
+  line-height: 1.4;
 }
 
 .course-meta {
@@ -852,7 +858,30 @@ body::before {
   font-family: var(--font-mono);
 }
 
-.course-meta-item svg { color: var(--primary); flex-shrink: 0; }
+.course-card-link {
+  display: flex;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.course-card-link:hover .course-name {
+  color: var(--secondary);
+}
+
+.course-link-hint {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11.5px;
+  font-family: var(--font-mono);
+  color: var(--text-dim);
+  margin-top: 6px;
+  transition: color var(--transition);
+}
+
+.course-card-link:hover .course-link-hint {
+  color: var(--primary);
+}
 
 /* ===== NEWSLETTER ===== */
 .newsletter-featured {
@@ -1120,8 +1149,9 @@ body::before {
 
 .stat-value {
   font-family: var(--font-display);
-  font-size: 28px;
-  font-weight: 800;
+  font-size: 30px;
+  font-weight: 700;
+  font-style: italic;
   letter-spacing: -1px;
   background: linear-gradient(135deg, var(--secondary) 0%, var(--highlight) 100%);
   -webkit-background-clip: text;

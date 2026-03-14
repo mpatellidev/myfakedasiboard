@@ -38,11 +38,10 @@ async function initHome() {
   const data = await fetchJSON('./data/events.json');
   eventsData = data || [];
 
-  // Load schedule for next class detection
+  // Load schedule for stats only
   const schData = await fetchJSON('./data/schedule.json');
   scheduleDataAll = schData || {};
 
-  renderNextClass();
   renderUpcomingEvents();
   renderHomeNewsletter();
   renderStats();

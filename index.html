@@ -20,7 +20,24 @@
   <!-- ===== NAVBAR ===== -->
   <nav class="navbar">
     <a class="navbar-brand" href="#home" onclick="navigateTo('home'); return false;">
-      <img src="assets/logo-si.svg" alt="SI" />
+      <span class="navbar-logo-mark" aria-hidden="true">
+        <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="brandGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#7c3aed"/>
+              <stop offset="100%" stop-color="#c084fc"/>
+            </linearGradient>
+          </defs>
+          <!-- S -->
+          <path d="M6 10 Q6 7 9 7 L14 7 Q17 7 17 10 Q17 13 14 14 L9 15 Q6 16 6 19 Q6 22 9 22 L14 22 Q17 22 17 19" stroke="url(#brandGrad)" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <!-- I -->
+          <line x1="20" y1="7" x2="20" y2="22" stroke="url(#brandGrad)" stroke-width="2" stroke-linecap="round"/>
+          <line x1="17.5" y1="7" x2="22.5" y2="7" stroke="url(#brandGrad)" stroke-width="2" stroke-linecap="round"/>
+          <line x1="17.5" y1="22" x2="22.5" y2="22" stroke="url(#brandGrad)" stroke-width="2" stroke-linecap="round"/>
+          <!-- underline grifo -->
+          <path d="M4 27 Q10 25 16 27 Q22 29 28 27" stroke="url(#brandGrad)" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0.8"/>
+        </svg>
+      </span>
       <span class="navbar-title">DaSI<span>board</span></span>
     </a>
 
@@ -60,15 +77,8 @@
     <!-- ===== HOME PAGE ===== -->
     <div id="home-page" class="page active">
 
-      <!-- Hero -->
-      <div class="home-hero anim-fade-up">
-        <div class="home-hero-greeting" id="greeting-text">Carregando...</div>
-        <h2>Olá, <span>Alex</span> 👋</h2>
-        <p>Seu painel acadêmico — Sistemas de Informação · USP · EACH</p>
-      </div>
-
       <!-- Stats -->
-      <div class="stat-grid stagger-fade" style="margin-bottom: 28px;">
+      <div class="stat-grid stagger-fade" style="margin-bottom: 32px;">
         <div class="stat-card card-shine anim-fade-up stagger-1">
           <div class="stat-value" id="stat-semesters">8</div>
           <div class="stat-label">Semestres</div>
@@ -87,22 +97,11 @@
         </div>
       </div>
 
-      <!-- Main grid -->
+      <!-- Two-column layout -->
       <div class="grid-2" style="margin-bottom: 24px; align-items: start;">
 
-        <!-- Next class -->
-        <div class="anim-fade-up stagger-2">
-          <div class="section-title">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            Aula atual / Próxima
-          </div>
-          <div class="next-class-card glow-pulse" id="next-class-info">
-            <div class="loading-spinner"><div class="spinner"></div></div>
-          </div>
-        </div>
-
         <!-- Upcoming events -->
-        <div class="anim-fade-up stagger-3">
+        <div class="anim-fade-up stagger-2">
           <div class="section-title">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
             Próximos eventos
@@ -112,17 +111,17 @@
           </div>
         </div>
 
-      </div>
+        <!-- Last newsletter -->
+        <div class="anim-fade-up stagger-3">
+          <div class="section-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            Última newsletter
+          </div>
+          <div class="card" id="home-newsletter">
+            <div class="loading-spinner"><div class="spinner"></div></div>
+          </div>
+        </div>
 
-      <!-- Last newsletter -->
-      <div class="anim-fade-up stagger-4">
-        <div class="section-title">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          Última newsletter
-        </div>
-        <div class="card" id="home-newsletter">
-          <div class="loading-spinner"><div class="spinner"></div></div>
-        </div>
       </div>
 
     </div>
@@ -297,16 +296,7 @@
   <script src="js/newsletter.js"></script>
   <script src="js/app.js"></script>
 
-  <script>
-    // Set greeting on load
-    document.addEventListener('DOMContentLoaded', () => {
-      const greetingEl = document.getElementById('greeting-text');
-      if (greetingEl) {
-        const h = new Date().getHours();
-        greetingEl.textContent = h < 12 ? 'Bom dia ☀️' : h < 18 ? 'Boa tarde 🌤️' : 'Boa noite 🌙';
-      }
-    });
-  </script>
+
 
 </body>
 </html>

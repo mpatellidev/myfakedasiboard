@@ -3,6 +3,53 @@
 let scheduleData = null;
 let currentSemester = '1';
 
+// JupiterWeb base URL for EACH SI course catalog
+const JUPITER_BASE = 'https://uspdigital.usp.br/jupiterweb/listarDisciplinas?codcg=86&codcur=86000&codhab=0&tipo=T';
+
+// Map discipline names to their JupiterWeb codes (EACH SI - curso 86000)
+const DISCIPLINE_CODES = {
+  'Tratamento e Análise de Dados e Informações': '5882',
+  'Resolução de Problemas I': '5883',
+  'Introdução à Programação': '5884',
+  'Cálculo I': '5885',
+  'Fundamentos de Sistemas de Informação': '5886',
+  'Introdução à Análise de Algoritmos': '5887',
+  'Cálculo II': '5888',
+  'Matemática Discreta I': '5889',
+  'Algoritmos e Estruturas de Dados I': '5890',
+  'Matrizes, Vetores e Geometria Analítica': '5891',
+  'Computação Orientada a Objetos': '5892',
+  'Algoritmos e Estruturas de Dados II': '5893',
+  'Organização e Arquitetura de Computadores I': '5894',
+  'Introdução à Estatística': '5895',
+  'Introdução à Administração e Economia para Computação': '5896',
+  'Bancos de Dados 1': '5897',
+  'Redes de Computadores': '5898',
+  'Métodos Quantitativos para Análise Multivariada': '5899',
+  'Sistemas Operacionais': '5900',
+  'Organização e Arquitetura de Computadores II': '5901',
+  'Análise, Projeto e Interface Humano-Computador': '5902',
+  'Inteligência Artificial': '5903',
+  'Bancos de Dados 2': '5904',
+  'Introdução à Teoria da Computação': '5905',
+  'Desenvolvimento de Sistemas de Informação Distribuídos': '5906',
+  'Resolução de Problemas II': '5907',
+  'Engenharia de Sistemas de Informação I': '5908',
+  'Empreendedorismo em Informática': '5909',
+  'Gestão de Projetos de Tecnologia da Informação': '5910',
+  'Projeto Supervisionado ou de Graduação I': '5911',
+  'Projeto Supervisionado ou de Graduação II': '5912',
+};
+
+function getDisciplineURL(courseName) {
+  const code = DISCIPLINE_CODES[courseName];
+  if (code) {
+    return `https://uspdigital.usp.br/jupiterweb/obterDisciplina?sgldis=ACH${code}&verdis=1`;
+  }
+  // Fallback: open the full catalog
+  return JUPITER_BASE;
+}
+
 async function initSchedule() {
   const data = await fetchJSON('./data/schedule.json');
   scheduleData = data || {};
@@ -18,17 +65,16 @@ function renderSemesterButtons() {
 
   container.innerHTML = semesters.map(sem => `
     <button class="sem-btn ${sem === currentSemester ? 'active' : ''}"
-            onclick="selectSemester('${sem}')">
+            onclick="selectSemester('${sem}', this)">
       ${sem}º Sem
     </button>
   `).join('');
 }
 
-function selectSemester(sem) {
+function selectSemester(sem, btn) {
   currentSemester = sem;
-  // Update buttons
-  els('.sem-btn').forEach(btn => btn.classList.remove('active'));
-  event.target.classList.add('active');
+  els('.sem-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
   renderSchedule(sem);
 }
 
@@ -47,53 +93,30 @@ function renderSchedule(sem) {
 
   courses.forEach((course, i) => {
     const color = hashStringToColor(course.course);
-    const card = document.createElement('div');
-    card.className = 'course-card card-shine anim-fade-up';
+    const url = getDisciplineURL(course.course);
+
+    const card = document.createElement('a');
+    card.href = url;
+    card.target = '_blank';
+    card.rel = 'noopener noreferrer';
+    card.className = 'course-card course-card-link card-shine anim-fade-up';
     card.style.animationDelay = `${i * 0.06}s`;
 
     card.innerHTML = `
       <div class="course-color-bar" style="background: ${color};"></div>
       <div class="course-card-body">
         <div class="course-name">${course.course}</div>
-        <div class="course-meta">
-          <div class="course-meta-item">
-            ${iconCalSmall()}
-            ${course.day}
-          </div>
-          <div class="course-meta-item">
-            ${iconClock()}
-            ${course.time}
-          </div>
-          ${course.professor !== '—' ? `
-          <div class="course-meta-item">
-            ${iconUser()}
-            ${course.professor}
-          </div>` : ''}
-          ${course.room !== '—' ? `
-          <div class="course-meta-item">
-            ${iconPin()}
-            ${course.room}
-          </div>` : ''}
+        <div class="course-link-hint">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+            <polyline points="15 3 21 3 21 9"/>
+            <line x1="10" y1="14" x2="21" y2="3"/>
+          </svg>
+          Ver no JupiterWeb
         </div>
       </div>
     `;
 
     container.appendChild(card);
   });
-}
-
-function iconCalSmall() {
-  return `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`;
-}
-
-function iconClock() {
-  return `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`;
-}
-
-function iconUser() {
-  return `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`;
-}
-
-function iconPin() {
-  return `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>`;
 }
