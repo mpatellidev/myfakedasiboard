@@ -4,5 +4,113 @@
     "title": "Pesquisa 'A Terceira Onda'",
     "description": "Fazer um resumo de no mínimo 3 páginas sobre a obra A terceira Onda de Alvin Toffler.",
     "type": "entrega"
-  }
+  },
+  {
+    "date": "2026-04-10",
+    "title": "Fim das inscrições Síntese Jr.",
+    "description": "NA",
+    "type": "evento"
+  },
+  {
+    "date": "2026-03-22",
+    "title": "Fim das inscrições Conway",
+    "description": "NA",
+    "type": "evento"
+  },
+  {
+    "date": "2026-03-22",
+    "title": "Fim das inscrições Hype",
+    "description": "NA",
+    "type": "evento"
+  },
+  {
+    "date": "2026-03-14",
+    "title": "Fim das inscrições Each in the Shell",
+    "description": "NA",
+    "type": "evento"
+  },
+  {
+    "date": "2026-03-16",
+    "title": "Liberação dos Cases Each in the Shell",
+    "description": "NA",
+    "type": "evento"
+  },
+  {
+    "date": "2026-04-06",
+    "title": "Entrevistas Each in the Shell",
+    "description": "NA",
+    "type": "evento"
+  },
+  {
+    "date": "2026-04-15",
+    "title": "Aprovados Each in the Shell",
+    "description": "NA",
+    "type": "evento"
+  },
+  {
+    "date": "2026-03-30",
+    "title": "PS Hype Iniciante",
+    "description": "NA",
+    "type": "evento"
+  },
+  {
+    "date": "2026-03-23",
+    "title": "PS Hype Avançado",
+    "description": "NA",
+    "type": "evento"
+  },
+  {
+    "date": "2026-05-01",
+    "title": "Entrevistas Hype",
+    "description": "NA",
+    "type": "evento"
+  },
+  {
+    "date": "2026-03-20",
+    "title": "Fim das Inscrições Monitoria AcaDASI",
+    "description": "NA",
+    "type": "evento"
+  },
+  {
+    "date": "2026-03-20",
+    "title": "Reunião Geral DASI USP",
+    "description": "NA",
+    "type": "evento"
+  },
+  {
+    "date": "2026-03-18",
+    "title": "Reunião DASI Esportivo",
+    "description": "NA",
+    "type": "evento"
+  },
+  {
+    "date": "2026-03-19",
+    "title": "Reunião DASI TI",
+    "description": "NA",
+    "type": "evento"
+  },
+  {
+    "date": "2026-04-05",
+    "title": "Fim das Inscrições Grace USP",
+    "description": "NA",
+    "type": "evento"
+  },
+  {
+    "date": "2026-03-17",
+    "title": "Dojo Grace USP",
+    "description": "Curso de Github exclusivo para mulheres, ministrado por mulheres.",
+    "type": "evento"
+  },
+  {
+    "date": "2026-03-19",
+    "title": "Dojo Grace USP",
+    "description": "Curso de Jargões, Debugging e Boas Práticas exclusivo para mulheres, ministrado por mulheres.",
+    "type": "evento"
+    {
+    "date": "2026-03-20",
+    "title": "Dojo Grace USP",
+    "description": "Curso de Leetcode e Roda de Conversa exclusivo para mulheres, ministrado por mulheres.",
+    "type": "evento"
+  },
+  },
 ]
