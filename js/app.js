@@ -5,10 +5,20 @@ let scheduleDataAll = null;
 
 // ===== THEME SYSTEM =====
 const THEMES = [
-  { key: 'padrao', label: 'Padrão' },
-  { key: 'super',  label: 'Super' },
-  { key: 'hypado', label: 'Hypado' },
-  { key: 'omni',   label: 'Omni' },
+  // Dark
+  { key: 'padrao',      label: 'Padrão' },
+  { key: 'super',       label: 'Super' },
+  { key: 'hypado',      label: 'Hypado' },
+  { key: 'omni',        label: 'Omni' },
+  { key: 'minas',       label: 'Minas' },
+  { key: 'd20',         label: 'D20' },
+  // Light
+  { key: 'grifinho',    label: 'Grifinho' },
+  { key: 'bidu',        label: 'Bidu' },
+  { key: 'laboratorio', label: 'Laboratório' },
+  { key: 'sintetizado', label: 'Sintetizado' },
+  { key: 'masacote',    label: 'Masacote' },
+  { key: 'grace',       label: 'Grace' },
 ];
 
 let currentThemeIndex = 0;
@@ -34,12 +44,30 @@ function applyTheme(theme) {
   document.documentElement.setAttribute('data-theme', theme.key);
   const dot = document.getElementById('theme-dot');
   const label = document.getElementById('theme-label');
-  if (dot) dot.style.animation = 'none';
+
+  // Get the actual dot color from the CSS variable after applying theme
+  const isLight = ['grifinho','bidu','laboratorio','sintetizado','masacote','grace'].includes(theme.key);
+
   if (label) label.textContent = theme.label;
-  // Re-trigger dot animation
-  setTimeout(() => {
-    if (dot) dot.style.animation = '';
-  }, 10);
+  if (dot) {
+    // Force reflow and animation restart
+    dot.style.animation = 'none';
+    void dot.offsetWidth;
+    dot.style.animation = '';
+  }
+
+  // Update theme-color meta for mobile browsers
+  const metaTheme = document.querySelector('meta[name="theme-color"]');
+  if (metaTheme) {
+    const bgMap = {
+      padrao: '#07070c', super: '#050a14', hypado: '#080600', omni: '#060606',
+      minas: '#060908', d20: '#020614',
+      grifinho: '#f8f6ff', bidu: '#fffbf5', laboratorio: '#fff5f9',
+      sintetizado: '#f5f8ff', masacote: '#fffdf0', grace: '#fff7f0',
+    };
+    metaTheme.setAttribute('content', bgMap[theme.key] || '#07070c');
+  }
+
   localStorage.setItem('dasitheme', theme.key);
 }
 
@@ -91,6 +119,7 @@ function navigateTo(page) {
   if (page === 'newsletter') initNewsletter();
   if (page === 'docentes') initDocentes();
   if (page === 'estudos') initEstudos();
+  if (page === 'ferramentas') closeTool?.();
 
   // Update URL hash
   history.pushState(null, '', `#${page}`);
