@@ -881,10 +881,58 @@ body::before {
   color: var(--text-dim);
   margin-top: 6px;
   transition: color var(--transition);
+  flex-shrink: 0;
 }
 
 .course-card-link:hover .course-link-hint {
   color: var(--primary);
+}
+
+/* ===== TIMETABLE ===== */
+.timetable-day {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.timetable-day-label {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-dim);
+  padding: 6px 0 4px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 4px;
+}
+
+.timetable-time {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  min-width: 115px;
+  flex-shrink: 0;
+}
+
+.timetable-time svg { color: var(--primary); flex-shrink: 0; }
+
+.timetable-code {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  margin-top: 4px;
+}
+
+@media (max-width: 640px) {
+  .timetable-time { min-width: unset; }
 }
 
 /* ===== NEWSLETTER ===== */
