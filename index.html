@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DaSIboard — Alex J.S. | SI-USP</title>
+  <meta name="description" content="Dashboard acadêmico pessoal para o curso de Sistemas de Informação da USP (EACH)" />
+  <meta name="theme-color" content="#0b0b0f" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+</head>
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar">
+    <a class="navbar-brand" href="#home" onclick="navigateTo('home'); return false;">
+      <img src="assets/logo-si.svg" alt="SI" />
+      <span class="navbar-title">DaSI<span>board</span></span>
+    </a>
+
+    <button class="hamburger" onclick="toggleMobileNav()" aria-label="Menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <div class="navbar-nav">
+      <button class="nav-link active" data-page="home" onclick="navigateTo('home')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Home
+      </button>
+      <button class="nav-link" data-page="calendar" onclick="navigateTo('calendar')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Calendário
+      </button>
+      <button class="nav-link" data-page="schedule" onclick="navigateTo('schedule')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Horários
+      </button>
+      <button class="nav-link" data-page="newsletter" onclick="navigateTo('newsletter')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        Newsletter
+      </button>
+
+      <div style="width: 1px; height: 20px; background: var(--border); margin: 0 8px;"></div>
+
+      <div style="font-family: var(--font-mono); font-size: 12px; color: var(--text-dim); padding: 7px 10px;" id="current-time"></div>
+    </div>
+  </nav>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="main-content">
+
+    <!-- ===== HOME PAGE ===== -->
+    <div id="home-page" class="page active">
+
+      <!-- Hero -->
+      <div class="home-hero anim-fade-up">
+        <div class="home-hero-greeting" id="greeting-text">Carregando...</div>
+        <h2>Olá, <span>Alex</span> 👋</h2>
+        <p>Seu painel acadêmico — Sistemas de Informação · USP · EACH</p>
+      </div>
+
+      <!-- Stats -->
+      <div class="stat-grid stagger-fade" style="margin-bottom: 28px;">
+        <div class="stat-card card-shine anim-fade-up stagger-1">
+          <div class="stat-value" id="stat-semesters">8</div>
+          <div class="stat-label">Semestres</div>
+        </div>
+        <div class="stat-card card-shine anim-fade-up stagger-2">
+          <div class="stat-value" id="stat-courses">—</div>
+          <div class="stat-label">Disciplinas</div>
+        </div>
+        <div class="stat-card card-shine anim-fade-up stagger-3">
+          <div class="stat-value" id="stat-events">—</div>
+          <div class="stat-label">Próximos eventos</div>
+        </div>
+        <div class="stat-card card-shine anim-fade-up stagger-4">
+          <div class="stat-value" style="font-size: 20px;">EACH</div>
+          <div class="stat-label">Escola de Artes, Ciências e Humanidades</div>
+        </div>
+      </div>
+
+      <!-- Main grid -->
+      <div class="grid-2" style="margin-bottom: 24px; align-items: start;">
+
+        <!-- Next class -->
+        <div class="anim-fade-up stagger-2">
+          <div class="section-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Aula atual / Próxima
+          </div>
+          <div class="next-class-card glow-pulse" id="next-class-info">
+            <div class="loading-spinner"><div class="spinner"></div></div>
+          </div>
+        </div>
+
+        <!-- Upcoming events -->
+        <div class="anim-fade-up stagger-3">
+          <div class="section-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Próximos eventos
+          </div>
+          <div class="event-list" id="upcoming-events">
+            <div class="loading-spinner"><div class="spinner"></div></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Last newsletter -->
+      <div class="anim-fade-up stagger-4">
+        <div class="section-title">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Última newsletter
+        </div>
+        <div class="card" id="home-newsletter">
+          <div class="loading-spinner"><div class="spinner"></div></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ===== CALENDAR PAGE ===== -->
+    <div id="calendar-page" class="page">
+
+      <div class="page-header">
+        <div class="page-header-label">Agenda acadêmica</div>
+        <h1>Calendário</h1>
+        <p>Provas, entregas e eventos do semestre</p>
+      </div>
+
+      <div class="calendar-wrapper">
+
+        <!-- Calendar grid -->
+        <div class="calendar-main">
+          <div class="calendar-header">
+            <div class="calendar-month-year" id="cal-month-year">—</div>
+            <div class="calendar-nav">
+              <button class="cal-nav-btn" onclick="calPrevMonth()" title="Mês anterior">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="15 18 9 12 15 6"/>
+                </svg>
+              </button>
+              <button class="cal-nav-btn" onclick="calNextMonth()" title="Próximo mês">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="9 18 15 12 9 6"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Weekday headers -->
+          <div class="calendar-grid">
+            <div class="cal-weekday">Dom</div>
+            <div class="cal-weekday">Seg</div>
+            <div class="cal-weekday">Ter</div>
+            <div class="cal-weekday">Qua</div>
+            <div class="cal-weekday">Qui</div>
+            <div class="cal-weekday">Sex</div>
+            <div class="cal-weekday">Sáb</div>
+            <!-- Days rendered by JS -->
+            <div id="cal-grid" style="display: contents;"></div>
+          </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="calendar-sidebar">
+
+          <!-- Selected day events -->
+          <div class="cal-selected-day card">
+            <div class="card-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              Eventos do dia
+            </div>
+            <div id="cal-selected-panel">
+              <div class="no-events-msg">Selecione um dia</div>
+            </div>
+          </div>
+
+          <!-- Legend -->
+          <div class="cal-legend">
+            <div class="cal-legend-title">Legenda</div>
+            <div class="legend-items">
+              <div class="legend-item">
+                <div class="legend-dot" style="background: var(--danger);"></div>
+                Prova
+              </div>
+              <div class="legend-item">
+                <div class="legend-dot" style="background: var(--warning);"></div>
+                Entrega
+              </div>
+              <div class="legend-item">
+                <div class="legend-dot" style="background: var(--success);"></div>
+                Evento
+              </div>
+              <div class="legend-item">
+                <div class="legend-dot" style="background: var(--info);"></div>
+                Apresentação
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ===== SCHEDULE PAGE ===== -->
+    <div id="schedule-page" class="page">
+
+      <div class="page-header">
+        <div class="page-header-label">Grade curricular</div>
+        <h1>Horários de Aula</h1>
+        <p>Disciplinas do Bacharelado em Sistemas de Informação — USP/EACH</p>
+      </div>
+
+      <!-- Semester selector -->
+      <div class="semester-selector" id="semester-buttons">
+        <!-- Rendered by JS -->
+      </div>
+
+      <!-- Schedule grid -->
+      <div class="schedule-grid" id="schedule-grid">
+        <div class="loading-spinner"><div class="spinner"></div>Carregando grade...</div>
+      </div>
+
+    </div>
+
+    <!-- ===== NEWSLETTER PAGE ===== -->
+    <div id="newsletter-page" class="page">
+
+      <div class="page-header">
+        <div class="page-header-label">Informações & Atualizações</div>
+        <h1>Newsletter</h1>
+        <p>Últimas notícias do curso, eventos e oportunidades</p>
+      </div>
+
+      <!-- Featured post -->
+      <div id="newsletter-featured" class="newsletter-featured">
+        <div class="loading-spinner"><div class="spinner"></div>Carregando...</div>
+      </div>
+
+      <!-- Archive -->
+      <div class="section-title">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="21 8 21 21 3 21 3 8"/>
+          <rect x="1" y="3" width="22" height="5"/>
+          <line x1="10" y1="12" x2="14" y2="12"/>
+        </svg>
+        Arquivo
+      </div>
+      <div class="newsletter-list" id="newsletter-list">
+        <div class="loading-spinner"><div class="spinner"></div></div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ===== NEWSLETTER MODAL ===== -->
+  <div id="newsletter-modal" class="modal-overlay hidden">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeNewsletterModal()">×</button>
+      <div class="modal-date" id="modal-date"></div>
+      <h2 class="modal-title" id="modal-title"></h2>
+      <div class="modal-content" id="modal-content"></div>
+    </div>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-text">
+        Desenvolvido por <strong>Alex J.S.</strong> &mdash;
+        <a href="https://www.each.usp.br/si/" target="_blank" rel="noopener">
+          Sistemas de Informação — USP/EACH
+        </a>
+      </div>
+      <div class="footer-badge">
+        <span class="footer-badge-dot"></span>
+        DaSIboard v1.0
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== SCRIPTS ===== -->
+  <script src="js/utils.js"></script>
+  <script src="js/calendar.js"></script>
+  <script src="js/schedule.js"></script>
+  <script src="js/newsletter.js"></script>
+  <script src="js/app.js"></script>
+
+  <script>
+    // Set greeting on load
+    document.addEventListener('DOMContentLoaded', () => {
+      const greetingEl = document.getElementById('greeting-text');
+      if (greetingEl) {
+        const h = new Date().getHours();
+        greetingEl.textContent = h < 12 ? 'Bom dia ☀️' : h < 18 ? 'Boa tarde 🌤️' : 'Boa noite 🌙';
+      }
+    });
+  </script>
+
+</body>
+</html>

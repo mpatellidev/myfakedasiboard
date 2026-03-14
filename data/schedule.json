@@ -1,0 +1,49 @@
+{
+  "1": [
+    { "course": "Tratamento e Análise de Dados e Informações", "day": "Segunda", "time": "08:00-10:00", "professor": "—", "room": "—" },
+    { "course": "Resolução de Problemas I", "day": "Terça", "time": "10:00-12:00", "professor": "—", "room": "—" },
+    { "course": "Introdução à Programação", "day": "Quarta", "time": "14:00-16:00", "professor": "—", "room": "Lab 1" },
+    { "course": "Cálculo I", "day": "Quinta", "time": "08:00-10:00", "professor": "—", "room": "—" },
+    { "course": "Fundamentos de Sistemas de Informação", "day": "Sexta", "time": "10:00-12:00", "professor": "—", "room": "—" }
+  ],
+  "2": [
+    { "course": "Introdução à Análise de Algoritmos", "day": "Segunda", "time": "10:00-12:00", "professor": "—", "room": "—" },
+    { "course": "Cálculo II", "day": "Terça", "time": "08:00-10:00", "professor": "—", "room": "—" },
+    { "course": "Matemática Discreta I", "day": "Quarta", "time": "10:00-12:00", "professor": "—", "room": "—" },
+    { "course": "Algoritmos e Estruturas de Dados I", "day": "Quinta", "time": "14:00-16:00", "professor": "—", "room": "Lab 2" },
+    { "course": "Matrizes, Vetores e Geometria Analítica", "day": "Sexta", "time": "08:00-10:00", "professor": "—", "room": "—" }
+  ],
+  "3": [
+    { "course": "Computação Orientada a Objetos", "day": "Segunda", "time": "14:00-16:00", "professor": "—", "room": "Lab 1" },
+    { "course": "Algoritmos e Estruturas de Dados II", "day": "Terça", "time": "10:00-12:00", "professor": "—", "room": "—" },
+    { "course": "Organização e Arquitetura de Computadores I", "day": "Quarta", "time": "08:00-10:00", "professor": "—", "room": "—" },
+    { "course": "Introdução à Estatística", "day": "Quinta", "time": "10:00-12:00", "professor": "—", "room": "—" },
+    { "course": "Introdução à Administração e Economia para Computação", "day": "Sexta", "time": "14:00-16:00", "professor": "—", "room": "—" }
+  ],
+  "4": [
+    { "course": "Bancos de Dados 1", "day": "Segunda", "time": "08:00-10:00", "professor": "—", "room": "Lab 2" },
+    { "course": "Redes de Computadores", "day": "Terça", "time": "14:00-16:00", "professor": "—", "room": "—" },
+    { "course": "Métodos Quantitativos para Análise Multivariada", "day": "Quarta", "time": "10:00-12:00", "professor": "—", "room": "—" },
+    { "course": "Sistemas Operacionais", "day": "Quinta", "time": "08:00-10:00", "professor": "—", "room": "—" },
+    { "course": "Organização e Arquitetura de Computadores II", "day": "Sexta", "time": "10:00-12:00", "professor": "—", "room": "—" }
+  ],
+  "5": [
+    { "course": "Análise, Projeto e Interface Humano-Computador", "day": "Segunda", "time": "10:00-12:00", "professor": "—", "room": "Lab 1" },
+    { "course": "Inteligência Artificial", "day": "Terça", "time": "08:00-10:00", "professor": "—", "room": "—" },
+    { "course": "Bancos de Dados 2", "day": "Quarta", "time": "14:00-16:00", "professor": "—", "room": "Lab 2" },
+    { "course": "Introdução à Teoria da Computação", "day": "Quinta", "time": "10:00-12:00", "professor": "—", "room": "—" },
+    { "course": "Desenvolvimento de Sistemas de Informação Distribuídos", "day": "Sexta", "time": "08:00-10:00", "professor": "—", "room": "—" }
+  ],
+  "6": [
+    { "course": "Resolução de Problemas II", "day": "Segunda", "time": "14:00-16:00", "professor": "—", "room": "—" },
+    { "course": "Engenharia de Sistemas de Informação I", "day": "Terça", "time": "10:00-12:00", "professor": "—", "room": "—" },
+    { "course": "Empreendedorismo em Informática", "day": "Quarta", "time": "08:00-10:00", "professor": "—", "room": "—" },
+    { "course": "Gestão de Projetos de Tecnologia da Informação", "day": "Quinta", "time": "14:00-16:00", "professor": "—", "room": "—" }
+  ],
+  "7": [
+    { "course": "Projeto Supervisionado ou de Graduação I", "day": "Sexta", "time": "14:00-18:00", "professor": "—", "room": "Orientação" }
+  ],
+  "8": [
+    { "course": "Projeto Supervisionado ou de Graduação II", "day": "Sexta", "time": "14:00-18:00", "professor": "—", "room": "Orientação" }
+  ]
+}

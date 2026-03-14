@@ -1,0 +1,117 @@
+// ===== UTILS =====
+
+const MONTH_NAMES_PT = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+const MONTH_NAMES_SHORT = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+const DAY_NAMES_PT = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+const DAY_NAMES_FULL = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
+
+function formatDate(dateStr) {
+  const [y, m, d] = dateStr.split('-').map(Number);
+  return `${String(d).padStart(2,'0')} de ${MONTH_NAMES_PT[m-1]} de ${y}`;
+}
+
+function formatDateShort(dateStr) {
+  const [y, m, d] = dateStr.split('-').map(Number);
+  return `${String(d).padStart(2,'0')} ${MONTH_NAMES_SHORT[m-1]}`;
+}
+
+function parseDate(dateStr) {
+  const [y, m, d] = dateStr.split('-').map(Number);
+  return new Date(y, m - 1, d);
+}
+
+function todayStr() {
+  const now = new Date();
+  return `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+}
+
+function getGreeting() {
+  const h = new Date().getHours();
+  if (h < 12) return 'Bom dia';
+  if (h < 18) return 'Boa tarde';
+  return 'Boa noite';
+}
+
+function getCurrentDayName() {
+  return DAY_NAMES_FULL[new Date().getDay()];
+}
+
+function getCurrentTime() {
+  const now = new Date();
+  return `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+}
+
+function timeToMinutes(timeStr) {
+  if (!timeStr || timeStr === '—') return 0;
+  const [h, m] = timeStr.split(':').map(Number);
+  return h * 60 + m;
+}
+
+function parseTimeRange(timeRange) {
+  if (!timeRange || timeRange === '—') return { start: 0, end: 0 };
+  const parts = timeRange.split('-');
+  return {
+    start: timeToMinutes(parts[0]),
+    end: timeToMinutes(parts[1])
+  };
+}
+
+// Color palette for courses (auto-assigned, deterministic)
+const COURSE_COLORS = [
+  '#7c3aed', '#a855f7', '#ec4899', '#f43f5e',
+  '#f97316', '#f59e0b', '#10b981', '#06b6d4',
+  '#3b82f6', '#6366f1', '#8b5cf6', '#d946ef',
+  '#84cc16', '#14b8a6', '#0ea5e9', '#e11d48'
+];
+
+function getCourseColor(index) {
+  return COURSE_COLORS[index % COURSE_COLORS.length];
+}
+
+// Hash string to color index
+function hashStringToColor(str) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    hash |= 0;
+  }
+  return COURSE_COLORS[Math.abs(hash) % COURSE_COLORS.length];
+}
+
+function hexToRgba(hex, alpha) {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
+async function fetchJSON(url) {
+  try {
+    const res = await fetch(url + '?v=' + Date.now());
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return await res.json();
+  } catch (e) {
+    console.warn(`Failed to fetch ${url}:`, e);
+    return null;
+  }
+}
+
+function el(selector, parent = document) {
+  return parent.querySelector(selector);
+}
+
+function els(selector, parent = document) {
+  return [...parent.querySelectorAll(selector)];
+}
+
+function staggerChildren(parent, cls = 'anim-fade-up') {
+  const kids = parent.children;
+  [...kids].forEach((child, i) => {
+    child.classList.add(cls);
+    child.style.animationDelay = `${i * 0.06}s`;
+  });
+}
+
+function showLoadingIn(container) {
+  container.innerHTML = `<div class="loading-spinner"><div class="spinner"></div>Carregando...</div>`;
+}
