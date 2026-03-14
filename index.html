@@ -20,25 +20,8 @@
   <!-- ===== NAVBAR ===== -->
   <nav class="navbar">
     <a class="navbar-brand" href="#home" onclick="navigateTo('home'); return false;">
-      <span class="navbar-logo-mark" aria-hidden="true">
-        <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="brandGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#7c3aed"/>
-              <stop offset="100%" stop-color="#c084fc"/>
-            </linearGradient>
-          </defs>
-          <!-- S -->
-          <path d="M6 10 Q6 7 9 7 L14 7 Q17 7 17 10 Q17 13 14 14 L9 15 Q6 16 6 19 Q6 22 9 22 L14 22 Q17 22 17 19" stroke="url(#brandGrad)" stroke-width="2" fill="none" stroke-linecap="round"/>
-          <!-- I -->
-          <line x1="20" y1="7" x2="20" y2="22" stroke="url(#brandGrad)" stroke-width="2" stroke-linecap="round"/>
-          <line x1="17.5" y1="7" x2="22.5" y2="7" stroke="url(#brandGrad)" stroke-width="2" stroke-linecap="round"/>
-          <line x1="17.5" y1="22" x2="22.5" y2="22" stroke="url(#brandGrad)" stroke-width="2" stroke-linecap="round"/>
-          <!-- underline grifo -->
-          <path d="M4 27 Q10 25 16 27 Q22 29 28 27" stroke="url(#brandGrad)" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0.8"/>
-        </svg>
-      </span>
-      <span class="navbar-title">DaSI<span>board</span></span>
+      <img src="assets/logo-dasi.jpg" alt="DaSI" class="navbar-logo-img" />
+      <span class="navbar-title">DaSIboard</span>
     </a>
 
     <button class="hamburger" onclick="toggleMobileNav()" aria-label="Menu">
@@ -63,6 +46,10 @@
       <button class="nav-link" data-page="newsletter" onclick="navigateTo('newsletter')">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
         Newsletter
+      </button>
+      <button class="nav-link" data-page="docentes" onclick="navigateTo('docentes')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Docentes
       </button>
 
       <div style="width: 1px; height: 20px; background: var(--border); margin: 0 8px;"></div>
@@ -261,6 +248,31 @@
 
     </div>
 
+    <!-- ===== DOCENTES PAGE ===== -->
+    <div id="docentes-page" class="page">
+
+      <div class="page-header">
+        <div class="page-header-label">Corpo docente</div>
+        <h1>Docentes</h1>
+        <p>Professores do Bacharelado em Sistemas de Informação — USP/EACH</p>
+      </div>
+
+      <!-- Search -->
+      <div class="docentes-search-wrap">
+        <div class="docentes-search-icon">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </div>
+        <input type="text" id="docentes-search" class="docentes-search" placeholder="Buscar por nome, área ou e-mail..." oninput="filterDocentes(this.value)" />
+      </div>
+
+      <div id="docentes-count" class="docentes-count"></div>
+
+      <div class="docentes-grid" id="docentes-grid">
+        <div class="loading-spinner"><div class="spinner"></div>Carregando docentes...</div>
+      </div>
+
+    </div>
+
   </main>
 
   <!-- ===== NEWSLETTER MODAL ===== -->
@@ -294,6 +306,7 @@
   <script src="js/calendar.js"></script>
   <script src="js/schedule.js"></script>
   <script src="js/newsletter.js"></script>
+  <script src="js/docentes.js"></script>
   <script src="js/app.js"></script>
 
 

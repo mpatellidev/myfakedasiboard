@@ -104,6 +104,15 @@ body::before {
 
 .navbar-brand img { width: 36px; height: 36px; }
 
+.navbar-logo-img {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid rgba(124, 58, 237, 0.4);
+  flex-shrink: 0;
+}
+
 .navbar-title {
   font-family: var(--font-display);
   font-size: 19px;
@@ -116,12 +125,7 @@ body::before {
   background-clip: text;
 }
 
-.navbar-title span {
-  font-weight: 400;
-  opacity: 0.6;
-  font-size: 14px;
-  -webkit-text-fill-color: var(--text-muted);
-}
+.navbar-title span { display: none; }
 
 .navbar-nav {
   display: flex;
@@ -1073,6 +1077,172 @@ body::before {
 }
 
 @keyframes spin { to { transform: rotate(360deg); } }
+
+/* ===== DOCENTES ===== */
+.docentes-search-wrap {
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.docentes-search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-dim);
+  pointer-events: none;
+}
+
+.docentes-search {
+  width: 100%;
+  max-width: 480px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 11px 14px 11px 40px;
+  font-size: 14px;
+  font-family: var(--font-body);
+  color: var(--text);
+  transition: all var(--transition);
+  outline: none;
+}
+
+.docentes-search::placeholder { color: var(--text-dim); }
+
+.docentes-search:focus {
+  border-color: var(--border-hover);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+}
+
+.docentes-count {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-bottom: 20px;
+  letter-spacing: 0.5px;
+}
+
+.docentes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+.docente-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  transition: all var(--transition);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.docente-card:hover {
+  border-color: var(--border-hover);
+  background: var(--bg-card-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.docente-card-top {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.docente-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  border: 1.5px solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.docente-info { flex: 1; min-width: 0; }
+
+.docente-name {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.35;
+  margin-bottom: 6px;
+}
+
+.docente-email {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--primary);
+  text-decoration: none;
+  transition: color var(--transition);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 4px;
+}
+
+.docente-email:hover { color: var(--secondary); }
+
+.docente-room {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+.docente-areas {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+}
+
+.docente-links {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.docente-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  color: var(--text-dim);
+  text-decoration: none;
+  padding: 4px 10px;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+  background: var(--bg-3);
+  transition: all var(--transition);
+}
+
+.docente-link:hover {
+  border-color: var(--border-hover);
+  color: var(--secondary);
+  background: rgba(124, 58, 237, 0.08);
+}
+
+@media (max-width: 640px) {
+  .docentes-grid { grid-template-columns: 1fr; }
+  .docentes-search { max-width: 100%; }
+}
 
 /* ===== FOOTER ===== */
 .footer {

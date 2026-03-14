@@ -27,6 +27,7 @@ function navigateTo(page) {
   if (page === 'calendar') initCalendar();
   if (page === 'schedule') initSchedule();
   if (page === 'newsletter') initNewsletter();
+  if (page === 'docentes') initDocentes();
 
   // Update URL hash
   history.pushState(null, '', `#${page}`);
