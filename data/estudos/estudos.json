@@ -247,10 +247,85 @@
     "enviadoPor": "Alex J.S.",
     "dataCriacao": "2025-12-12",
     "dataEnvio": "2026-03-14",
-    "tags": ["ia", "dados", "programacao", "machine", "learning"],
+    "tags": ["ia", "dados", "programacao", "machine", "learning", "hype"],
     "anexos": [],
     "links": [
       { "titulo": "YouTube", "url": "https://youtube.com/playlist?list=PLwpRadtnDrRBpSHXQin2vIPi2yVX1sosj&si=4xjS0QZrkxPphkU0" }
+    ],
+    "destaque": true
+  },
+
+  
+  {
+    "id": 10,
+    "tipo": "curso",
+    "titulo": "Introdução ao Deep Learning",
+    "descricao": "DL pelo Hype.USP.",
+    "area": "IA",
+    "disciplina": "Inteligência Artificial",
+    "semestre": 1,
+    "criadoPor": "Hype",
+    "enviadoPor": "Alex J.S.",
+    "dataCriacao": "2026-02-24",
+    "dataEnvio": "2026-03-14",
+    "tags": ["dados", "ia", "deep", "learning", "hype"],
+    "anexos": [],
+    "links": [],
+    "destaque": false,
+    "modulos": [
+      {
+        "id": "m1",
+        "titulo": "Dia 1",
+        "descricao": "",
+        "ordem": 1,
+        "concluido": true,
+        "links": [
+          { "titulo": "YouTube", "url": "https://www.youtube.com/live/5fS76rLc4JE?si=-TBywjToxqWIlugk" }
+        ],
+        "anexos": []
+      },
+      {
+        "id": "m2",
+        "titulo": "Dia 2",
+        "descricao": "",
+        "ordem": 2,
+        "concluido": true,
+        "links": [
+          { "titulo": "YouTube", "url": "https://www.youtube.com/live/l3dXyR1BhMs?si=VJ9ctT8liYgnsH0V" }
+        ],
+        "anexos": []
+      },
+      {
+        "id": "m3",
+        "titulo": "Dia 3",
+        "descricao": "",
+        "ordem": 3,
+        "concluido": false,
+        "links": [
+          { "titulo": "YouTube", "url": "https://www.youtube.com/live/nrBJ6GQfZ-s?si=e9kN7LIxzO-v0EPp" }
+        ],
+        "anexos": []
+      }
+    ]
+  },
+
+  
+  {
+    "id": 9,
+    "tipo": "link",
+    "titulo": "Aula de Redes Neurais",
+    "descricao": "Construindo Redes Neurais com TensorFlow e Keras.",
+    "area": "IA",
+    "disciplina": "Inteligência Artificial",
+    "semestre": 1,
+    "criadoPor": "Hype",
+    "enviadoPor": "Alex J.S.",
+    "dataCriacao": "2023-06-21",
+    "dataEnvio": "2026-03-14",
+    "tags": ["ia", "dados", "programacao", "neural", "tensorflow", "keras"],
+    "anexos": [],
+    "links": [
+      { "titulo": "YouTube", "url": "https://youtu.be/PKKkcKI-nbE?si=QVpzA_MWMm4tCzkn" }
     ],
     "destaque": true
   }
