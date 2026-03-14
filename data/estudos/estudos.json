@@ -234,5 +234,24 @@
       { "titulo": "YouTube", "url": "https://youtube.com/playlist?list=PL23TBfsYj5mcyy8ZciFXidHpFh8HgNvel&si=u_Whtoks7R38WjeM" }
     ],
     "destaque": true
+  },
+  {
+    "id": 9,
+    "tipo": "link",
+    "titulo": "Curso de Machine Learning",
+    "descricao": "Curso gratuito de ML no YouTube.",
+    "area": "IA",
+    "disciplina": "Inteligência Artificial",
+    "semestre": 1,
+    "criadoPor": "Hype",
+    "enviadoPor": "Alex J.S.",
+    "dataCriacao": "2025-12-12",
+    "dataEnvio": "2026-03-14",
+    "tags": ["ia", "dados", "programacao", "machine", "learning"],
+    "anexos": [],
+    "links": [
+      { "titulo": "YouTube", "url": "https://youtube.com/playlist?list=PLwpRadtnDrRBpSHXQin2vIPi2yVX1sosj&si=4xjS0QZrkxPphkU0" }
+    ],
+    "destaque": true
   }
 ]
