@@ -1,113 +1,17 @@
-/* ===== ANIMATIONS — Liquid Glass / Frutiger Aero ===== */
-
-/* Entry animations with stagger */
-.stagger-1 { animation-delay: 0.05s; }
-.stagger-2 { animation-delay: 0.10s; }
-.stagger-3 { animation-delay: 0.15s; }
-.stagger-4 { animation-delay: 0.20s; }
-.stagger-5 { animation-delay: 0.25s; }
-
-.anim-fade-up {
-  animation: fadeUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) both;
-}
-
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.anim-fade-in {
-  animation: fadeInOnly 0.4s ease both;
-}
-
-@keyframes fadeInOnly {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-
-/* Glow pulse */
-.glow-pulse {
-  animation: glowPulse 3s ease-in-out infinite;
-}
-
-/* Number count up */
-@keyframes countUp {
-  from { opacity: 0; transform: scale(0.8); }
-  to   { opacity: 1; transform: scale(1); }
-}
-.count-up {
-  animation: countUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-}
-
-/* Liquid glass shine sweep on hover */
-.card-shine {
-  position: relative;
-  overflow: hidden;
-}
-.card-shine::after {
-  content: '';
-  position: absolute;
-  top: -50%; left: -75%;
-  width: 50%; height: 200%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
-  transform: skewX(-20deg);
-  transition: left 0.7s ease;
-}
-.card-shine:hover::after { left: 125%; }
-
-/* Progress bar animation */
-@keyframes progressFill { from { width: 0%; } }
-.progress-bar { animation: progressFill 1s cubic-bezier(0.4, 0, 0.2, 1) both; }
-
-/* Float animation */
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50%       { transform: translateY(-8px); }
-}
-
-/* Skeleton shimmer */
-@keyframes shimmer {
-  0%   { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-.skeleton {
-  background: linear-gradient(90deg, var(--bg-3) 25%, rgba(124,58,237,0.08) 50%, var(--bg-3) 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
-  border-radius: var(--radius-sm);
-}
-
-/* Typed cursor */
-@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-.cursor-blink { animation: blink 1s step-end infinite; }
-
-/* Scale in */
-@keyframes scaleIn {
-  from { opacity: 0; transform: scale(0.9); }
-  to   { opacity: 1; transform: scale(1); }
-}
-.scale-in { animation: scaleIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
-
-/* Slide from right */
-@keyframes slideFromRight {
-  from { opacity: 0; transform: translateX(24px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
-.slide-right { animation: slideFromRight 0.3s cubic-bezier(0.4, 0, 0.2, 1) both; }
-
-/* Gradient shift */
-@keyframes gradientShift {
-  0%   { background-position: 0% 50%; }
-  50%  { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-.gradient-animate {
-  background-size: 200% 200%;
-  animation: gradientShift 6s ease infinite;
-}
-
-/* Liquid ripple on click */
-@keyframes liquidRipple {
-  0%   { transform: scale(0); opacity: 0.5; }
-  100% { transform: scale(4); opacity: 0; }
-}
+/* ===== ANIMATIONS — DaSIboard v2 ===== */
+.stagger-1{animation-delay:.05s}.stagger-2{animation-delay:.1s}.stagger-3{animation-delay:.15s}.stagger-4{animation-delay:.2s}.stagger-5{animation-delay:.25s}
+.anim-fade-up{animation:fadeUp .4s cubic-bezier(.4,0,.2,1) both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.anim-fade-in{animation:fadeInOnly .4s ease both}
+@keyframes fadeInOnly{from{opacity:0}to{opacity:1}}
+@keyframes countUp{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:scale(1)}}
+.count-up{animation:countUp .5s cubic-bezier(.34,1.56,.64,1) both}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+.skeleton{background:linear-gradient(90deg,var(--bg-3) 25%,rgba(124,58,237,.08) 50%,var(--bg-3) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:var(--radius-sm)}
+@keyframes scaleIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+.scale-in{animation:scaleIn .25s cubic-bezier(.34,1.56,.64,1) both}
+@keyframes slideFromRight{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+.slide-right{animation:slideFromRight .3s cubic-bezier(.4,0,.2,1) both}
+@keyframes gradientShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+.gradient-animate{background-size:200% 200%;animation:gradientShift 6s ease infinite}
+@keyframes glowPulse{0%,100%{box-shadow:0 0 16px var(--glow)}50%{box-shadow:0 0 32px var(--glow-strong)}}
