@@ -305,7 +305,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .kanban-input:focus{border-color:var(--border-hover);box-shadow:0 0 0 3px var(--glass-tint)}
 .kanban-input::placeholder{color:var(--text-dim)}
 .kanban-input[type="date"]{color-scheme:dark}
-[data-theme="grifinho"] .kanban-input[type="date"],[data-theme="bidu"] .kanban-input[type="date"],[data-theme="laboratorio"] .kanban-input[type="date"],[data-theme="sintetizado"] .kanban-input[type="date"],[data-theme="masacote"] .kanban-input[type="date"],[data-theme="grace"] .kanban-input[type="date"],[data-theme="mamaco"] .kanban-input[type="date"]{color-scheme:light}
+[data-theme="grifinho"] .kanban-input[type="date"],[data-theme="bidu"] .kanban-input[type="date"],[data-theme="laboratorio"] .kanban-input[type="date"],[data-theme="sintetizado"] .kanban-input[type="date"],[data-theme="masacote"] .kanban-input[type="date"],[data-theme="grace"] .kanban-input[type="date"],[data-theme="mamaco"] .kanban-input[type="date"],[data-theme="jedi"] .kanban-input[type="date"],[data-theme="ocean"] .kanban-input[type="date"]{color-scheme:light}
 .kanban-select{background:var(--bg-card);backdrop-filter:blur(14px);border:1px solid var(--glass-border);border-radius:var(--radius-sm);padding:9px 12px;font-size:13px;font-family:var(--font-body);color:var(--text);transition:all var(--transition);outline:none;cursor:pointer;flex-shrink:0}
 .kanban-select:focus{border-color:var(--border-hover)}
 .kanban-board{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:start}
@@ -637,9 +637,9 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 @keyframes rainbowShift{0%{background-position:0% 50%}100%{background-position:300% 50%}}
 
 /* LIGHT THEME CARDS */
-[data-theme="grifinho"] .card,[data-theme="bidu"] .card,[data-theme="laboratorio"] .card,[data-theme="sintetizado"] .card,[data-theme="masacote"] .card,[data-theme="grace"] .card,[data-theme="mamaco"] .card{background:rgba(255,255,255,.8);box-shadow:0 2px 14px rgba(0,0,0,.06)}
+[data-theme="grifinho"] .card,[data-theme="bidu"] .card,[data-theme="laboratorio"] .card,[data-theme="sintetizado"] .card,[data-theme="masacote"] .card,[data-theme="grace"] .card,[data-theme="mamaco"] .card,[data-theme="jedi"] .card,[data-theme="ocean"] .card{background:rgba(255,255,255,.8);box-shadow:0 2px 14px rgba(0,0,0,.06)}
 [data-theme="grifinho"] .card:hover,[data-theme="bidu"] .card:hover,[data-theme="laboratorio"] .card:hover,[data-theme="sintetizado"] .card:hover,[data-theme="masacote"] .card:hover,[data-theme="grace"] .card:hover{box-shadow:0 6px 24px rgba(0,0,0,.1)}
-[data-theme="grifinho"] input,[data-theme="grifinho"] textarea,[data-theme="bidu"] input,[data-theme="bidu"] textarea,[data-theme="laboratorio"] input,[data-theme="laboratorio"] textarea,[data-theme="sintetizado"] input,[data-theme="sintetizado"] textarea,[data-theme="masacote"] input,[data-theme="masacote"] textarea,[data-theme="grace"] input,[data-theme="grace"] textarea{color:var(--text);background:rgba(255,255,255,.7)}
+[data-theme="grifinho"] input,[data-theme="grifinho"] textarea,[data-theme="bidu"] input,[data-theme="bidu"] textarea,[data-theme="laboratorio"] input,[data-theme="laboratorio"] textarea,[data-theme="sintetizado"] input,[data-theme="sintetizado"] textarea,[data-theme="masacote"] input,[data-theme="masacote"] textarea,[data-theme="grace"] input,[data-theme="grace"] textarea,[data-theme="jedi"] input,[data-theme="jedi"] textarea,[data-theme="ocean"] input,[data-theme="ocean"] textarea{color:var(--text);background:rgba(255,255,255,.7)}
 
 /* ===== RESPONSIVE ===== */
 @media (max-width:1024px){
@@ -1509,3 +1509,374 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
   font-family:var(--font-mono);font-size:9px;color:var(--text-dim);margin-top:14px;
   position:relative;z-index:1;letter-spacing:.3px;
 }
+
+/* ==========================================================
+   TEMA: SITH — Escuridão + Vermelho Sith + Cinza Plasma
+   ========================================================== */
+[data-theme="sith"] {
+  --bg:#0a0002;--bg-2:#110003;--bg-3:#180005;
+  --bg-card:rgba(20,0,4,.78);--bg-card-hover:rgba(30,2,8,.9);
+  --border:rgba(220,0,30,.2);--border-hover:rgba(255,30,60,.65);
+  --primary:#cc001e;--primary-2:#990016;
+  --secondary:#ff4060;--highlight:#ff0030;--accent:#ff6080;
+  --text:#f0e0e4;--text-muted:#b08090;--text-dim:#503040;
+  --success:#34d399;--warning:#fbbf24;--danger:#ff0030;--info:#60a5fa;
+  --glow:rgba(200,0,24,.42);--glow-strong:rgba(220,0,30,.7);
+  --orb-1:rgba(200,0,24,.22);--orb-2:rgba(100,0,12,.15);--orb-3:rgba(255,60,80,.06);
+  --sidebar-bg:rgba(8,0,1,.96);
+  --theme-dot-color:#cc001e;--gradient-a:#cc001e;--gradient-b:#ff4060;
+  --glass-tint:rgba(200,0,24,.06);--glass-border:rgba(200,0,24,.22);--glass-shine:rgba(255,80,80,.08);
+}
+[data-theme="sith"] .page-header h1 { background:linear-gradient(135deg,#f0e0e4,#ff4060); -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
+[data-theme="sith"] .stat-value { background:linear-gradient(135deg,#ff4060,#cc001e); -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
+[data-theme="sith"] .navbar::after { background:linear-gradient(90deg,transparent,#cc001e,#ff4060,transparent); opacity:.7; }
+[data-theme="sith"] .footer::before { background:linear-gradient(90deg,transparent,#cc001e,#ff4060,transparent); opacity:.5; }
+[data-theme="sith"] .btn-primary { background:linear-gradient(135deg,#cc001e,#990016); box-shadow:0 4px 20px rgba(200,0,24,.5); }
+[data-theme="sith"] .btn-primary:hover { box-shadow:0 8px 32px rgba(220,0,30,.7); }
+[data-theme="sith"] .sidebar-link.active { background:rgba(200,0,24,.12); border-color:rgba(200,0,24,.4); box-shadow:0 0 12px rgba(200,0,24,.2); }
+[data-theme="sith"] .card:hover { border-color:rgba(220,0,30,.55); box-shadow:var(--glass-inner-shadow),0 0 32px rgba(200,0,24,.18); }
+/* Lightsaber red glow on active sidebar indicator */
+[data-theme="sith"] .sidebar-link.active::before { background:linear-gradient(180deg,#ff4060,#cc001e); box-shadow:0 0 8px rgba(255,64,96,.6); }
+[data-theme="sith"] .cal-day.today .cal-day-num { background:linear-gradient(135deg,#cc001e,#990016); box-shadow:0 0 16px rgba(200,0,24,.6); }
+/* Breathe like Vader */
+[data-theme="sith"] .footer-badge-dot { background:#cc001e; box-shadow:0 0 8px rgba(200,0,24,.7); animation:pulse-dot 1.8s ease-in-out infinite; }
+[data-theme="sith"] .section-title::after { background:linear-gradient(90deg,rgba(200,0,24,.4),transparent); }
+
+/* ==========================================================
+   TEMA: JEDI — Claro + Azul Jedi + Verde Força
+   ========================================================== */
+[data-theme="jedi"] {
+  color-scheme:light;
+  --bg:#f0f5f8;--bg-2:#e2ecf2;--bg-3:#d0e4ed;
+  --bg-card:rgba(255,255,255,.82);--bg-card-hover:rgba(255,255,255,.95);
+  --border:rgba(30,80,160,.16);--border-hover:rgba(30,80,160,.45);
+  --primary:#1e4fa0;--primary-2:#163d80;
+  --secondary:#3b82f6;--highlight:#22c55e;--accent:#16a34a;
+  --text:#0c1a2e;--text-muted:#3a5a80;--text-dim:#8aabcc;
+  --success:#16a34a;--warning:#ca8a04;--danger:#dc2626;--info:#2563eb;
+  --glow:rgba(30,79,160,.22);--glow-strong:rgba(30,79,160,.42);
+  --orb-1:rgba(30,79,160,.1);--orb-2:rgba(34,197,94,.1);--orb-3:rgba(59,130,246,.06);
+  --sidebar-bg:rgba(12,26,46,.96);
+  --theme-dot-color:#1e4fa0;--gradient-a:#1e4fa0;--gradient-b:#22c55e;
+  --glass-tint:rgba(30,79,160,.05);--glass-border:rgba(30,79,160,.18);--glass-shine:rgba(255,255,255,.65);
+}
+[data-theme="jedi"] .sidebar { background:rgba(12,26,46,.96); border-right-color:rgba(59,130,246,.25); }
+[data-theme="jedi"] .sidebar-title { background:linear-gradient(135deg,#3b82f6,#22c55e); -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
+[data-theme="jedi"] .sidebar-link { color:rgba(147,197,253,.8); }
+[data-theme="jedi"] .sidebar-link:hover { color:#93c5fd; background:rgba(59,130,246,.1); }
+[data-theme="jedi"] .sidebar-link.active { color:#93c5fd; background:rgba(59,130,246,.12); border-color:rgba(59,130,246,.35); }
+[data-theme="jedi"] .sidebar-section-label { color:rgba(147,197,253,.4); }
+[data-theme="jedi"] .sidebar-time { color:rgba(147,197,253,.5); }
+[data-theme="jedi"] .topbar { background:rgba(12,26,46,.96); }
+[data-theme="jedi"] .page-header h1 { background:linear-gradient(135deg,#1e4fa0,#22c55e); -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
+[data-theme="jedi"] .stat-value { background:linear-gradient(135deg,#1e4fa0,#22c55e); -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
+[data-theme="jedi"] .card { background:rgba(255,255,255,.82); box-shadow:0 2px 14px rgba(30,79,160,.07),inset 0 1px 0 rgba(255,255,255,.9); }
+[data-theme="jedi"] .btn-primary { background:linear-gradient(135deg,#1e4fa0,#163d80); color:#fff; }
+[data-theme="jedi"] .navbar::after { background:linear-gradient(90deg,transparent,#1e4fa0,#22c55e,transparent); opacity:.6; }
+[data-theme="jedi"] .footer { background:rgba(12,26,46,.96); }
+[data-theme="jedi"] .footer-text, [data-theme="jedi"] .footer-badge { color:rgba(147,197,253,.6); }
+[data-theme="jedi"] .footer-text a { color:#93c5fd; }
+/* Jedi lightsaber green accent on active */
+[data-theme="jedi"] .sidebar-link.active::before { background:linear-gradient(180deg,#22c55e,#16a34a); box-shadow:0 0 8px rgba(34,197,94,.5); }
+[data-theme="jedi"] .cal-day.today .cal-day-num { background:linear-gradient(135deg,#1e4fa0,#22c55e); color:#fff; box-shadow:0 0 14px rgba(34,197,94,.4); }
+[data-theme="jedi"] input,[data-theme="jedi"] textarea { color:var(--text); background:rgba(255,255,255,.8); }
+[data-theme="jedi"] ::-webkit-scrollbar-thumb { background:#1e4fa0; }
+[data-theme="jedi"] .section-title::after { background:linear-gradient(90deg,rgba(30,79,160,.25),transparent); }
+[data-theme="jedi"] .kanban-input,[data-theme="jedi"] .kanban-select { color-scheme:light; }
+
+/* ==========================================================
+   TEMA: OCEAN BREEZE — Claro + Azul Água + Espuma
+   ========================================================== */
+[data-theme="ocean"] {
+  color-scheme:light;
+  --bg:#f0f8ff;--bg-2:#e0f0fc;--bg-3:#cce8f8;
+  --bg-card:rgba(255,255,255,.8);--bg-card-hover:rgba(255,255,255,.95);
+  --border:rgba(6,148,190,.16);--border-hover:rgba(6,148,190,.45);
+  --primary:#0694be;--primary-2:#0576a0;
+  --secondary:#22d3ee;--highlight:#06b6d4;--accent:#0e7490;
+  --text:#082030;--text-muted:#2a6880;--text-dim:#8ac4d8;
+  --success:#059669;--warning:#d97706;--danger:#dc2626;--info:#0284c7;
+  --glow:rgba(6,148,190,.25);--glow-strong:rgba(6,148,190,.48);
+  --orb-1:rgba(6,148,190,.15);--orb-2:rgba(34,211,238,.12);--orb-3:rgba(14,116,144,.07);
+  --sidebar-bg:rgba(4,28,48,.95);
+  --theme-dot-color:#0694be;--gradient-a:#0694be;--gradient-b:#22d3ee;
+  --glass-tint:rgba(6,148,190,.05);--glass-border:rgba(6,148,190,.18);--glass-shine:rgba(255,255,255,.72);
+}
+[data-theme="ocean"] .sidebar { background:rgba(4,28,48,.96); border-right-color:rgba(34,211,238,.2); }
+[data-theme="ocean"] .sidebar-title { background:linear-gradient(135deg,#22d3ee,#0694be); -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
+[data-theme="ocean"] .sidebar-link { color:rgba(103,232,249,.8); }
+[data-theme="ocean"] .sidebar-link:hover { color:#67e8f9; background:rgba(34,211,238,.1); }
+[data-theme="ocean"] .sidebar-link.active { color:#67e8f9; background:rgba(34,211,238,.12); border-color:rgba(34,211,238,.35); }
+[data-theme="ocean"] .sidebar-section-label { color:rgba(103,232,249,.35); }
+[data-theme="ocean"] .sidebar-time { color:rgba(103,232,249,.45); }
+[data-theme="ocean"] .topbar { background:rgba(4,28,48,.96); }
+[data-theme="ocean"] .page-header h1 { background:linear-gradient(135deg,#0694be,#22d3ee); -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
+[data-theme="ocean"] .stat-value { background:linear-gradient(135deg,#0694be,#22d3ee); -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
+[data-theme="ocean"] .card { background:rgba(255,255,255,.8); box-shadow:0 2px 16px rgba(6,148,190,.08),inset 0 1px 0 rgba(255,255,255,.95); }
+[data-theme="ocean"] .card:hover { box-shadow:0 8px 28px rgba(6,148,190,.15); }
+[data-theme="ocean"] .btn-primary { background:linear-gradient(135deg,#0694be,#0576a0); color:#fff; }
+/* Wave animation on navbar line */
+[data-theme="ocean"] .navbar::after { background:linear-gradient(90deg,transparent,#0694be,#22d3ee,#0694be,transparent); animation:waveShift 4s ease-in-out infinite; opacity:.6; }
+@keyframes waveShift { 0%,100%{background-position:0% 50%}50%{background-position:100% 50%} }
+[data-theme="ocean"] .footer { background:rgba(4,28,48,.96); }
+[data-theme="ocean"] .footer-text, [data-theme="ocean"] .footer-badge { color:rgba(103,232,249,.55); }
+[data-theme="ocean"] .footer-text a { color:#67e8f9; }
+[data-theme="ocean"] .cal-day.today .cal-day-num { background:linear-gradient(135deg,#0694be,#22d3ee); color:#fff; box-shadow:0 0 14px rgba(6,148,190,.5); }
+[data-theme="ocean"] input,[data-theme="ocean"] textarea { color:var(--text); background:rgba(255,255,255,.8); }
+[data-theme="ocean"] ::-webkit-scrollbar-thumb { background:#0694be; }
+[data-theme="ocean"] .sidebar-link.active::before { background:linear-gradient(180deg,#22d3ee,#0694be); box-shadow:0 0 8px rgba(34,211,238,.5); }
+/* Ocean ripple orbs */
+[data-theme="ocean"] .orb-1 { background:radial-gradient(circle,rgba(6,148,190,.18) 0%,transparent 70%); animation:orbDrift1 18s ease-in-out infinite alternate; }
+[data-theme="ocean"] .orb-2 { background:radial-gradient(circle,rgba(34,211,238,.14) 0%,transparent 70%); }
+[data-theme="ocean"] .kanban-input,[data-theme="ocean"] .kanban-select { color-scheme:light; }
+[data-theme="ocean"] .section-title::after { background:linear-gradient(90deg,rgba(6,148,190,.25),transparent); }
+
+/* ==========================================================
+   MAMACO: Wood & Leaves — sem liquid glass, com texturas
+   ========================================================== */
+
+/* Override glass effects for mamaco: replace backdrop-filter with solid wood feel */
+[data-theme="mamaco"] .card {
+  background: linear-gradient(160deg, #fdf6e3 0%, #f5e6c0 100%) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: 1.5px solid rgba(101,67,33,.28) !important;
+  box-shadow: 0 2px 8px rgba(60,30,0,.12), inset 0 1px 0 rgba(255,248,200,.8), 2px 2px 0 rgba(101,67,33,.06) !important;
+  border-radius: 10px !important;
+}
+[data-theme="mamaco"] .card::before {
+  background: repeating-linear-gradient(90deg,transparent,transparent 8px,rgba(101,67,33,.03) 8px,rgba(101,67,33,.03) 9px),
+              linear-gradient(180deg,rgba(255,252,220,.8) 0%,transparent 30%) !important;
+}
+[data-theme="mamaco"] .card::after { background: none !important; }
+[data-theme="mamaco"] .card:hover {
+  box-shadow: 0 6px 18px rgba(60,30,0,.18), inset 0 1px 0 rgba(255,250,210,.9), 2px 2px 0 rgba(101,67,33,.08) !important;
+  transform: translateY(-2px) !important;
+}
+/* Wood-grain sidebar */
+[data-theme="mamaco"] .sidebar {
+  background: repeating-linear-gradient(92deg,rgba(40,18,0,.96),rgba(40,18,0,.96) 3px,rgba(35,14,0,.96) 3px,rgba(35,14,0,.96) 6px) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border-right: 1.5px solid rgba(90,50,0,.45) !important;
+}
+/* Topbar wood */
+[data-theme="mamaco"] .topbar {
+  background: repeating-linear-gradient(92deg,rgba(40,18,0,.97),rgba(40,18,0,.97) 3px,rgba(35,14,0,.97) 3px,rgba(35,14,0,.97) 6px) !important;
+  backdrop-filter: none !important;
+}
+/* Quick buttons - leaf feel */
+[data-theme="mamaco"] .home-quick-btn {
+  background: linear-gradient(135deg,rgba(240,220,160,.9),rgba(230,205,140,.9)) !important;
+  backdrop-filter: none !important;
+  border: 1.5px solid rgba(101,67,33,.3) !important;
+  box-shadow: 0 2px 6px rgba(60,30,0,.1), inset 0 1px 0 rgba(255,248,200,.7) !important;
+}
+[data-theme="mamaco"] .home-quick-btn:hover {
+  background: linear-gradient(135deg,rgba(250,230,170,.95),rgba(240,215,150,.95)) !important;
+  box-shadow: 0 6px 16px rgba(60,30,0,.16) !important;
+}
+/* Stat cards */
+[data-theme="mamaco"] .stat-card {
+  background: linear-gradient(150deg,#fdf0c0 0%,#f0d890 100%) !important;
+  backdrop-filter: none !important;
+  border: 1.5px solid rgba(101,67,33,.25) !important;
+  box-shadow: 0 2px 8px rgba(60,30,0,.1) !important;
+}
+[data-theme="mamaco"] .stat-card::before { background: none !important; }
+/* Event items */
+[data-theme="mamaco"] .event-item {
+  background: linear-gradient(135deg,rgba(250,238,190,.9),rgba(238,220,160,.9)) !important;
+  backdrop-filter: none !important;
+  border: 1.5px solid rgba(101,67,33,.2) !important;
+}
+/* Kanban */
+[data-theme="mamaco"] .kanban-col {
+  background: linear-gradient(160deg,#faefd0,#f0e0b0) !important;
+  backdrop-filter: none !important;
+  border: 1.5px solid rgba(101,67,33,.22) !important;
+}
+[data-theme="mamaco"] .kanban-card {
+  background: linear-gradient(135deg,#fff8e0,#f5e8c0) !important;
+  backdrop-filter: none !important;
+  border: 1.5px solid rgba(101,67,33,.2) !important;
+  box-shadow: 1px 2px 4px rgba(60,30,0,.08) !important;
+}
+/* Newsletter */
+[data-theme="mamaco"] .newsletter-featured {
+  background: linear-gradient(150deg,#fdf0c0,#f0d890) !important;
+  backdrop-filter: none !important;
+}
+/* Modals */
+[data-theme="mamaco"] .modal-box {
+  background: linear-gradient(160deg,#fdf6e3,#f5e6c0) !important;
+  backdrop-filter: none !important;
+}
+/* Leaf divider on section titles */
+[data-theme="mamaco"] .section-title::after {
+  background: repeating-linear-gradient(90deg,rgba(90,50,0,.2),rgba(90,50,0,.2) 4px,transparent 4px,transparent 8px) !important;
+  height: 2px !important;
+}
+/* Bamboo border-radius — less rounded, more natural */
+[data-theme="mamaco"] .card,[data-theme="mamaco"] .home-quick-btn,
+[data-theme="mamaco"] .stat-card,[data-theme="mamaco"] .kanban-col,
+[data-theme="mamaco"] .kanban-card,[data-theme="mamaco"] .event-item {
+  border-radius: 6px !important;
+}
+[data-theme="mamaco"] .calendar-main { background:linear-gradient(160deg,#fdf6e3,#f0dda0) !important; backdrop-filter:none !important; border:1.5px solid rgba(101,67,33,.28) !important; }
+/* Docente cards */
+[data-theme="mamaco"] .docente-card {
+  background:linear-gradient(150deg,#fdf0d0,#f5e0a8) !important;
+  backdrop-filter:none !important;
+  border:1.5px solid rgba(101,67,33,.22) !important;
+}
+/* Estudo cards */
+[data-theme="mamaco"] .estudo-card {
+  background:linear-gradient(150deg,#fdf0d0,#f5e0a8) !important;
+  backdrop-filter:none !important;
+  border:1.5px solid rgba(101,67,33,.22) !important;
+}
+
+/* ==========================================================
+   THEME DARK/LIGHT SWITCH STYLES
+   ========================================================== */
+.theme-mode-switch {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  background: var(--glass-tint);
+  border: 1px solid var(--glass-border);
+  margin-bottom: 4px;
+}
+.tsw-btn {
+  font-size: 14px; line-height: 1; background: none; border: none;
+  cursor: pointer; padding: 2px; opacity: .5; transition: opacity .2s, transform .2s;
+  flex-shrink: 0;
+}
+.tsw-btn:hover { opacity: 1; transform: scale(1.2); }
+[data-mode="dark"] .tsw-btn.tsw-dark,
+[data-mode="light"] .tsw-btn.tsw-light { opacity: 1; }
+.tsw-track {
+  position: relative; width: 36px; height: 20px;
+  background: var(--glass-tint); border: 1px solid var(--glass-border);
+  border-radius: 10px; cursor: pointer; flex-shrink: 0;
+  transition: background .25s;
+}
+[data-mode="light"] .tsw-track { background: rgba(255,180,0,.15); border-color: rgba(255,180,0,.35); }
+.tsw-knob {
+  position: absolute; top: 2px; left: 2px;
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--bg-card); font-size: 9px;
+  display: flex; align-items: center; justify-content: center;
+  transition: left .25s cubic-bezier(.34,1.56,.64,1);
+  box-shadow: 0 1px 4px rgba(0,0,0,.3);
+  pointer-events: none;
+}
+[data-mode="light"] .tsw-knob { left: 18px; }
+.tsw-label {
+  font-family: var(--font-mono); font-size: 10px;
+  color: var(--text-dim); letter-spacing: .5px; flex: 1;
+}
+
+/* ==========================================================
+   QUOTE WIDGET
+   ========================================================== */
+.quote-card {
+  padding: 20px !important;
+  position: relative;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.quote-loading {
+  display: flex; align-items: center; justify-content: center; padding: 20px;
+}
+.quote-mark {
+  font-family: var(--font-display); font-size: 48px; font-style: italic;
+  color: var(--primary); line-height: .8; margin-bottom: 8px;
+  opacity: .5; position: relative; z-index: 1;
+}
+.quote-text {
+  font-family: var(--font-display); font-size: 14.5px; font-style: italic;
+  font-weight: 500; color: var(--text); line-height: 1.65;
+  margin-bottom: 12px; position: relative; z-index: 1;
+  border: none; padding: 0; quotes: none;
+}
+.quote-meta {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+  position: relative; z-index: 1; margin-bottom: 12px;
+}
+.quote-author {
+  font-family: var(--font-mono); font-size: 11.5px; font-weight: 600;
+  color: var(--primary);
+}
+.quote-source {
+  font-family: var(--font-mono); font-size: 10px;
+  color: var(--text-dim); background: var(--glass-tint);
+  border: 1px solid var(--glass-border); border-radius: 100px;
+  padding: 2px 8px; backdrop-filter: blur(6px);
+}
+.quote-refresh-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--font-mono); font-size: 10.5px; font-weight: 600;
+  color: var(--text-dim); background: var(--glass-tint);
+  border: 1px solid var(--glass-border); border-radius: 100px;
+  padding: 4px 12px; cursor: pointer; transition: all .2s;
+  position: relative; z-index: 1; width: fit-content;
+  backdrop-filter: blur(8px);
+}
+.quote-refresh-btn:hover {
+  border-color: var(--border-hover); color: var(--primary);
+  background: var(--bg-card-hover);
+}
+.quote-refresh-btn svg { transition: transform .5s; }
+.quote-refresh-btn:hover svg { transform: rotate(180deg); }
+
+/* ==========================================================
+   PERFORMANCE OPTIMIZATIONS
+   ========================================================== */
+
+/* Reduce repaints: promote fixed elements to composite layers */
+.sidebar, .topbar, .bg-orbs, .moon-egg {
+  will-change: transform;
+  contain: layout style;
+}
+.orb { will-change: transform; }
+
+/* Reduce backdrop-filter cost on mobile */
+@media (max-width: 768px) {
+  .event-item, .kanban-card, .cal-filter-btn, .badge,
+  .estudos-filter-btn, .cal-nav-btn, .sem-btn {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  /* Simplify animations on mobile */
+  .orb-3 { display: none; }
+  .card::before { height: 30%; }
+}
+
+/* Reduce motion for accessibility + perf */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.15ms !important;
+  }
+  .orb { animation: none !important; }
+}
+
+/* GPU-accelerated transitions only on transform/opacity */
+.card, .stat-card, .event-item, .kanban-card, .home-quick-btn,
+.tool-card, .docente-card, .estudo-card, .entidade-card,
+.newsletter-item, .course-card {
+  transition: transform var(--transition), box-shadow var(--transition),
+              border-color var(--transition), background var(--transition);
+}
+
+/* Contain paint for sidebar nav items */
+.sidebar-link { contain: layout; }
+
+/* Font-display swap optimization */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800&family=JetBrains+Mono:wght@400;500;600&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,500;1,9..144,700&display=swap&font-display=swap');

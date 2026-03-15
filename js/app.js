@@ -4,21 +4,25 @@ let eventsData = [];
 let scheduleDataAll = null;
 
 // ===== THEME SYSTEM =====
+// dark=true, light=false
 const THEMES = [
-  { key: 'padrao',      label: 'Padrão' },
-  { key: 'super',       label: 'Super' },
-  { key: 'hackerman',   label: 'Hackerman' },
-  { key: 'hypado',      label: 'Hypado' },
-  { key: 'omni',        label: 'Omni' },
-  { key: 'minas',       label: 'Minas' },
-  { key: 'd20',         label: 'D20' },
-  { key: 'grifinho',    label: 'Grifinho' },
-  { key: 'bidu',        label: 'Bidu' },
-  { key: 'mamaco',      label: 'Mamaco' },
-  { key: 'laboratorio', label: 'Laboratório' },
-  { key: 'sintetizado', label: 'Sintetizado' },
-  { key: 'masacote',    label: 'Masacote' },
-  { key: 'grace',       label: 'Grace' },
+  { key: 'padrao',      label: 'Padrão',       dark: true  },
+  { key: 'super',       label: 'Super',         dark: true  },
+  { key: 'hackerman',   label: 'Hackerman',     dark: true  },
+  { key: 'sith',        label: 'Sith',          dark: true  },
+  { key: 'hypado',      label: 'Hypado',        dark: true  },
+  { key: 'omni',        label: 'Omni',          dark: true  },
+  { key: 'minas',       label: 'Minas',         dark: true  },
+  { key: 'd20',         label: 'D20',           dark: true  },
+  { key: 'grifinho',    label: 'Grifinho',      dark: false },
+  { key: 'bidu',        label: 'Bidu',          dark: false },
+  { key: 'mamaco',      label: 'Mamaco',        dark: false },
+  { key: 'jedi',        label: 'Jedi',          dark: false },
+  { key: 'ocean',       label: 'Ocean Breeze',  dark: false },
+  { key: 'laboratorio', label: 'Laboratório',   dark: false },
+  { key: 'sintetizado', label: 'Sintetizado',   dark: false },
+  { key: 'masacote',    label: 'Masacote',      dark: false },
+  { key: 'grace',       label: 'Grace',         dark: false },
 ];
 let currentThemeIndex = 0;
 let themeFullRotations = 0;
@@ -30,6 +34,7 @@ function cycleTheme() {
     if (themeFullRotations >= 2) { triggerMoonEasterEgg(); themeFullRotations = 0; }
   }
   applyTheme(THEMES[currentThemeIndex]);
+  renderThemeSwitch();
 }
 
 function applyTheme(theme) {
@@ -40,16 +45,44 @@ function applyTheme(theme) {
   if (dot) { dot.style.animation = 'none'; void dot.offsetWidth; dot.style.animation = ''; }
   const meta = document.querySelector('meta[name="theme-color"]');
   if (meta) {
-    const bgMap = { padrao:'#07070c',super:'#04080f',hackerman:'#010a01',hypado:'#080600',omni:'#060606',minas:'#060908',d20:'#020614',grifinho:'#f4f0ff',bidu:'#fff8f0',mamaco:'#f5f0e0',laboratorio:'#fff0f7',sintetizado:'#f0f6ff',masacote:'#fffce8',grace:'#fff4eb' };
+    const bgMap = { padrao:'#07070c',super:'#04080f',hackerman:'#010a01',sith:'#0a0002',hypado:'#080600',omni:'#060606',minas:'#060908',d20:'#020614',grifinho:'#f4f0ff',bidu:'#fff8f0',mamaco:'#f5f0e0',jedi:'#f0f8f2',ocean:'#f0f8ff',laboratorio:'#fff0f7',sintetizado:'#f0f6ff',masacote:'#fffce8',grace:'#fff4eb' };
     meta.setAttribute('content', bgMap[theme.key] || '#07070c');
   }
   localStorage.setItem('dasitheme', theme.key);
+}
+
+// ===== DARK/LIGHT SWITCH =====
+function setThemeMode(mode) {
+  // mode: 'dark' | 'light'
+  const darkThemes  = THEMES.filter(t => t.dark);
+  const lightThemes = THEMES.filter(t => !t.dark);
+  const pool = mode === 'dark' ? darkThemes : lightThemes;
+  // Pick first of pool, or stay if already in correct mode
+  const current = THEMES[currentThemeIndex];
+  if ((mode === 'dark') === current.dark) return; // already correct mode
+  const first = pool[0];
+  const idx = THEMES.findIndex(t => t.key === first.key);
+  currentThemeIndex = idx;
+  applyTheme(THEMES[currentThemeIndex]);
+  renderThemeSwitch();
+}
+
+function renderThemeSwitch() {
+  const sw = document.getElementById('theme-mode-switch');
+  if (!sw) return;
+  const isDark = THEMES[currentThemeIndex]?.dark !== false;
+  sw.setAttribute('data-mode', isDark ? 'dark' : 'light');
+  const knob = sw.querySelector('.tsw-knob');
+  const label = sw.querySelector('.tsw-label');
+  if (knob) knob.textContent = isDark ? '🌙' : '☀️';
+  if (label) label.textContent = isDark ? 'Escuro' : 'Claro';
 }
 
 function loadSavedTheme() {
   const saved = localStorage.getItem('dasitheme');
   if (saved) { const idx = THEMES.findIndex(t => t.key === saved); if (idx >= 0) { currentThemeIndex = idx; applyTheme(THEMES[idx]); return; } }
   applyTheme(THEMES[0]);
+  renderThemeSwitch();
 }
 
 function triggerMoonEasterEgg() {
@@ -106,6 +139,82 @@ function createSidebarOverlay() {
 }
 
 // ===== HOME =====
+// ===== QUOTES WIDGET =====
+const FALLBACK_QUOTES = [
+  { text: "A vida não examinada não vale a pena ser vivida.", author: "Sócrates", source: "Filosofia" },
+  { text: "Eu penso, logo existo.", author: "René Descartes", source: "Filosofia" },
+  { text: "O homem está condenado a ser livre.", author: "Jean-Paul Sartre", source: "Filosofia" },
+  { text: "Tudo o que sabemos é uma gota; o que ignoramos é um oceano.", author: "Isaac Newton", source: "Filosofia" },
+  { text: "A imaginação é mais importante que o conhecimento.", author: "Albert Einstein", source: "Ciência" },
+  { text: "Não é o mais forte que sobrevive, mas o mais adaptável.", author: "Charles Darwin", source: "Ciência" },
+  { text: "Ser ou não ser, eis a questão.", author: "William Shakespeare", source: "Hamlet" },
+  { text: "É melhor ter amado e perdido do que nunca ter amado.", author: "Alfred Lord Tennyson", source: "In Memoriam" },
+  { text: "Dois caminhos divergiram numa floresta, e eu... tomei o menos percorrido.", author: "Robert Frost", source: "The Road Not Taken" },
+  { text: "Não chore porque acabou; sorria porque aconteceu.", author: "Gabriel García Márquez", source: "Literatura" },
+  { text: "Quando você quiser desistir, lembre-se por que começou.", author: "Kobe Bryant", source: "Esporte" },
+  { text: "O segredo é não correr atrás das borboletas. É cuidar do jardim para que elas venham até você.", author: "Mário Quintana", source: "Poesia" },
+  { text: "Não podemos escolher o vento, mas podemos ajustar as velas.", author: "Dolly Parton", source: "Música" },
+  { text: "A dificuldade é o que acorda o gênio.", author: "Nassim Nicholas Taleb", source: "Literatura" },
+  { text: "Tudo passa, tudo é passageiro. O que permanece somos nós, a escolher o que fazer com o tempo que temos.", author: "J.R.R. Tolkien", source: "O Senhor dos Anéis" },
+  { text: "Não temas a perfeição — jamais a alcançarás.", author: "Salvador Dalí", source: "Arte" },
+  { text: "Com grandes poderes vêm grandes responsabilidades.", author: "Stan Lee", source: "Marvel Comics" },
+  { text: "A vida é o que acontece enquanto você está ocupado fazendo outros planos.", author: "John Lennon", source: "Música" },
+  { text: "No meio de cada dificuldade existe uma oportunidade.", author: "Albert Einstein", source: "Ciência" },
+  { text: "Não é quem você é por dentro, mas o que você faz que te define.", author: "Bruce Wayne", source: "Batman Begins" },
+  { text: "Que a Força esteja com você.", author: "Yoda", source: "Star Wars" },
+  { text: "I am the danger.", author: "Walter White", source: "Breaking Bad" },
+  { text: "Winter is coming.", author: "Ned Stark", source: "Game of Thrones" },
+  { text: "O código limpo é simples e direto. Parece prosa bem escrita.", author: "Robert C. Martin", source: "Clean Code" },
+  { text: "Qualquer tolo pode escrever código que um computador entenda. Bons programadores escrevem código que humanos entendam.", author: "Martin Fowler", source: "Refactoring" },
+  { text: "Simplifique o complexo, não complique o simples.", author: "Bruno Munari", source: "Design" },
+  { text: "Os dados superam a opinião.", author: "Jeff Bezos", source: "Gestão" },
+  { text: "Move fast and break things.", author: "Mark Zuckerberg", source: "Silicon Valley" },
+  { text: "Primeiro, resolva o problema. Depois, escreva o código.", author: "John Johnson", source: "Programação" },
+];
+
+async function fetchExternalQuote() {
+  try {
+    // quotable.io — API pública de frases
+    const res = await fetch('https://api.quotable.io/quotes/random?limit=1&maxLength=200', { signal: AbortSignal.timeout(3500) });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    if (data && data[0]) return { text: data[0].content, author: data[0].author, source: 'Quotable API' };
+  } catch(e) {}
+  // Fallback: zenquotes
+  try {
+    const res = await fetch('https://zenquotes.io/api/random', { signal: AbortSignal.timeout(3000) });
+    if (!res.ok) throw new Error();
+    const data = await res.json();
+    if (data && data[0]) return { text: data[0].q, author: data[0].a, source: 'ZenQuotes' };
+  } catch(e) {}
+  return null;
+}
+
+async function loadQuoteWidget() {
+  const card = document.getElementById('quote-card');
+  if (!card) return;
+  card.innerHTML = '<div class="quote-loading"><div class="spinner"></div></div>';
+
+  let quote = await fetchExternalQuote();
+  if (!quote) {
+    quote = FALLBACK_QUOTES[Math.floor(Math.random() * FALLBACK_QUOTES.length)];
+  }
+
+  card.innerHTML =
+    '<div class="quote-mark">"</div>' +
+    '<blockquote class="quote-text">' + escQ(quote.text) + '</blockquote>' +
+    '<div class="quote-meta">' +
+      '<span class="quote-author">— ' + escQ(quote.author) + '</span>' +
+      (quote.source ? '<span class="quote-source">' + escQ(quote.source) + '</span>' : '') +
+    '</div>' +
+    '<button class="quote-refresh-btn" onclick="loadQuoteWidget()" title="Nova frase">' +
+      '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>' +
+      'Nova frase' +
+    '</button>';
+}
+
+function escQ(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
 async function initHome() {
   renderHeroGreeting();
   const data = await fetchJSON('./data/events.json');
@@ -114,6 +223,7 @@ async function initHome() {
   scheduleDataAll = schData || {};
   renderUpcomingEvents();
   renderHomeNewsletter();
+  loadQuoteWidget();
   renderNextClass();
   renderCountdown();
   updateStatEvents();
@@ -320,6 +430,7 @@ function triggerCaligrafiaEasterEgg() {
 // ===== INIT =====
 document.addEventListener('DOMContentLoaded', () => {
   loadSavedTheme();
+  renderThemeSwitch();
   createSidebarOverlay();
   const hash = window.location.hash.replace('#','') || 'home';
   navigateTo(hash);
