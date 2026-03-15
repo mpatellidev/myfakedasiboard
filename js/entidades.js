@@ -18,7 +18,7 @@ function renderEntidadesHub() {
   const detail = document.getElementById('entidade-detalhe');
   if (!hub) return;
 
-  hub.style.display = '';
+  hub.style.display = 'block';
   if (detail) detail.style.display = 'none';
   entidadeAtiva = null;
   syncBackBtn();
@@ -75,7 +75,7 @@ function openEntidade(id) {
   if (!detail) return;
 
   if (hub) hub.style.display = 'none';
-  detail.style.display = '';
+  detail.style.display = 'block';
 
   var today = new Date(); today.setHours(0, 0, 0, 0);
   var proximos = [];

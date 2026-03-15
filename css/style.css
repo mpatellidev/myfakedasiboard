@@ -1028,7 +1028,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .entidade-card:hover .entidade-card-arrow { transform: translateX(4px); }
 
 /* ---- Entidade hero (detalhe) ---- */
-#entidade-detalhe { display: none; }
+/* entidade-detalhe visibility managed by JS */
 
 .entidade-hero {
   position: relative; overflow: hidden;
