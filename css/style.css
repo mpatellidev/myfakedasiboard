@@ -2481,3 +2481,91 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
   .page { padding:0 !important; }
   .card { box-shadow:none !important; background:white !important; border:1px solid #ccc !important; }
 }
+
+/* ============================================================
+   SCHEDULE SECTION LABELS + NEW CARDS
+   ============================================================ */
+.schedule-section-label {
+  display:flex;align-items:center;gap:8px;
+  font-family:var(--font-mono);font-size:10.5px;font-weight:700;
+  text-transform:uppercase;letter-spacing:1.2px;color:var(--text-muted);
+  padding:8px 0 6px;margin-bottom:4px;
+  border-bottom:1px solid var(--glass-border);
+}
+.schedule-section-label svg { color:var(--primary);flex-shrink:0; }
+.course-code {
+  font-family:var(--font-mono);font-size:10px;font-weight:600;
+  color:var(--primary);letter-spacing:.5px;
+  background:var(--glass-tint);border:1px solid var(--glass-border);
+  padding:2px 7px;border-radius:4px;
+  backdrop-filter:blur(6px);
+}
+.course-cb-badge {
+  font-family:var(--font-mono);font-size:9px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.5px;
+  color:var(--success);background:rgba(52,211,153,.1);
+  border:1px solid rgba(52,211,153,.25);padding:2px 7px;border-radius:4px;
+}
+
+/* ============================================================
+   PAC-MAN EASTER EGG
+   ============================================================ */
+.pacman-overlay {
+  position:fixed;inset:0;
+  background:rgba(0,0,0,.85);
+  backdrop-filter:blur(20px);
+  z-index:8000;
+  display:flex;align-items:center;justify-content:center;
+  animation:fadeIn .3s ease;
+}
+.pacman-box {
+  background:var(--bg-card);
+  backdrop-filter:blur(32px) saturate(220%);
+  -webkit-backdrop-filter:blur(32px) saturate(220%);
+  border:2px solid var(--glass-border);
+  border-radius:var(--radius-xl);
+  padding:24px;
+  position:relative;
+  box-shadow:var(--glass-inner-shadow),0 32px 80px rgba(0,0,0,.5);
+  max-width:560px;
+  width:calc(100vw - 32px);
+}
+.pacman-header {
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:12px;
+}
+.pacman-title {
+  font-family:var(--font-display);font-size:18px;font-weight:800;
+  font-style:italic;letter-spacing:-.3px;
+  background:linear-gradient(135deg,var(--primary),var(--highlight));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.pacman-score {
+  font-family:var(--font-mono);font-size:13px;font-weight:700;
+  color:var(--highlight);
+}
+.pacman-close {
+  width:28px;height:28px;display:flex;align-items:center;justify-content:center;
+  background:var(--glass-tint);border:1px solid var(--glass-border);
+  border-radius:var(--radius-sm);color:var(--text-muted);cursor:pointer;
+  font-size:16px;transition:all .2s;
+}
+.pacman-close:hover { background:rgba(248,113,113,.12);border-color:var(--danger);color:var(--danger); }
+.pacman-canvas {
+  display:block;border-radius:var(--radius);
+  border:1px solid var(--glass-border);
+  background:#000;
+  width:100%;
+  image-rendering:pixelated;
+}
+.pacman-controls {
+  display:flex;justify-content:space-between;align-items:center;
+  margin-top:10px;
+  font-family:var(--font-mono);font-size:10.5px;color:var(--text-dim);
+}
+.pacman-hint { letter-spacing:.3px; }
+.pacman-lives { color:var(--highlight); }
+@media(max-width:480px) {
+  .pacman-box { padding:14px; }
+  .pacman-title { font-size:15px; }
+}

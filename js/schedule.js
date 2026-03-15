@@ -1,214 +1,179 @@
-// ===== SCHEDULE MODULE =====
-// Turmas are loaded from /data/turmas/<id>.json
-// To add a new turma: create the JSON file and add its id to /data/turmas/index.json
+// ===== SCHEDULE MODULE (refactored for semester+turma) =====
 
-// ── Real ACH discipline codes from EACH/USP SI curriculum ─────────────────
-const DISCIPLINE_MAP = {
-  'ACH0021': 'Tratamento e Análise de Dados e Informações',
-  'ACH0041': 'Resolução de Problemas I',
-  'ACH2001': 'Introdução à Programação',
-  'ACH2011': 'Cálculo I',
-  'ACH2014': 'Fundamentos de Sistemas de Informação',
-  'ACH2002': 'Introdução à Análise de Algoritmos',
-  'ACH2012': 'Cálculo II',
-  'ACH2013': 'Matemática Discreta I',
-  'ACH2023': 'Algoritmos e Estruturas de Dados I',
-  'ACH2033': 'Matrizes, Vetores e Geometria Analítica',
-  'ACH2003': 'Computação Orientada a Objetos',
-  'ACH2024': 'Algoritmos e Estruturas de Dados II',
-  'ACH2034': 'Organização e Arquitetura de Computadores I',
-  'ACH2053': 'Introdução à Estatística',
-  'ACH2035': 'Introdução à Administração e Economia para Computação',
-  'ACH2004': 'Bancos de Dados 1',
-  'ACH2044': 'Redes de Computadores',
-  'ACH2063': 'Métodos Quantitativos para Análise Multivariada',
-  'ACH2026': 'Sistemas Operacionais',
-  'ACH2036': 'Organização e Arquitetura de Computadores II',
-  'ACH2005': 'Análise, Projeto e Interface Humano-Computador',
-  'ACH2055': 'Inteligência Artificial',
-  'ACH2016': 'Bancos de Dados 2',
-  'ACH2025': 'Introdução à Teoria da Computação',
-  'ACH2147': 'Desenvolvimento de Sistemas de Informação Distribuídos',
-  'ACH2043': 'Resolução de Problemas II',
-  'ACH2006': 'Engenharia de Sistemas de Informação I',
-  'ACH2008': 'Empreendedorismo em Informática',
-  'ACH2027': 'Gestão de Projetos de Tecnologia da Informação',
-  'ACH2017': 'Projeto Supervisionado ou de Graduação I',
-  'ACH2018': 'Projeto Supervisionado ou de Graduação II',
-  'ACH0042': 'Resolução de Problemas III (CB)',
-  'ACH0101': 'Ciências da Natureza – Ciências da Terra',
-  'ACH0111': 'Ciências da Natureza – Ciências da Vida',
-  'ACH0121': 'Ciências da Natureza – Ciências do Universo',
-  'ACH0131': 'Ciências da Natureza – Ciência, Cultura e Sociedade',
-  'ACH0141': 'Sociedade, Multiculturalismo e Direitos',
-  'ACH0151': 'Sociedade, Multiculturalismo e Direitos – Cultura Digital',
-  'ACH0161': 'Sociedade, Multiculturalismo e Direitos – Direitos Humanos e Multiculturalismo',
-  'ACH0102': 'Psicologia, Educação e Temas Contemporâneos',
-  'ACH0112': 'Psicologia, Educação e Temas Contemporâneos – Visão Psicanalítica',
-  'ACH0122': 'Psicologia, Educação e Temas Contemporâneos – Processos Sociais',
-  'ACH0132': 'Psicologia, Educação e Temas Contemporâneos – Abordagem Crítica',
-  'ACH0142': 'Sociedade, Meio Ambiente e Cidadania – Desenvolvimento e Meio Ambiente',
-  'ACH0152': 'Sociedade, Meio Ambiente e Cidadania – Sociedade, Ambiente e Cidadania',
-  'ACH0162': 'Resolução de Problemas IV (CB)',
-  'ACH2107': 'Análise de Redes Sociais',
-  'ACH2197': 'Análise de Redes Sociais',
-};
+let scheduleData = null;
+let scheduleActiveSem = '1';
+let scheduleActiveTurma = '02';
 
-// ── Correct JupiterWeb URL (verified format) ──────────────────────────────
-function getDisciplineURL(code) {
-  return `https://uspdigital.usp.br/jupiterweb/obterDisciplina?sgldis=${code}`;
-}
-
-function getDisciplineName(code) {
-  return DISCIPLINE_MAP[code] || code;
-}
-
-// ── State ──────────────────────────────────────────────────────────────────
-let turmasList = [];
-let turmasCache = {};
-let currentTurmaId = null;
-
-const DIAS = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
-
-// ── Init ───────────────────────────────────────────────────────────────────
 async function initSchedule() {
-  const ids = await fetchJSON('./data/turmas/index.json');
-  turmasList = ids || [];
-
-  if (!turmasList.length) {
-    el('#schedule-grid').innerHTML = `<div class="empty-state"><p>Nenhuma turma cadastrada.</p></div>`;
+  if (!scheduleData) {
+    const data = await fetchJSON('./data/schedule.json');
+    scheduleData = data || null;
+  }
+  if (!scheduleData) {
+    document.getElementById('schedule-grid').innerHTML = '<div class="empty-state"><p>Erro ao carregar horários.</p></div>';
     return;
   }
-
-  currentTurmaId = turmasList[0];
-  renderTurmaSelector();
-  await loadAndRenderTurma(currentTurmaId);
+  renderSemesterTabs();
+  renderTurmaTabs();
+  renderScheduleGrid();
 }
 
-function renderTurmaSelector() {
-  const container = el('#semester-buttons');
-  if (!container) return;
-
-  container.innerHTML = turmasList.map(id => `
-    <button class="sem-btn ${id === currentTurmaId ? 'active' : ''}"
-            onclick="selectTurma('${id}', this)">
-      ${id}
+function renderSemesterTabs() {
+  const el = document.getElementById('semester-buttons');
+  if (!el || !scheduleData) return;
+  el.innerHTML = scheduleData.semesters.map(sem => `
+    <button class="sem-btn ${scheduleActiveSem === sem.id ? 'active' : ''}"
+      onclick="selectSemester('${sem.id}')">
+      ${sem.label}
     </button>
   `).join('');
 }
 
-async function selectTurma(id, btn) {
-  currentTurmaId = id;
-  els('.sem-btn').forEach(b => b.classList.remove('active'));
-  if (btn) btn.classList.add('active');
-  await loadAndRenderTurma(id);
-}
+function renderTurmaTabs() {
+  const hdr = document.getElementById('schedule-turma-header');
+  if (!hdr || !scheduleData) return;
 
-async function loadAndRenderTurma(id) {
-  const grid = el('#schedule-grid');
-  if (!grid) return;
+  // Find which turmas are available for this semester
+  const semInfo = scheduleData.semesters.find(s => s.id === scheduleActiveSem);
+  const turmas = semInfo?.turmas || Object.keys(scheduleData.turmas);
 
-  if (!turmasCache[id]) {
-    grid.innerHTML = `<div class="loading-spinner"><div class="spinner"></div>Carregando turma...</div>`;
-    const data = await fetchJSON(`./data/turmas/${id}.json`);
-    turmasCache[id] = data;
-  }
-
-  const turma = turmasCache[id];
-  if (!turma) {
-    grid.innerHTML = `<div class="empty-state"><p>Não foi possível carregar a turma ${id}.</p></div>`;
-    return;
-  }
-
-  renderTurmaHeader(turma);
-  renderTimetable(turma);
-}
-
-function renderTurmaHeader(turma) {
-  const header = el('#schedule-turma-header');
-  if (!header) return;
-
-  const count = (turma.aulas || []).length;
-  header.innerHTML = `
-    <span class="badge badge-purple">${turma.label}</span>
-    <span style="font-size:13px; color:var(--text-muted); font-family:var(--font-mono);">${turma.semester || ''}</span>
-    <span style="font-size:12px; color:var(--text-dim); font-family:var(--font-mono);">${count} aula${count !== 1 ? 's' : ''}</span>
+  hdr.innerHTML = `
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+      <span style="font-family:var(--font-mono);font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px">Turma:</span>
+      ${turmas.map(t => {
+        const info = scheduleData.turmas[t];
+        return `<button class="sem-btn ${scheduleActiveTurma === t ? 'active' : ''}"
+          onclick="selectTurma('${t}')" style="display:flex;align-items:center;gap:6px">
+          <span style="font-size:11px;opacity:.7">${info?.periodo || t}</span>
+          ${t}
+        </button>`;
+      }).join('')}
+    </div>
+    <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-dim);padding:4px 8px;border-radius:var(--radius-sm);background:var(--glass-tint);border:1px solid var(--glass-border)">
+      ${scheduleData.turmas[scheduleActiveTurma]?.label || scheduleActiveTurma}
+    </div>
   `;
 }
 
-function renderTimetable(turma) {
-  const grid = el('#schedule-grid');
-  if (!grid) return;
-  grid.innerHTML = '';
+function selectSemester(semId) {
+  scheduleActiveSem = semId;
+  // Make sure current turma is available
+  const semInfo = scheduleData.semesters.find(s => s.id === semId);
+  if (semInfo?.turmas && !semInfo.turmas.includes(scheduleActiveTurma)) {
+    scheduleActiveTurma = semInfo.turmas[0];
+  }
+  renderSemesterTabs();
+  renderTurmaTabs();
+  renderScheduleGrid();
+}
 
-  const aulas = turma.aulas || [];
+function selectTurma(turma) {
+  scheduleActiveTurma = turma;
+  renderTurmaTabs();
+  renderScheduleGrid();
+}
 
-  if (!aulas.length) {
-    grid.innerHTML = `<div class="empty-state"><p>Nenhuma aula cadastrada para esta turma.<br><span style="font-size:12px;">Edite <code>data/turmas/${turma.id}.json</code> para adicionar aulas.</span></p></div>`;
+function renderScheduleGrid() {
+  const grid = document.getElementById('schedule-grid');
+  if (!grid || !scheduleData) return;
+
+  const key = `${scheduleActiveSem}_${scheduleActiveTurma}`;
+  const courses = scheduleData.schedule[key];
+
+  if (!courses || courses.length === 0) {
+    grid.innerHTML = `<div class="empty-state"><p>Nenhuma disciplina cadastrada para esta combinação.</p></div>`;
     return;
   }
 
-  // Group by day
-  const byDay = {};
-  DIAS.forEach(d => { byDay[d] = []; });
-  aulas.forEach(a => {
-    if (byDay[a.dia] !== undefined) byDay[a.dia].push(a);
+  // Group by tipo: ciclobasico first, then especifica
+  const cb = courses.filter(c => c.tipo === 'ciclobasico');
+  const esp = courses.filter(c => c.tipo !== 'ciclobasico');
+
+  const dayOrder = ['Segunda','Terça','Quarta','Quinta','Sexta'];
+  const sortFn = (a,b) => {
+    const da = dayOrder.indexOf(a.day), db = dayOrder.indexOf(b.day);
+    if (da !== db) return da - db;
+    return (a.time||'').localeCompare(b.time||'');
+  };
+
+  let html = '';
+
+  if (cb.length) {
+    html += `
+      <div class="schedule-section-label">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        Ciclo Básico
+      </div>`;
+    html += cb.sort(sortFn).map(c => buildCourseCard(c, 'cb')).join('');
+  }
+
+  if (esp.length) {
+    html += `
+      <div class="schedule-section-label" style="${cb.length ? 'margin-top:20px' : ''}">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+        Disciplinas de SI
+      </div>`;
+    html += esp.sort(sortFn).map(c => buildCourseCard(c, 'si')).join('');
+  }
+
+  grid.innerHTML = html;
+
+  // Stagger animation
+  grid.querySelectorAll('.course-card').forEach((card, i) => {
+    card.classList.add('anim-fade-up');
+    card.style.animationDelay = `${i * 0.04}s`;
   });
+}
 
-  // Render days that have aulas
-  DIAS.forEach((dia, dIdx) => {
-    const dayAulas = byDay[dia];
-    if (!dayAulas.length) return;
+function buildCourseCard(c, tipo) {
+  const colorIndex = hashStringToColor(c.code || c.course);
+  const dayAbbr = {'Segunda':'Seg','Terça':'Ter','Quarta':'Qua','Quinta':'Qui','Sexta':'Sex'}[c.day] || c.day;
 
-    const daySection = document.createElement('div');
-    daySection.className = 'timetable-day anim-fade-up';
-    daySection.style.animationDelay = `${dIdx * 0.06}s`;
+  // Extra time slots
+  const extraHtml = (c.extra || []).filter(e => e && !e.includes('?')).map(e =>
+    `<div class="course-meta-item" style="opacity:.65">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      ${e}
+    </div>`
+  ).join('');
 
-    const dayLabel = document.createElement('div');
-    dayLabel.className = 'timetable-day-label';
-    dayLabel.textContent = dia;
-    daySection.appendChild(dayLabel);
+  // Jupiter link (only for SI-specific)
+  const jupLink = tipo === 'si' && c.code ?
+    `<a class="course-link-hint" href="https://uspdigital.usp.br/jupiterweb/obterDisciplina?sgldis=${c.code}" target="_blank" rel="noopener">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      JupiterWeb
+    </a>` : '';
 
-    dayAulas
-      .sort((a, b) => timeToMinutes(a.inicio) - timeToMinutes(b.inicio))
-      .forEach(aula => {
-        const name  = getDisciplineName(aula.codigo);
-        const url   = getDisciplineURL(aula.codigo);
-        const color = hashStringToColor(aula.codigo);
-
-        const card = document.createElement('a');
-        card.href = url;
-        card.target = '_blank';
-        card.rel = 'noopener noreferrer';
-        card.className = 'course-card course-card-link card-shine';
-
-        card.innerHTML = `
-          <div class="course-color-bar" style="background:${color};"></div>
-          <div class="course-card-body">
-            <div class="timetable-time">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-              ${aula.inicio}–${aula.fim}
-            </div>
-            <div style="flex:1; min-width:0;">
-              <div class="course-name">${name}</div>
-              <div class="timetable-code">
-                <span style="color:${color}; font-weight:600;">${aula.codigo}</span>
-                ${aula.turma ? `<span style="color:var(--text-dim);">· T${aula.turma}</span>` : ''}
-              </div>
-            </div>
-            <div class="course-link-hint">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-                <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
-              </svg>
-              JupiterWeb
-            </div>
-          </div>
-        `;
-
-        daySection.appendChild(card);
-      });
-
-    grid.appendChild(daySection);
-  });
+  return `<div class="course-card anim-fade-up">
+    <div class="course-color-bar" style="background:${colorIndex}"></div>
+    <div class="course-card-body">
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;flex-wrap:wrap">
+          <span class="course-code">${c.code || ''}</span>
+          ${tipo === 'cb' ? '<span class="course-cb-badge">Ciclo Básico</span>' : ''}
+        </div>
+        <div class="course-name">${c.course}</div>
+        <div class="course-meta" style="margin-top:6px;flex-wrap:wrap;gap:8px">
+          ${c.day && c.day !== '?' ? `<div class="course-meta-item">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            ${c.day}
+          </div>` : ''}
+          ${c.time ? `<div class="course-meta-item">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            ${c.time}
+          </div>` : ''}
+          ${extraHtml}
+          ${c.professor && c.professor !== '—' ? `<div class="course-meta-item">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            ${c.professor}
+          </div>` : ''}
+          ${c.room && c.room !== '—' ? `<div class="course-meta-item">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            ${c.room}
+          </div>` : ''}
+        </div>
+      </div>
+      ${jupLink}
+    </div>
+  </div>`;
 }

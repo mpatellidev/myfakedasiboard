@@ -27,6 +27,15 @@ const DEFAULT_SEMESTERS = [
 
 let gpaData = null;
 
+async function gpaLoadDefaults() {
+  // Load real disciplines from schedule data
+  try {
+    const data = await fetchJSON('./data/gpa_defaults.json');
+    if (data && data.semesters) return data.semesters;
+  } catch(e) {}
+  return JSON.parse(JSON.stringify(DEFAULT_SEMESTERS));
+}
+
 function gpaLoad() {
   try {
     const saved = localStorage.getItem(GPA_KEY);
@@ -243,4 +252,13 @@ function gpaDeleteSemester(semId) {
   gpaSave(); renderGPA(); showToast('Semestre removido.');
 }
 
-function initGPA() { gpaLoad(); renderGPA(); }
+async function initGPA() {
+  gpaLoad();
+  // On first use, if no saved data, load real discipline names
+  if (!localStorage.getItem(GPA_KEY)) {
+    const defaults = await gpaLoadDefaults();
+    gpaData = { semesters: defaults };
+    gpaSave();
+  }
+  renderGPA();
+}
