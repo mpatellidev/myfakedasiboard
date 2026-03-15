@@ -6,30 +6,44 @@ let scheduleDataAll = null;
 // ===== THEME SYSTEM =====
 // dark=true, light=false
 const THEMES = [
-  { key: 'padrao',      label: 'Padrão',       dark: true  },
-  { key: 'super',       label: 'Super',         dark: true  },
-  { key: 'hackerman',   label: 'Hackerman',     dark: true  },
-  { key: 'sith',        label: 'Sith',          dark: true  },
-  { key: 'hypado',      label: 'Hypado',        dark: true  },
-  { key: 'omni',        label: 'Omni',          dark: true  },
-  { key: 'minas',       label: 'Minas',         dark: true  },
-  { key: 'd20',         label: 'D20',           dark: true  },
-  { key: 'grifinho',    label: 'Grifinho',      dark: false },
-  { key: 'bidu',        label: 'Bidu',          dark: false },
-  { key: 'mamaco',      label: 'Mamaco',        dark: false },
-  { key: 'jedi',        label: 'Jedi',          dark: false },
-  { key: 'ocean',       label: 'Ocean Breeze',  dark: false },
-  { key: 'laboratorio', label: 'Laboratório',   dark: false },
-  { key: 'sintetizado', label: 'Sintetizado',   dark: false },
-  { key: 'masacote',    label: 'Masacote',      dark: false },
-  { key: 'grace',       label: 'Grace',         dark: false },
+  { key: 'padrao',       label: 'Padrão',        dark: true  },
+  { key: 'super',        label: 'Super',          dark: true  },
+  { key: 'hackerman',    label: 'Hackerman',      dark: true  },
+  { key: 'sith',         label: 'Sith',           dark: true  },
+  { key: 'gatilho',      label: 'Gatilho do Tempo', dark: true },
+  { key: 'hypado',       label: 'Hypado',         dark: true  },
+  { key: 'omni',         label: 'Omni',           dark: true  },
+  { key: 'minas',        label: 'Minas',          dark: true  },
+  { key: 'd20',          label: 'D20',            dark: true  },
+  { key: 'grifinho',     label: 'Grifinho',       dark: false },
+  { key: 'bidu',         label: 'Bidu',           dark: false },
+  { key: 'mamaco',       label: 'Mamaco',         dark: false },
+  { key: 'jedi',         label: 'Jedi',           dark: false },
+  { key: 'ocean',        label: 'Ocean Breeze',   dark: false },
+  { key: 'laboratorio',  label: 'Laboratório',    dark: false },
+  { key: 'sintetizado',  label: 'Sintetizado',    dark: false },
+  { key: 'masacote',     label: 'Masacote',       dark: false },
+  { key: 'grace',        label: 'Grace',          dark: false },
 ];
 let currentThemeIndex = 0;
 let themeFullRotations = 0;
 
+// Returns pool of themes for current mode
+function getThemePool() {
+  const isDark = THEMES[currentThemeIndex]?.dark !== false;
+  return THEMES.filter(t => t.dark === isDark);
+}
+
+// Cycle only within current mode (dark or light)
 function cycleTheme() {
-  currentThemeIndex = (currentThemeIndex + 1) % THEMES.length;
-  if (currentThemeIndex === 0) {
+  const isDark = THEMES[currentThemeIndex]?.dark !== false;
+  const pool = THEMES.map((t, i) => ({ ...t, idx: i })).filter(t => t.dark === isDark);
+  const posInPool = pool.findIndex(t => t.idx === currentThemeIndex);
+  const nextInPool = pool[(posInPool + 1) % pool.length];
+  currentThemeIndex = nextInPool.idx;
+
+  // Easter egg: full rotation within dark pool
+  if (posInPool + 1 >= pool.length) {
     themeFullRotations++;
     if (themeFullRotations >= 2) { triggerMoonEasterEgg(); themeFullRotations = 0; }
   }
@@ -45,24 +59,26 @@ function applyTheme(theme) {
   if (dot) { dot.style.animation = 'none'; void dot.offsetWidth; dot.style.animation = ''; }
   const meta = document.querySelector('meta[name="theme-color"]');
   if (meta) {
-    const bgMap = { padrao:'#07070c',super:'#04080f',hackerman:'#010a01',sith:'#0a0002',hypado:'#080600',omni:'#060606',minas:'#060908',d20:'#020614',grifinho:'#f4f0ff',bidu:'#fff8f0',mamaco:'#f5f0e0',jedi:'#f0f8f2',ocean:'#f0f8ff',laboratorio:'#fff0f7',sintetizado:'#f0f6ff',masacote:'#fffce8',grace:'#fff4eb' };
+    const bgMap = { padrao:'#07070c',super:'#04080f',hackerman:'#010a01',sith:'#0a0002',gatilho:'#050210',hypado:'#080600',omni:'#060606',minas:'#060908',d20:'#020614',grifinho:'#f4f0ff',bidu:'#fff8f0',mamaco:'#f5f0e0',jedi:'#f0f8f2',ocean:'#f0f8ff',laboratorio:'#fff0f7',sintetizado:'#f0f6ff',masacote:'#fffce8',grace:'#fff4eb' };
     meta.setAttribute('content', bgMap[theme.key] || '#07070c');
   }
   localStorage.setItem('dasitheme', theme.key);
+  // Also save as last-used for this mode
+  const modeKey = (theme.dark !== false) ? 'dasitheme_dark' : 'dasitheme_light';
+  localStorage.setItem(modeKey, theme.key);
 }
 
 // ===== DARK/LIGHT SWITCH =====
 function setThemeMode(mode) {
-  // mode: 'dark' | 'light'
-  const darkThemes  = THEMES.filter(t => t.dark);
-  const lightThemes = THEMES.filter(t => !t.dark);
-  const pool = mode === 'dark' ? darkThemes : lightThemes;
-  // Pick first of pool, or stay if already in correct mode
   const current = THEMES[currentThemeIndex];
-  if ((mode === 'dark') === current.dark) return; // already correct mode
-  const first = pool[0];
-  const idx = THEMES.findIndex(t => t.key === first.key);
-  currentThemeIndex = idx;
+  const wantDark = mode === 'dark';
+  if (wantDark === (current.dark !== false)) return; // already correct mode
+  // Restore last used theme for this mode, or fall back to first
+  const lastKey = localStorage.getItem('dasitheme_' + mode);
+  const pool = THEMES.map((t, i) => ({ ...t, idx: i })).filter(t => t.dark === wantDark);
+  const restored = lastKey ? pool.find(t => t.key === lastKey) : null;
+  const target = restored || pool[0];
+  currentThemeIndex = target.idx;
   applyTheme(THEMES[currentThemeIndex]);
   renderThemeSwitch();
 }
@@ -70,17 +86,32 @@ function setThemeMode(mode) {
 function renderThemeSwitch() {
   const sw = document.getElementById('theme-mode-switch');
   if (!sw) return;
-  const isDark = THEMES[currentThemeIndex]?.dark !== false;
+
+  const theme = THEMES[currentThemeIndex];
+  const isDark = theme?.dark !== false;
+
+  // Update mode toggle
   sw.setAttribute('data-mode', isDark ? 'dark' : 'light');
   const knob = sw.querySelector('.tsw-knob');
-  const label = sw.querySelector('.tsw-label');
+  const swLabel = sw.querySelector('.tsw-label');
   if (knob) knob.textContent = isDark ? '🌙' : '☀️';
-  if (label) label.textContent = isDark ? 'Escuro' : 'Claro';
+  if (swLabel) swLabel.textContent = theme?.label || '—';
+
+  // Update cycle button counter
+  const pool = THEMES.filter(t => t.dark === isDark);
+  const posInPool = pool.findIndex(t => t.key === theme?.key);
+  const dot = document.getElementById('theme-dot');
+  const cycleLabel = document.getElementById('theme-label');
+  if (dot) { dot.style.animation = 'none'; void dot.offsetWidth; dot.style.animation = ''; }
+  if (cycleLabel) cycleLabel.textContent = `${posInPool + 1}/${pool.length}`;
 }
 
 function loadSavedTheme() {
   const saved = localStorage.getItem('dasitheme');
-  if (saved) { const idx = THEMES.findIndex(t => t.key === saved); if (idx >= 0) { currentThemeIndex = idx; applyTheme(THEMES[idx]); return; } }
+  if (saved) {
+    const idx = THEMES.findIndex(t => t.key === saved);
+    if (idx >= 0) { currentThemeIndex = idx; applyTheme(THEMES[idx]); renderThemeSwitch(); return; }
+  }
   applyTheme(THEMES[0]);
   renderThemeSwitch();
 }
@@ -378,8 +409,16 @@ function initModals() {
   const overlay = document.getElementById('newsletter-modal');
   overlay?.addEventListener('click', e => { if (e.target === overlay) closeNewsletterModal(); });
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') { closeNewsletterModal?.(); fecharEstudosModal?.(); closeKanbanModal?.(); closeSearch?.(); }
+    if (e.key === 'Escape') { closeNewsletterModal?.(); fecharEstudosModal?.(); closeKanbanModal?.(); closeSearch?.(); closeDevCard?.(); }
   });
+}
+
+// ===== DEV CARD =====
+function openDevCard() {
+  document.getElementById('dev-card-overlay')?.classList.remove('hidden');
+}
+function closeDevCard() {
+  document.getElementById('dev-card-overlay')?.classList.add('hidden');
 }
 
 function updateTime() {
