@@ -291,7 +291,13 @@ function renderNextClass() {
   const currentDayName = DAY_NAMES_FULL[now.getDay()];
   const nowMinutes = now.getHours() * 60 + now.getMinutes();
   let allClasses = [];
-  Object.entries(scheduleDataAll).forEach(([sem, courses]) => courses.forEach(c => allClasses.push({ ...c, semester: sem })));
+  // schedule.json structure: { semesters:[...], turmas:[...], schedule: { "1_02": [...] } }
+  const sch = scheduleDataAll.schedule || scheduleDataAll;
+  Object.entries(sch).forEach(([key, courses]) => {
+    if (!Array.isArray(courses)) return;
+    const semNum = key.split('_')[0];
+    courses.forEach(c => allClasses.push({ ...c, semester: semNum }));
+  });
   const todayClasses = allClasses.filter(c => c.day === currentDayName);
   const currentClass = todayClasses.find(c => { const {start,end} = parseTimeRange(c.time); return nowMinutes >= start && nowMinutes <= end; });
   const nextToday = todayClasses.filter(c => parseTimeRange(c.time).start > nowMinutes).sort((a,b) => parseTimeRange(a.time).start - parseTimeRange(b.time).start)[0];

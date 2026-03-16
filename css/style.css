@@ -21,13 +21,13 @@
 [data-theme="hypado"]{--bg:#080600;--bg-2:#110d00;--bg-3:#181200;--bg-card:rgba(18,14,0,.72);--bg-card-hover:rgba(28,22,0,.84);--border:rgba(251,146,60,.18);--border-hover:rgba(251,146,60,.52);--primary:#fb923c;--primary-2:#f97316;--secondary:#fdba74;--highlight:#a855f7;--accent:#c084fc;--text:#fdf0e0;--text-muted:#c4956a;--text-dim:#6b4f2a;--success:#34d399;--warning:#fbbf24;--danger:#f87171;--info:#60a5fa;--glow:rgba(251,146,60,.32);--glow-strong:rgba(251,146,60,.62);--orb-1:rgba(251,146,60,.14);--orb-2:rgba(168,85,247,.1);--orb-3:rgba(253,186,116,.07);--sidebar-bg:rgba(8,6,0,.9);--theme-dot-color:#fb923c;--gradient-a:#fb923c;--gradient-b:#a855f7;--glass-tint:rgba(251,146,60,.06);--glass-border:rgba(253,186,116,.22);--glass-shine:rgba(255,255,255,.07)}
 [data-theme="omni"]{--bg:#060606;--bg-2:#0d0d0d;--bg-3:#141414;--bg-card:rgba(16,16,16,.72);--bg-card-hover:rgba(26,26,26,.84);--border:rgba(74,222,128,.18);--border-hover:rgba(74,222,128,.52);--primary:#4ade80;--primary-2:#22c55e;--secondary:#86efac;--highlight:#d1fae5;--accent:#f0fdf4;--text:#f5f5f5;--text-muted:#a0a0a0;--text-dim:#505050;--success:#4ade80;--warning:#fbbf24;--danger:#f87171;--info:#60a5fa;--glow:rgba(74,222,128,.28);--glow-strong:rgba(74,222,128,.55);--orb-1:rgba(74,222,128,.1);--orb-2:rgba(255,255,255,.04);--orb-3:rgba(74,222,128,.05);--sidebar-bg:rgba(6,6,6,.92);--theme-dot-color:#4ade80;--gradient-a:#fff;--gradient-b:#4ade80;--glass-tint:rgba(74,222,128,.05);--glass-border:rgba(134,239,172,.2);--glass-shine:rgba(255,255,255,.06)}
 [data-theme="minas"]{--bg:#060908;--bg-2:#0a100c;--bg-3:#0e1710;--bg-card:rgba(11,18,16,.72);--bg-card-hover:rgba(18,29,21,.84);--border:rgba(236,72,153,.18);--border-hover:rgba(236,72,153,.55);--primary:#ec4899;--primary-2:#db2777;--secondary:#f9a8d4;--highlight:#6b8f5e;--accent:#4ade80;--text:#f0e8f0;--text-muted:#a88fa0;--text-dim:#4d6045;--success:#6b8f5e;--warning:#fbbf24;--danger:#f87171;--info:#60a5fa;--glow:rgba(236,72,153,.32);--glow-strong:rgba(236,72,153,.62);--orb-1:rgba(236,72,153,.14);--orb-2:rgba(107,143,94,.1);--orb-3:rgba(249,168,212,.07);--sidebar-bg:rgba(6,9,8,.9);--theme-dot-color:#ec4899;--gradient-a:#ec4899;--gradient-b:#6b8f5e;--glass-tint:rgba(236,72,153,.05);--glass-border:rgba(249,168,212,.2);--glass-shine:rgba(255,255,255,.06)}
-[data-theme="d20"]{--bg:#020614;--bg-2:#050a1e;--bg-3:#080e28;--bg-card:rgba(6,11,32,.72);--bg-card-hover:rgba(11,16,48,.84);--border:rgba(99,102,241,.22);--border-hover:rgba(167,139,250,.62);--primary:#818cf8;--primary-2:#6366f1;--secondary:#a5b4fc;--highlight:#f472b6;--accent:#fb923c;--text:#eef0ff;--text-muted:#8890c4;--text-dim:#3d4480;--success:#34d399;--warning:#fbbf24;--danger:#f87171;--info:#60a5fa;--glow:rgba(99,102,241,.4);--glow-strong:rgba(167,139,250,.65);--orb-1:rgba(99,102,241,.18);--orb-2:rgba(244,114,182,.12);--orb-3:rgba(251,146,60,.07);--sidebar-bg:rgba(2,6,20,.92);--theme-dot-color:#818cf8;--gradient-a:#818cf8;--gradient-b:#f472b6;--glass-tint:rgba(99,102,241,.06);--glass-border:rgba(165,180,252,.22);--glass-shine:rgba(255,255,255,.07)}
+[data-theme="d20"]{--bg:#030210;--bg-2:#060318;--bg-3:#0a0522;--bg-card:rgba(8,4,36,.68);--bg-card-hover:rgba(14,8,52,.82);--border:rgba(180,120,255,.22);--border-hover:rgba(255,120,200,.55);--primary:#c084fc;--primary-2:#a855f7;--secondary:#f0abfc;--highlight:#fb923c;--accent:#34d399;--text:#f5f0ff;--text-muted:#b89dda;--text-dim:#5a3d90;--success:#34d399;--warning:#fbbf24;--danger:#f87171;--info:#60a5fa;--glow:rgba(192,132,252,.45);--glow-strong:rgba(240,171,252,.7);--orb-1:rgba(192,132,252,.22);--orb-2:rgba(251,146,60,.14);--orb-3:rgba(52,211,153,.1);--sidebar-bg:rgba(3,2,16,.94);--theme-dot-color:#c084fc;--gradient-a:#c084fc;--gradient-b:#f0abfc;--glass-tint:rgba(192,132,252,.07);--glass-border:rgba(192,132,252,.25);--glass-shine:rgba(255,200,255,.09)}
 [data-theme="grifinho"]{color-scheme:light;--bg:#f4f0ff;--bg-2:#ece6fa;--bg-3:#e2d9f3;--bg-card:rgba(255,255,255,.78);--bg-card-hover:rgba(255,255,255,.92);--border:rgba(109,40,217,.16);--border-hover:rgba(109,40,217,.42);--primary:#7c3aed;--primary-2:#6d28d9;--secondary:#5b21b6;--highlight:#4c1d95;--accent:#c084fc;--text:#0f0920;--text-muted:#4a3f6a;--text-dim:#9880c0;--success:#16a34a;--warning:#ca8a04;--danger:#dc2626;--info:#2563eb;--glow:rgba(124,58,237,.2);--glow-strong:rgba(124,58,237,.4);--orb-1:rgba(124,58,237,.1);--orb-2:rgba(192,132,252,.08);--orb-3:rgba(232,121,249,.05);--sidebar-bg:rgba(244,240,255,.92);--theme-dot-color:#7c3aed;--gradient-a:#7c3aed;--gradient-b:#0f0920;--glass-tint:rgba(124,58,237,.05);--glass-border:rgba(124,58,237,.18);--glass-shine:rgba(255,255,255,.55)}
 [data-theme="bidu"]{color-scheme:light;--bg:#fff8f0;--bg-2:#fff0e0;--bg-3:#ffe5c8;--bg-card:rgba(255,255,255,.78);--bg-card-hover:rgba(255,255,255,.93);--border:rgba(234,88,12,.16);--border-hover:rgba(234,88,12,.42);--primary:#ea580c;--primary-2:#c2410c;--secondary:#9a3412;--highlight:#7c2d12;--accent:#fb923c;--text:#1c0a00;--text-muted:#78350f;--text-dim:#c2844a;--success:#16a34a;--warning:#d97706;--danger:#dc2626;--info:#2563eb;--glow:rgba(234,88,12,.2);--glow-strong:rgba(234,88,12,.4);--orb-1:rgba(234,88,12,.1);--orb-2:rgba(251,146,60,.08);--orb-3:rgba(253,186,116,.05);--sidebar-bg:rgba(255,248,240,.92);--theme-dot-color:#ea580c;--gradient-a:#ea580c;--gradient-b:#7c2d12;--glass-tint:rgba(234,88,12,.04);--glass-border:rgba(234,88,12,.18);--glass-shine:rgba(255,255,255,.55)}
 [data-theme="laboratorio"]{color-scheme:light;--bg:#fff0f7;--bg-2:#ffe2f0;--bg-3:#ffd0e6;--bg-card:rgba(255,255,255,.78);--bg-card-hover:rgba(255,255,255,.93);--border:rgba(219,39,119,.16);--border-hover:rgba(219,39,119,.42);--primary:#db2777;--primary-2:#be185d;--secondary:#9d174d;--highlight:#831843;--accent:#f9a8d4;--text:#1a0010;--text-muted:#9d174d;--text-dim:#c06090;--success:#16a34a;--warning:#d97706;--danger:#dc2626;--info:#2563eb;--glow:rgba(219,39,119,.2);--glow-strong:rgba(219,39,119,.4);--orb-1:rgba(219,39,119,.1);--orb-2:rgba(249,168,212,.1);--orb-3:rgba(252,231,243,.08);--sidebar-bg:rgba(255,240,247,.92);--theme-dot-color:#db2777;--gradient-a:#db2777;--gradient-b:#f9a8d4;--glass-tint:rgba(219,39,119,.04);--glass-border:rgba(219,39,119,.18);--glass-shine:rgba(255,255,255,.55)}
 [data-theme="sintetizado"]{color-scheme:light;--bg:#f0f6ff;--bg-2:#e4eeff;--bg-3:#d4e4ff;--bg-card:rgba(255,255,255,.78);--bg-card-hover:rgba(255,255,255,.93);--border:rgba(37,99,235,.16);--border-hover:rgba(37,99,235,.42);--primary:#2563eb;--primary-2:#1d4ed8;--secondary:#1e40af;--highlight:#1e3a8a;--accent:#60a5fa;--text:#000d2e;--text-muted:#1e40af;--text-dim:#6080c0;--success:#16a34a;--warning:#d97706;--danger:#dc2626;--info:#0284c7;--glow:rgba(37,99,235,.2);--glow-strong:rgba(37,99,235,.4);--orb-1:rgba(37,99,235,.1);--orb-2:rgba(96,165,250,.1);--orb-3:rgba(147,197,253,.07);--sidebar-bg:rgba(240,246,255,.92);--theme-dot-color:#2563eb;--gradient-a:#2563eb;--gradient-b:#60a5fa;--glass-tint:rgba(37,99,235,.04);--glass-border:rgba(37,99,235,.18);--glass-shine:rgba(255,255,255,.55)}
 [data-theme="masacote"]{color-scheme:light;--bg:#fffce8;--bg-2:#fff8d0;--bg-3:#fff0b0;--bg-card:rgba(255,255,255,.78);--bg-card-hover:rgba(255,255,255,.93);--border:rgba(220,38,38,.16);--border-hover:rgba(220,38,38,.48);--primary:#dc2626;--primary-2:#b91c1c;--secondary:#ca8a04;--highlight:#854d0e;--accent:#fbbf24;--text:#1c0000;--text-muted:#7f1d1d;--text-dim:#b45309;--success:#16a34a;--warning:#ca8a04;--danger:#dc2626;--info:#2563eb;--glow:rgba(220,38,38,.2);--glow-strong:rgba(220,38,38,.4);--orb-1:rgba(220,38,38,.1);--orb-2:rgba(251,191,36,.12);--orb-3:rgba(253,224,71,.07);--sidebar-bg:rgba(255,252,232,.94);--theme-dot-color:#dc2626;--gradient-a:#dc2626;--gradient-b:#fbbf24;--glass-tint:rgba(220,38,38,.04);--glass-border:rgba(220,38,38,.18);--glass-shine:rgba(255,255,255,.55)}
-[data-theme="grace"]{color-scheme:light;--bg:#fff4eb;--bg-2:#ffe8d4;--bg-3:#ffd8b8;--bg-card:rgba(255,255,255,.78);--bg-card-hover:rgba(255,255,255,.93);--border:rgba(249,115,22,.18);--border-hover:rgba(239,68,68,.48);--primary:#f97316;--primary-2:#ea580c;--secondary:#dc2626;--highlight:#b91c1c;--accent:#fb923c;--text:#1c0800;--text-muted:#9a3412;--text-dim:#d4622a;--success:#16a34a;--warning:#d97706;--danger:#dc2626;--info:#2563eb;--glow:rgba(249,115,22,.22);--glow-strong:rgba(249,115,22,.45);--orb-1:rgba(249,115,22,.12);--orb-2:rgba(220,38,38,.09);--orb-3:rgba(253,186,116,.07);--sidebar-bg:rgba(255,244,235,.92);--theme-dot-color:#f97316;--gradient-a:#f97316;--gradient-b:#dc2626;--glass-tint:rgba(249,115,22,.05);--glass-border:rgba(249,115,22,.2);--glass-shine:rgba(255,255,255,.55)}
+[data-theme="grace"]{color-scheme:light;--bg:#fff8ff;--bg-2:#f5f0ff;--bg-3:#ffe8f5;--bg-card:rgba(255,255,255,.82);--bg-card-hover:rgba(255,255,255,.95);--border:rgba(200,80,200,.16);--border-hover:rgba(100,100,255,.42);--primary:#a855f7;--primary-2:#9333ea;--secondary:#ec4899;--highlight:#f97316;--accent:#eab308;--text:#1a0030;--text-muted:#7730a0;--text-dim:#c090e0;--success:#16a34a;--warning:#d97706;--danger:#dc2626;--info:#7c3aed;--glow:rgba(168,85,247,.28);--glow-strong:rgba(236,72,153,.45);--orb-1:rgba(168,85,247,.14);--orb-2:rgba(236,72,153,.10);--orb-3:rgba(249,115,22,.08);--sidebar-bg:rgba(255,248,255,.94);--theme-dot-color:#a855f7;--gradient-a:#f97316;--gradient-b:#a855f7;--glass-tint:rgba(168,85,247,.05);--glass-border:rgba(168,85,247,.18);--glass-shine:rgba(255,255,255,.60)}
 
 :root{
   --sidebar-width: 230px;
@@ -647,9 +647,80 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 @keyframes moonFlyUp{0%{opacity:0;transform:translateX(-50%) translateY(0) scale(.7) rotate(5deg)}12%{opacity:1;transform:translateX(-50%) translateY(-12px) scale(.95) rotate(0deg)}62%{opacity:1;transform:translateX(-50%) translateY(-68vh) scale(1.15) rotate(-4deg)}88%{opacity:.6;transform:translateX(-50%) translateY(-94vh) scale(1.2) rotate(-8deg)}100%{opacity:0;transform:translateX(-50%) translateY(-120vh) scale(1.3) rotate(-12deg)}}
 @keyframes moonTextShow{0%{opacity:0;transform:translateX(-50%) translateY(12px) scale(.88)}18%{opacity:1;transform:translateX(-50%) translateY(0) scale(1)}68%{opacity:1}100%{opacity:0;transform:translateX(-50%) translateY(-10px) scale(.95)}}
 
-/* D20 RAINBOW */
-[data-theme="d20"] .nav-link.active,[data-theme="d20"] .sem-btn.active,[data-theme="d20"] .btn-primary,[data-theme="d20"] .sidebar-link.active{background:linear-gradient(90deg,#818cf8,#f472b6,#fb923c,#34d399,#60a5fa,#818cf8);background-size:300% 100%;animation:rainbowShift 3s linear infinite;border-color:transparent;color:#fff!important}
+/* ==========================================================
+   D20 — RAINBOW MULTIVERSE (full prismatic experience)
+   ========================================================== */
 @keyframes rainbowShift{0%{background-position:0% 50%}100%{background-position:300% 50%}}
+@keyframes rainbowBorder{0%,100%{border-color:rgba(192,132,252,.5)}25%{border-color:rgba(251,146,60,.5)}50%{border-color:rgba(52,211,153,.5)}75%{border-color:rgba(96,165,250,.5)}}
+@keyframes d20TextRainbow{0%{filter:hue-rotate(0deg)}100%{filter:hue-rotate(360deg)}}
+@keyframes d20OrbFloat{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(20px,-15px) scale(1.05)}66%{transform:translate(-10px,10px) scale(.96)}}
+
+/* Rainbow gradient helper */
+.d20-rainbow-bg { background:linear-gradient(90deg,#c084fc,#f472b6,#fb923c,#fbbf24,#34d399,#60a5fa,#c084fc) !important; background-size:300% 100% !important; animation:rainbowShift 4s linear infinite !important; }
+
+/* Core buttons + active states */
+[data-theme="d20"] .btn-primary,
+[data-theme="d20"] .sidebar-link.active,
+[data-theme="d20"] .nav-link.active,
+[data-theme="d20"] .sem-btn.active,
+[data-theme="d20"] .cal-filter-btn.active {
+  background:linear-gradient(90deg,#c084fc,#f472b6,#fb923c,#fbbf24,#34d399,#60a5fa,#c084fc) !important;
+  background-size:300% 100% !important;
+  animation:rainbowShift 4s linear infinite !important;
+  border-color:transparent !important;
+  color:#fff !important;
+  box-shadow:0 4px 20px rgba(192,132,252,.45),0 0 0 1px rgba(255,255,255,.1) !important;
+}
+/* Sidebar active bar — rainbow */
+[data-theme="d20"] .sidebar-link.active::before {
+  background:linear-gradient(180deg,#c084fc,#f472b6,#fb923c,#34d399) !important;
+  box-shadow:0 0 14px rgba(192,132,252,.7) !important;
+  animation:d20TextRainbow 4s linear infinite !important;
+}
+/* Stat values — hue-rotate rainbow */
+[data-theme="d20"] .stat-value {
+  background:linear-gradient(135deg,#c084fc,#f472b6,#fb923c) !important;
+  -webkit-background-clip:text !important; -webkit-text-fill-color:transparent !important;
+  background-clip:text !important;
+  animation:d20TextRainbow 6s linear infinite !important;
+  filter:drop-shadow(0 0 12px rgba(192,132,252,.55)) !important;
+}
+/* Page header h1 */
+[data-theme="d20"] .page-header h1 {
+  background:linear-gradient(135deg,#c084fc 0%,#f472b6 35%,#fb923c 65%,#34d399 100%) !important;
+  -webkit-background-clip:text !important; -webkit-text-fill-color:transparent !important;
+  background-clip:text !important;
+  animation:d20TextRainbow 8s linear infinite !important;
+}
+/* Hero gradient */
+[data-theme="d20"] .home-hero h2 span {
+  background:linear-gradient(135deg,#c084fc,#f472b6,#fb923c,#34d399) !important;
+  -webkit-background-clip:text !important; -webkit-text-fill-color:transparent !important;
+  background-clip:text !important;
+  filter:drop-shadow(0 0 20px rgba(192,132,252,.5)) !important;
+  animation:d20TextRainbow 6s linear infinite !important;
+}
+/* Cards — rainbow border on hover */
+[data-theme="d20"] .card:hover { animation:rainbowBorder 2s linear infinite !important; }
+/* Calendar today — rainbow ring */
+[data-theme="d20"] .cal-day.today {
+  box-shadow:0 0 0 2px #c084fc,0 0 0 2px #c084fc !important;
+  animation:rainbowBorder 2s linear infinite !important;
+}
+/* Countdown num */
+[data-theme="d20"] .countdown-num {
+  background:linear-gradient(135deg,#c084fc,#f472b6,#fb923c) !important;
+  -webkit-background-clip:text !important; -webkit-text-fill-color:transparent !important;
+  background-clip:text !important;
+  animation:d20TextRainbow 5s linear infinite !important;
+  filter:drop-shadow(0 0 18px rgba(192,132,252,.6)) !important;
+}
+/* Next class label */
+[data-theme="d20"] .next-class-label { animation:d20TextRainbow 6s linear infinite !important; }
+/* Theme dot */
+[data-theme="d20"] .theme-dot { animation:d20TextRainbow 3s linear infinite,dotPulse 2.5s ease-in-out infinite !important; }
+/* Orbs float */
+[data-theme="d20"] .orb { animation:d20OrbFloat 8s ease-in-out infinite !important; }
 
 /* LIGHT THEME CARDS */
 [data-theme="grifinho"] .card,[data-theme="bidu"] .card,[data-theme="laboratorio"] .card,[data-theme="sintetizado"] .card,[data-theme="masacote"] .card,[data-theme="grace"] .card,[data-theme="mamaco"] .card,[data-theme="jedi"] .card,[data-theme="ocean"] .card{background:rgba(255,255,255,.8);box-shadow:0 2px 14px rgba(0,0,0,.06)}
@@ -1785,44 +1856,67 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 /* ==========================================================
    TEMA: JEDI — Claro + Azul Jedi + Verde Força
    ========================================================== */
+/* ==========================================================
+   TEMA: JEDI — Luke Skywalker / Star Wars
+   Sabre azul, desertos de Tatooine, Force vibes, dark sidebar
+   ========================================================== */
 [data-theme="jedi"] {
   color-scheme:light;
-  --bg:#f0f5f8;--bg-2:#e2ecf2;--bg-3:#d0e4ed;
-  --bg-card:rgba(255,255,255,.82);--bg-card-hover:rgba(255,255,255,.95);
-  --border:rgba(30,80,160,.16);--border-hover:rgba(30,80,160,.45);
-  --primary:#1e4fa0;--primary-2:#163d80;
-  --secondary:#3b82f6;--highlight:#22c55e;--accent:#16a34a;
-  --text:#0c1a2e;--text-muted:#3a5a80;--text-dim:#8aabcc;
-  --success:#16a34a;--warning:#ca8a04;--danger:#dc2626;--info:#2563eb;
-  --glow:rgba(30,79,160,.22);--glow-strong:rgba(30,79,160,.42);
-  --orb-1:rgba(30,79,160,.1);--orb-2:rgba(34,197,94,.1);--orb-3:rgba(59,130,246,.06);
-  --sidebar-bg:rgba(12,26,46,.96);
-  --theme-dot-color:#1e4fa0;--gradient-a:#1e4fa0;--gradient-b:#22c55e;
-  --glass-tint:rgba(30,79,160,.05);--glass-border:rgba(30,79,160,.18);--glass-shine:rgba(255,255,255,.65);
+  /* Tatooine sands + Jedi robes + Coruscant sky */
+  --bg:#f2ede3;--bg-2:#ebe3d0;--bg-3:#dfd5bc;
+  --bg-card:rgba(255,252,244,.84);--bg-card-hover:rgba(255,255,250,.96);
+  --border:rgba(30,90,180,.14);--border-hover:rgba(30,90,180,.42);
+  --primary:#1a5cb8;--primary-2:#134a96; /* lightsaber blue */
+  --secondary:#2d8cff;--highlight:#22c55e;--accent:#f59e0b;
+  --text:#160e04;--text-muted:#4a3a1a;--text-dim:#9c8a60;
+  --success:#16a34a;--warning:#d97706;--danger:#dc2626;--info:#1a5cb8;
+  --glow:rgba(26,92,184,.28);--glow-strong:rgba(45,140,255,.52);
+  --orb-1:rgba(26,92,184,.10);--orb-2:rgba(245,158,11,.12);--orb-3:rgba(34,197,94,.07);
+  --sidebar-bg:rgba(8,16,30,.97); /* dark side of the Force */
+  --theme-dot-color:#2d8cff;--gradient-a:#2d8cff;--gradient-b:#22c55e;
+  --glass-tint:rgba(26,92,184,.05);--glass-border:rgba(26,92,184,.16);--glass-shine:rgba(255,252,230,.65);
 }
-[data-theme="jedi"] .sidebar { background:rgba(12,26,46,.96); border-right-color:rgba(59,130,246,.25); }
-[data-theme="jedi"] .sidebar-title { background:linear-gradient(135deg,#3b82f6,#22c55e); -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
-[data-theme="jedi"] .sidebar-link { color:rgba(147,197,253,.8); }
-[data-theme="jedi"] .sidebar-link:hover { color:#93c5fd; background:rgba(59,130,246,.1); }
-[data-theme="jedi"] .sidebar-link.active { color:#93c5fd; background:rgba(59,130,246,.12); border-color:rgba(59,130,246,.35); }
-[data-theme="jedi"] .sidebar-section-label { color:rgba(147,197,253,.4); }
-[data-theme="jedi"] .sidebar-time { color:rgba(147,197,253,.5); }
-[data-theme="jedi"] .topbar { background:rgba(12,26,46,.96); }
-[data-theme="jedi"] .page-header h1 { background:linear-gradient(135deg,#1e4fa0,#22c55e); -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
-[data-theme="jedi"] .stat-value { background:linear-gradient(135deg,#1e4fa0,#22c55e); -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
-[data-theme="jedi"] .card { background:rgba(255,255,255,.82); box-shadow:0 2px 14px rgba(30,79,160,.07),inset 0 1px 0 rgba(255,255,255,.9); }
-[data-theme="jedi"] .btn-primary { background:linear-gradient(135deg,#1e4fa0,#163d80); color:#fff; }
-[data-theme="jedi"] .navbar::after { background:linear-gradient(90deg,transparent,#1e4fa0,#22c55e,transparent); opacity:.6; }
-[data-theme="jedi"] .footer { background:rgba(12,26,46,.96); }
-[data-theme="jedi"] .footer-text, [data-theme="jedi"] .footer-badge { color:rgba(147,197,253,.6); }
-[data-theme="jedi"] .footer-text a { color:#93c5fd; }
-/* Jedi lightsaber green accent on active */
-[data-theme="jedi"] .sidebar-link.active::before { background:linear-gradient(180deg,#22c55e,#16a34a); box-shadow:0 0 8px rgba(34,197,94,.5); }
-[data-theme="jedi"] .cal-day.today .cal-day-num { background:linear-gradient(135deg,#1e4fa0,#22c55e); color:#fff; box-shadow:0 0 14px rgba(34,197,94,.4); }
-[data-theme="jedi"] input,[data-theme="jedi"] textarea { color:var(--text); background:rgba(255,255,255,.8); }
-[data-theme="jedi"] ::-webkit-scrollbar-thumb { background:#1e4fa0; }
-[data-theme="jedi"] .section-title::after { background:linear-gradient(90deg,rgba(30,79,160,.25),transparent); }
+/* Dark sidebar — like night on Coruscant */
+[data-theme="jedi"] .sidebar { background:rgba(6,12,26,.97); border-right-color:rgba(45,140,255,.20); box-shadow:2px 0 32px rgba(45,140,255,.12); }
+[data-theme="jedi"] .sidebar-title { background:linear-gradient(135deg,#2d8cff 0%,#22c55e 100%); -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
+[data-theme="jedi"] .sidebar-link { color:rgba(180,210,255,.75); }
+[data-theme="jedi"] .sidebar-link:hover { color:#a8d4ff; background:rgba(45,140,255,.08); }
+[data-theme="jedi"] .sidebar-link.active { color:#a8d4ff; background:rgba(45,140,255,.12); border-color:rgba(45,140,255,.30); }
+[data-theme="jedi"] .sidebar-section-label { color:rgba(100,160,255,.35); }
+[data-theme="jedi"] .sidebar-time { color:rgba(100,160,255,.4); }
+[data-theme="jedi"] .topbar { background:rgba(6,12,26,.95); }
+/* Lightsaber blue active bar */
+[data-theme="jedi"] .sidebar-link.active::before { background:linear-gradient(180deg,#2d8cff,#22c55e); box-shadow:0 0 14px rgba(45,140,255,.65); width:4px; }
+/* Page titles — Jedi wisdom gradient */
+[data-theme="jedi"] .page-header h1 { background:linear-gradient(135deg,#1a5cb8 0%,#2d8cff 50%,#22c55e 100%); -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; filter:drop-shadow(0 0 12px rgba(45,140,255,.25)); }
+[data-theme="jedi"] .stat-value { background:linear-gradient(135deg,#2d8cff,#22c55e); -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; filter:drop-shadow(0 0 8px rgba(45,140,255,.3)); }
+/* Cards — Tatooine sandstone feel */
+[data-theme="jedi"] .card { background:rgba(255,252,242,.85); box-shadow:0 2px 16px rgba(26,92,184,.08),inset 0 1px 0 rgba(255,255,220,.9); }
+[data-theme="jedi"] .card:hover { box-shadow:0 8px 32px rgba(45,140,255,.15),inset 0 1px 0 rgba(255,255,220,.9); }
+/* Lightsaber glow on btn-primary */
+[data-theme="jedi"] .btn-primary { background:linear-gradient(135deg,#1a5cb8,#134a96); color:#fff; box-shadow:0 4px 18px rgba(45,140,255,.38),inset 0 1px 0 rgba(100,180,255,.3); }
+[data-theme="jedi"] .btn-primary:hover { box-shadow:0 8px 28px rgba(45,140,255,.55),0 0 0 1px rgba(45,140,255,.3),inset 0 1px 0 rgba(100,180,255,.35); }
+/* Hero gradient — dunes of Tatooine at sunset */
+[data-theme="jedi"] .home-hero h2 span { background:linear-gradient(135deg,#1a5cb8 0%,#2d8cff 45%,#22c55e 100%); -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
+/* Calendar today — blue lightsaber ring */
+[data-theme="jedi"] .cal-day.today { box-shadow:0 0 0 2px #2d8cff,0 0 14px rgba(45,140,255,.4) !important; }
+[data-theme="jedi"] .cal-day.today .cal-day-num { color:#1a5cb8; font-weight:800; }
+/* Orbs — twin suns of Tatooine */
+[data-theme="jedi"] .orb:nth-child(1) { background:rgba(26,92,184,.12); }
+[data-theme="jedi"] .orb:nth-child(2) { background:rgba(245,158,11,.10); }
+[data-theme="jedi"] .orb:nth-child(3) { background:rgba(34,197,94,.08); }
+/* Section dividers — like a lightsaber slash */
+[data-theme="jedi"] .section-title::after { background:linear-gradient(90deg,rgba(45,140,255,.30),transparent); }
+/* Lightsaber idle glow on primary elements */
+[data-theme="jedi"] .sidebar-link.active { animation:jediSaberPulse 3s ease-in-out infinite; }
+@keyframes jediSaberPulse { 0%,100%{box-shadow:inset 0 0 0 1px rgba(45,140,255,.30),0 0 8px rgba(45,140,255,.08)} 50%{box-shadow:inset 0 0 0 1px rgba(45,140,255,.50),0 0 16px rgba(45,140,255,.18)} }
+/* Countdown num — Force energy */
+[data-theme="jedi"] .countdown-num { background:linear-gradient(160deg,#2d8cff,#22c55e) !important; -webkit-background-clip:text !important;-webkit-text-fill-color:transparent !important;background-clip:text !important; filter:drop-shadow(0 0 16px rgba(45,140,255,.4)) !important; }
+[data-theme="jedi"] input,[data-theme="jedi"] textarea { color:var(--text); background:rgba(255,252,240,.85); }
+[data-theme="jedi"] ::-webkit-scrollbar-thumb { background:#1a5cb8; }
 [data-theme="jedi"] .kanban-input,[data-theme="jedi"] .kanban-select { color-scheme:light; }
+[data-theme="jedi"] .next-class-label { color:#2d8cff; }
+[data-theme="jedi"] .next-class-label::before { background:#2d8cff; box-shadow:0 0 10px rgba(45,140,255,.6); }
 
 /* ==========================================================
    TEMA: OCEAN BREEZE — Claro + Azul Água + Espuma
@@ -3495,3 +3589,182 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 #dev-card-overlay .modal-box {
   border-radius: var(--lg-radius) !important;
 }
+
+/* ==========================================================
+   GRACE — PRIDE RAINBOW (arco-íris por todo o site)
+   Referência: orgulho LGBTQ+, bandeira arco-íris, celebração
+   ========================================================== */
+@keyframes graceRainbow{0%{filter:hue-rotate(0deg)}100%{filter:hue-rotate(360deg)}}
+@keyframes graceBorderFlow{0%{border-color:rgba(239,68,68,.4)}16%{border-color:rgba(249,115,22,.4)}33%{border-color:rgba(234,179,8,.4)}50%{border-color:rgba(34,197,94,.4)}66%{border-color:rgba(59,130,246,.4)}83%{border-color:rgba(168,85,247,.4)}100%{border-color:rgba(239,68,68,.4)}}
+@keyframes graceBarFlow{0%{background-position:0% 0%}100%{background-position:200% 0%}}
+
+/* The 6-color pride stripe gradient */
+:root { --pride: linear-gradient(90deg,#e53e3e,#f97316,#eab308,#22c55e,#3b82f6,#a855f7); }
+
+/* ── Body background: subtle rainbow tint ── */
+[data-theme="grace"] body::before {
+  content:'';
+  position:fixed;
+  inset:0;
+  background:linear-gradient(160deg,rgba(168,85,247,.04) 0%,rgba(236,72,153,.04) 25%,rgba(249,115,22,.04) 50%,rgba(34,197,94,.04) 75%,rgba(59,130,246,.04) 100%);
+  pointer-events:none;
+  z-index:0;
+}
+
+/* ── Sidebar: pride stripe top border ── */
+[data-theme="grace"] .sidebar {
+  border-right:none !important;
+  background:rgba(255,248,255,.95) !important;
+  box-shadow:2px 0 0 0 transparent, inset -1px 0 0 0 rgba(168,85,247,.15) !important;
+}
+[data-theme="grace"] .sidebar::after {
+  content:'';
+  position:absolute;
+  top:0; left:0; right:0;
+  height:3px;
+  background:var(--pride);
+  background-size:200% 100%;
+  animation:graceBarFlow 4s linear infinite;
+}
+[data-theme="grace"] .sidebar-link.active {
+  background:linear-gradient(90deg,rgba(168,85,247,.10),rgba(236,72,153,.08),rgba(249,115,22,.06)) !important;
+  border:1px solid rgba(168,85,247,.25) !important;
+}
+[data-theme="grace"] .sidebar-link.active::before {
+  background:var(--pride) !important;
+  background-size:200% 100% !important;
+  animation:graceBarFlow 3s linear infinite !important;
+  box-shadow:0 0 10px rgba(168,85,247,.5) !important;
+}
+
+/* ── Page header H1: pride gradient ── */
+[data-theme="grace"] .page-header h1 {
+  background:var(--pride);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  background-clip:text;
+  animation:graceRainbow 8s linear infinite;
+  filter:drop-shadow(0 2px 8px rgba(168,85,247,.2));
+}
+
+/* ── Stat values: cycling rainbow ── */
+[data-theme="grace"] .stat-value {
+  background:var(--pride);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  background-clip:text;
+  animation:graceRainbow 6s linear infinite;
+  filter:drop-shadow(0 0 8px rgba(168,85,247,.3));
+}
+
+/* ── Hero h2 span ── */
+[data-theme="grace"] .home-hero h2 span {
+  background:var(--pride);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  background-clip:text;
+  animation:graceRainbow 7s linear infinite;
+}
+
+/* ── Buttons: pride gradient ── */
+[data-theme="grace"] .btn-primary {
+  background:var(--pride) !important;
+  background-size:200% 100% !important;
+  animation:graceBarFlow 3s linear infinite !important;
+  color:#fff !important;
+  box-shadow:0 4px 18px rgba(168,85,247,.35) !important;
+}
+
+/* ── Cards: rainbow border on hover ── */
+[data-theme="grace"] .card:hover {
+  animation:graceBorderFlow 3s linear infinite !important;
+}
+
+/* ── Section title line: pride stripe ── */
+[data-theme="grace"] .section-title::after {
+  background:var(--pride) !important;
+  background-size:200% 100% !important;
+  animation:graceBarFlow 4s linear infinite !important;
+  height:2px !important;
+  opacity:.5 !important;
+}
+
+/* ── Section title icon ── */
+[data-theme="grace"] .section-title svg {
+  animation:graceRainbow 5s linear infinite !important;
+}
+
+/* ── Topbar bottom stripe ── */
+[data-theme="grace"] .topbar::after {
+  background:var(--pride) !important;
+  background-size:200% 100% !important;
+  animation:graceBarFlow 4s linear infinite !important;
+  opacity:.7 !important;
+}
+
+/* ── Active filter buttons / tabs ── */
+[data-theme="grace"] .cal-filter-btn.active,
+[data-theme="grace"] .sem-btn.active,
+[data-theme="grace"] .nav-link.active {
+  background:var(--pride) !important;
+  background-size:200% 100% !important;
+  animation:graceBarFlow 4s linear infinite !important;
+  color:#fff !important;
+  border-color:transparent !important;
+}
+
+/* ── Badge colors: pride cycling ── */
+[data-theme="grace"] .badge {
+  animation:graceBorderFlow 4s linear infinite !important;
+}
+
+/* ── Countdown num ── */
+[data-theme="grace"] .countdown-num {
+  background:var(--pride) !important;
+  -webkit-background-clip:text !important; -webkit-text-fill-color:transparent !important;
+  background-clip:text !important;
+  animation:graceRainbow 5s linear infinite !important;
+  filter:drop-shadow(0 0 14px rgba(168,85,247,.4)) !important;
+}
+
+/* ── Sidebar time ── */
+[data-theme="grace"] .sidebar-time {
+  background:var(--pride);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  background-clip:text;
+  animation:graceRainbow 8s linear infinite;
+}
+
+/* ── Calendar today ── */
+[data-theme="grace"] .cal-day.today {
+  animation:graceBorderFlow 3s linear infinite !important;
+  box-shadow:0 0 0 2px #a855f7 !important;
+}
+
+/* ── Scrollbar ── */
+[data-theme="grace"] ::-webkit-scrollbar-thumb {
+  background:var(--pride);
+  background-size:200% 100%;
+  animation:graceBarFlow 4s linear infinite;
+}
+
+/* ── Kanban col dots ── */
+[data-theme="grace"] .kanban-col-dot { animation:graceRainbow 4s linear infinite; }
+
+/* ── Theme dot ── */
+[data-theme="grace"] .theme-dot { animation:graceRainbow 3s linear infinite,dotPulse 2.5s ease-in-out infinite; }
+
+/* ── Next class label pulse ── */
+[data-theme="grace"] .next-class-label { animation:graceRainbow 6s linear infinite; }
+[data-theme="grace"] .next-class-label::before { animation:graceRainbow 3s linear infinite,pulse-dot 2s infinite; }
+
+/* ── Home hero greeting ── */
+[data-theme="grace"] .hero-greeting-text { animation:graceRainbow 7s linear infinite; }
+
+/* ── Event date badges ── */
+[data-theme="grace"] .event-date-badge { animation:graceBorderFlow 4s linear infinite; }
+
+/* ── GH token dot connected ── */
+[data-theme="grace"] .gh-token-dot.connected { animation:graceRainbow 3s linear infinite; }
+
+/* ── Orbs: pride colors ── */
+[data-theme="grace"] .orb:nth-child(1) { background:rgba(239,68,68,.12); }
+[data-theme="grace"] .orb:nth-child(2) { background:rgba(168,85,247,.12); }
+[data-theme="grace"] .orb:nth-child(3) { background:rgba(59,130,246,.09); }
