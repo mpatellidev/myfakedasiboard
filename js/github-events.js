@@ -69,12 +69,18 @@ function ghBase64Encode(str) {
   return btoa(bin);
 }
 
+// ── Helper: fetch com timeout garantido ───────────────────────────────────────
+function fetchWithTimeout(url, options = {}, ms = 5000) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), ms);
+  return fetch(url, { ...options, signal: controller.signal })
+    .finally(() => clearTimeout(timer));
+}
+
 // ── Leitura do events.json (fetch local, sem API, sem auth) ──────────────────
-// Lê diretamente do arquivo local para que a home funcione sem token.
-// Eventos pendentes (via PR mergeado) são carregados só se houver token.
 async function ghGetMainEvents() {
   try {
-    const res = await fetch('./data/events.json?t=' + Date.now());
+    const res = await fetchWithTimeout('./data/events.json?t=' + Date.now(), { cache: 'no-store' }, 8000);
     if (!res.ok) throw new Error('HTTP ' + res.status);
     return await res.json();
   } catch (e) {
@@ -84,63 +90,68 @@ async function ghGetMainEvents() {
 }
 
 // ── Leitura dos eventos pendentes (pasta events-pending/) ─────────────────────
-// Para repositórios públicos, a API do GitHub pode ser usada sem autenticação
-// (com limite de 60 req/hora por IP). O token, quando presente, eleva esse
-// limite para 5000 req/hora — mas NÃO é obrigatório para leitura.
+//
+// Estratégia de dois caminhos:
+//   1. PRIMÁRIO (sempre): lê index.json estático do próprio site — rápido,
+//      sem autenticação, funciona em todos os dispositivos/navegadores.
+//   2. SECUNDÁRIO (só com token): consulta a API do GitHub para pegar arquivos
+//      que ainda não estejam no index.json (ex: recém-mergeados antes do deploy).
+//
+// Isso elimina a dependência de token para visualizar eventos e evita qualquer
+// risco de travamento por requisições externas sem timeout.
 async function ghGetPendingEvents() {
-  try {
-    // Tenta primeiro via fetch local (funciona em GitHub Pages pois os arquivos
-    // são servidos estaticamente — sem depender da API do GitHub nem de token)
-    const indexRes = await fetch(`./data/events-pending/.gitkeep`, { method: 'HEAD', cache: 'no-store' });
-    // Se o servidor de desenvolvimento local serve a pasta, tenta listar via API
-    // pública do GitHub (sem autenticação, funciona para repos públicos)
-    const apiUrl = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PENDING_DIR}?ref=${GH_BRANCH}`;
-    const headers = ghHasToken()
-      ? ghHeaders(true)   // com token: 5000 req/h
-      : { 'Accept': 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' }; // sem token: 60 req/h
+  // Caminho 1: index.json estático — não depende de token nem da API do GitHub
+  const staticEvents = await ghGetPendingEventsStatic();
 
-    const res = await fetch(apiUrl + `&t=${Date.now()}`, { headers, cache: 'no-store' });
-    if (!res.ok) {
-      if (res.status === 404) return [];
-      // 403/429 = rate limit sem token → tenta fallback via raw
-      if ((res.status === 403 || res.status === 429) && !ghHasToken()) {
-        return await ghGetPendingEventsFallback();
-      }
-      throw new Error(`HTTP ${res.status}`);
-    }
+  // Caminho 2: API do GitHub — só tenta se houver token (evita rate limit anônimo)
+  if (!ghHasToken()) return staticEvents;
+
+  try {
+    const apiUrl = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PENDING_DIR}?ref=${GH_BRANCH}&t=${Date.now()}`;
+    const res = await fetchWithTimeout(apiUrl, { headers: ghHeaders(true), cache: 'no-store' }, 6000);
+    if (!res.ok) return staticEvents; // qualquer erro: usa o que já temos
     const items = await res.json();
-    if (!Array.isArray(items)) return [];
+    if (!Array.isArray(items)) return staticEvents;
+
     const jsonFiles = items.filter(f => f.name.endsWith('.json') && f.type === 'file');
     const results = await Promise.allSettled(
-      jsonFiles.map(f => fetch(f.download_url + '?t=' + Date.now(), { cache: 'no-store' }).then(r => r.json()).catch(() => null))
+      jsonFiles.map(f =>
+        fetchWithTimeout(f.download_url + '?t=' + Date.now(), { cache: 'no-store' }, 5000)
+          .then(r => r.json()).catch(() => null)
+      )
     );
-    return results.filter(r => r.status === 'fulfilled' && r.value).map(r => r.value);
+    const apiEvents = results.filter(r => r.status === 'fulfilled' && r.value).map(r => r.value);
+
+    // Mescla: prioriza eventos da API (mais atualizados), completa com os estáticos
+    const seen = new Set(apiEvents.map(e => `${e.date}|${e.title}`));
+    const merged = [...apiEvents, ...staticEvents.filter(e => !seen.has(`${e.date}|${e.title}`))];
+    return merged;
   } catch (e) {
-    if (e.status === 404) return [];
-    console.warn('[DaSIboard] Pendentes indisponíveis via API, tentando fallback:', e.message);
-    return await ghGetPendingEventsFallback();
+    console.warn('[DaSIboard] API de pendentes indisponível, usando index estático:', e.message);
+    return staticEvents;
   }
 }
 
-// ── Fallback: lê eventos pendentes diretamente via URL do GitHub Pages ────────
-// Quando a API pública atinge rate limit, tenta carregar os arquivos que já
-// estão no events-pending/ diretamente como arquivos estáticos do site.
-async function ghGetPendingEventsFallback() {
+// ── Caminho primário: lê eventos pendentes via index.json estático ────────────
+async function ghGetPendingEventsStatic() {
   try {
-    // Tenta carregar o índice de pendentes (arquivo gerado automaticamente, se existir)
-    const idxRes = await fetch('./data/events-pending/index.json?t=' + Date.now(), { cache: 'no-store' });
-    if (idxRes.ok) {
-      const filenames = await idxRes.json();
-      if (Array.isArray(filenames)) {
-        const results = await Promise.allSettled(
-          filenames.map(name => fetch(`./data/events-pending/${name}?t=${Date.now()}`, { cache: 'no-store' }).then(r => r.json()).catch(() => null))
-        );
-        return results.filter(r => r.status === 'fulfilled' && r.value).map(r => r.value);
-      }
-    }
-    return [];
+    const idxRes = await fetchWithTimeout(
+      './data/events-pending/index.json?t=' + Date.now(),
+      { cache: 'no-store' },
+      5000
+    );
+    if (!idxRes.ok) return [];
+    const filenames = await idxRes.json();
+    if (!Array.isArray(filenames)) return [];
+    const results = await Promise.allSettled(
+      filenames.map(name =>
+        fetchWithTimeout(`./data/events-pending/${name}?t=${Date.now()}`, { cache: 'no-store' }, 5000)
+          .then(r => r.json()).catch(() => null)
+      )
+    );
+    return results.filter(r => r.status === 'fulfilled' && r.value).map(r => r.value);
   } catch (e) {
-    console.warn('[DaSIboard] Fallback de pendentes também falhou:', e.message);
+    console.warn('[DaSIboard] index.json de pendentes indisponível:', e.message);
     return [];
   }
 }
