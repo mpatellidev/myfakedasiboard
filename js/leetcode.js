@@ -1,1294 +1,782 @@
 // ===== DESAFIOS DE PROGRAMAÇÃO — DaSIboard =====
-// Editor de código integrado com desafios de HTML, CSS, JS e C
-// C: executado via Anthropic API (LLM interpreta/simula output)
-// JS: executado em sandbox iframe
-// HTML/CSS: preview ao vivo em iframe
-
-'use strict';
 
 // ─── STATE ────────────────────────────────────────────────────────────────────
-let lcState = {
+var lcState = {
   lang: 'javascript',
   challengeIndex: 0,
-  filter: 'all',      // 'all' | 'easy' | 'medium' | 'hard'
-  solved: {},         // { 'js_0': true, ... }
-  code: {},           // { 'js_0': '...user code...', ... }
-  view: 'list',       // 'list' | 'editor'
+  filter: 'all',
+  solved: {},
+  code: {},
+  view: 'list',
   running: false,
-  testResults: null,
 };
 
-// ─── CHALLENGES DATABASE ──────────────────────────────────────────────────────
-const LC_CHALLENGES = {
+// ─── CHALLENGES ───────────────────────────────────────────────────────────────
+var LC_CHALLENGES = {
   javascript: [
     {
-      id: 'js_0', title: 'Dois Somas', difficulty: 'easy',
-      tags: ['array', 'hash'],
-      description: `Dado um array de inteiros \`nums\` e um inteiro \`target\`, retorne os **índices** dos dois números que somam \`target\`.
-
-Você pode assumir que cada entrada possui exatamente uma solução, e não pode usar o mesmo elemento duas vezes.
-
-**Exemplo 1:**
-\`\`\`
-Entrada: nums = [2,7,11,15], target = 9
-Saída: [0,1]
-\`\`\`
-
-**Exemplo 2:**
-\`\`\`
-Entrada: nums = [3,2,4], target = 6
-Saída: [1,2]
-\`\`\``,
-      starterCode: `/**
- * @param {number[]} nums
- * @param {number} target
- * @return {number[]}
- */
-function twoSum(nums, target) {
-  // Escreva sua solução aqui
-  
-}`,
-      testFn: `
-function runTests(fn) {
-  const cases = [
-    { args: [[2,7,11,15],9], expected: [0,1] },
-    { args: [[3,2,4],6],     expected: [1,2] },
-    { args: [[3,3],6],       expected: [0,1] },
-    { args: [[1,2,3,4],7],   expected: [2,3] },
-  ];
-  return cases.map(({args,expected}) => {
-    try {
-      const res = fn(...args);
-      const ok = JSON.stringify(res?.sort?.()) === JSON.stringify([...expected].sort());
-      return { ok, input: JSON.stringify(args[0])+', target='+args[1], expected: JSON.stringify(expected), got: JSON.stringify(res) };
-    } catch(e) { return { ok:false, input:JSON.stringify(args[0]), expected:JSON.stringify(expected), got:'Erro: '+e.message }; }
-  });
-}`,
-      fnName: 'twoSum',
+      id: 'js_0', title: 'Dois Somas', difficulty: 'easy', tags: ['array','hash'],
+      description: 'Dado um array de inteiros <code>nums</code> e um inteiro <code>target</code>, retorne os <strong>índices</strong> dos dois números que somam <code>target</code>.\n\nVocê pode assumir que cada entrada possui exatamente uma solução.\n\n<pre class="lc-code-block"><code>Entrada: nums = [2,7,11,15], target = 9\nSaída: [0,1]\n\nEntrada: nums = [3,2,4], target = 6\nSaída: [1,2]</code></pre>',
+      starterCode: '/**\n * @param {number[]} nums\n * @param {number} target\n * @return {number[]}\n */\nfunction twoSum(nums, target) {\n  // Escreva sua solução aqui\n  \n}',
+      testFn: 'function runTests(fn){var cases=[{args:[[2,7,11,15],9],exp:[0,1]},{args:[[3,2,4],6],exp:[1,2]},{args:[[3,3],6],exp:[0,1]},{args:[[1,2,3,4],7],exp:[2,3]}];return cases.map(function(c){try{var r=fn(c.args[0],c.args[1]);var ok=JSON.stringify((r||[]).slice().sort(function(a,b){return a-b}))===JSON.stringify(c.exp.slice().sort(function(a,b){return a-b}));return{ok:ok,input:JSON.stringify(c.args[0])+", target="+c.args[1],expected:JSON.stringify(c.exp),got:JSON.stringify(r)};}catch(e){return{ok:false,input:"",expected:JSON.stringify(c.exp),got:"Erro: "+e.message};}});}',
+      fnName: 'twoSum'
     },
     {
-      id: 'js_1', title: 'Palíndromo', difficulty: 'easy',
-      tags: ['string', 'math'],
-      description: `Dado um inteiro \`x\`, retorne \`true\` se \`x\` for um palíndromo, e \`false\` caso contrário.
-
-Um número palíndromo é aquele que lê o mesmo de trás para frente.
-
-**Exemplo 1:** \`x = 121\` → \`true\`
-**Exemplo 2:** \`x = -121\` → \`false\` (negativos nunca são palíndromos)
-**Exemplo 3:** \`x = 10\` → \`false\``,
-      starterCode: `/**
- * @param {number} x
- * @return {boolean}
- */
-function isPalindrome(x) {
-  
-}`,
-      testFn: `
-function runTests(fn) {
-  const cases = [
-    { args:[121],    expected:true },
-    { args:[-121],   expected:false },
-    { args:[10],     expected:false },
-    { args:[0],      expected:true },
-    { args:[12321],  expected:true },
-    { args:[123],    expected:false },
-  ];
-  return cases.map(({args,expected}) => {
-    try {
-      const res = fn(...args);
-      return { ok:res===expected, input:String(args[0]), expected:String(expected), got:String(res) };
-    } catch(e) { return { ok:false, input:String(args[0]), expected:String(expected), got:'Erro: '+e.message }; }
-  });
-}`,
-      fnName: 'isPalindrome',
+      id: 'js_1', title: 'Palíndromo', difficulty: 'easy', tags: ['string','math'],
+      description: 'Dado um inteiro <code>x</code>, retorne <code>true</code> se for um palíndromo (lê igual de frente e de trás).\n\nNúmeros negativos nunca são palíndromos.\n\n<pre class="lc-code-block"><code>121  → true\n-121 → false\n10   → false\n0    → true</code></pre>',
+      starterCode: '/**\n * @param {number} x\n * @return {boolean}\n */\nfunction isPalindrome(x) {\n  \n}',
+      testFn: 'function runTests(fn){var cases=[{a:121,e:true},{a:-121,e:false},{a:10,e:false},{a:0,e:true},{a:12321,e:true},{a:123,e:false}];return cases.map(function(c){try{var r=fn(c.a);return{ok:r===c.e,input:String(c.a),expected:String(c.e),got:String(r)};}catch(e){return{ok:false,input:String(c.a),expected:String(c.e),got:"Erro: "+e.message};}});}',
+      fnName: 'isPalindrome'
     },
     {
-      id: 'js_2', title: 'Maior Elemento', difficulty: 'easy',
-      tags: ['array'],
-      description: `Dado um array de inteiros \`nums\`, encontre e retorne o **maior elemento**.
-
-**Exemplo:**
-\`\`\`
-Entrada: [3,1,4,1,5,9,2,6]
-Saída: 9
-\`\`\``,
-      starterCode: `/**
- * @param {number[]} nums
- * @return {number}
- */
-function findMax(nums) {
-  
-}`,
-      testFn: `
-function runTests(fn) {
-  const cases = [
-    { args:[[3,1,4,1,5,9,2,6]], expected:9 },
-    { args:[[-5,-1,-3]],        expected:-1 },
-    { args:[[42]],              expected:42 },
-    { args:[[0,0,0]],           expected:0 },
-    { args:[[100,1,50]],        expected:100 },
-  ];
-  return cases.map(({args,expected}) => {
-    try {
-      const res = fn(...args);
-      return { ok:res===expected, input:JSON.stringify(args[0]), expected:String(expected), got:String(res) };
-    } catch(e) { return { ok:false, input:JSON.stringify(args[0]), expected:String(expected), got:'Erro: '+e.message }; }
-  });
-}`,
-      fnName: 'findMax',
+      id: 'js_2', title: 'FizzBuzz', difficulty: 'easy', tags: ['math','string'],
+      description: 'Dado um inteiro <code>n</code>, retorne um array de strings de 1 a n onde:\n<ul><li>Múltiplos de 3 → <code>"Fizz"</code></li><li>Múltiplos de 5 → <code>"Buzz"</code></li><li>Múltiplos de ambos → <code>"FizzBuzz"</code></li><li>Demais → o número como string</li></ul>\n\n<pre class="lc-code-block"><code>n=5 → ["1","2","Fizz","4","Buzz"]</code></pre>',
+      starterCode: '/**\n * @param {number} n\n * @return {string[]}\n */\nfunction fizzBuzz(n) {\n  \n}',
+      testFn: 'function runTests(fn){var cases=[{n:5,e:["1","2","Fizz","4","Buzz"]},{n:3,e:["1","2","Fizz"]},{n:1,e:["1"]},{n:15,e:["1","2","Fizz","4","Buzz","Fizz","7","8","Fizz","Buzz","11","Fizz","13","14","FizzBuzz"]}];return cases.map(function(c){try{var r=fn(c.n);var ok=JSON.stringify(r)===JSON.stringify(c.e);return{ok:ok,input:"n="+c.n,expected:JSON.stringify(c.e.slice(0,5))+"...",got:JSON.stringify((r||[]).slice(0,5))+"..."};}catch(e){return{ok:false,input:"n="+c.n,expected:"...",got:"Erro: "+e.message};}});}',
+      fnName: 'fizzBuzz'
     },
     {
-      id: 'js_3', title: 'FizzBuzz', difficulty: 'easy',
-      tags: ['math', 'string'],
-      description: `Dado um inteiro \`n\`, retorne um array de strings de \`1\` a \`n\` onde:
-- Múltiplos de 3 → \`"Fizz"\`
-- Múltiplos de 5 → \`"Buzz"\`
-- Múltiplos de ambos → \`"FizzBuzz"\`
-- Demais → o número como string
-
-**Exemplo (n=5):** \`["1","2","Fizz","4","Buzz"]\``,
-      starterCode: `/**
- * @param {number} n
- * @return {string[]}
- */
-function fizzBuzz(n) {
-  
-}`,
-      testFn: `
-function runTests(fn) {
-  const cases = [
-    { args:[5],  expected:["1","2","Fizz","4","Buzz"] },
-    { args:[15], expected:["1","2","Fizz","4","Buzz","Fizz","7","8","Fizz","Buzz","11","Fizz","13","14","FizzBuzz"] },
-    { args:[1],  expected:["1"] },
-  ];
-  return cases.map(({args,expected}) => {
-    try {
-      const res = fn(...args);
-      const ok = JSON.stringify(res) === JSON.stringify(expected);
-      return { ok, input:'n='+args[0], expected:JSON.stringify(expected.slice(0,6))+(expected.length>6?'...':''), got:JSON.stringify((res||[]).slice(0,6))+((res||[]).length>6?'...':'') };
-    } catch(e) { return { ok:false, input:'n='+args[0], expected:'...', got:'Erro: '+e.message }; }
-  });
-}`,
-      fnName: 'fizzBuzz',
+      id: 'js_3', title: 'Inverter String', difficulty: 'easy', tags: ['string','array'],
+      description: 'Escreva uma função que inverte um array de caracteres <code>s</code> <strong>in-place</strong> com O(1) de memória extra.\n\n<pre class="lc-code-block"><code>["h","e","l","l","o"] → ["o","l","l","e","h"]\n["H","a","n","n","a","h"] → ["h","a","n","n","a","H"]</code></pre>',
+      starterCode: '/**\n * @param {character[]} s\n * @return {void}\n */\nfunction reverseString(s) {\n  \n}',
+      testFn: 'function runTests(fn){var cases=[[["h","e","l","l","o"],["o","l","l","e","h"]],[["H","a","n","n","a","h"],["h","a","n","n","a","H"]],[["a"],["a"]],[["a","b"],["b","a"]]];return cases.map(function(c){var input=c[0].slice();try{fn(c[0]);var ok=JSON.stringify(c[0])===JSON.stringify(c[1]);return{ok:ok,input:JSON.stringify(input),expected:JSON.stringify(c[1]),got:JSON.stringify(c[0])};}catch(e){return{ok:false,input:JSON.stringify(input),expected:JSON.stringify(c[1]),got:"Erro: "+e.message};}});}',
+      fnName: 'reverseString'
     },
     {
-      id: 'js_4', title: 'Número Válido de Parênteses', difficulty: 'medium',
-      tags: ['stack', 'string'],
-      description: `Dada uma string \`s\` contendo apenas os caracteres \`'('`, \`')'`, \`'{'`, \`'}'`, \`'['`, \`']'\`, determine se a sequência de entrada é **válida**.
-
-Uma entrada é válida se:
-1. Cada abre-chave é fechada com o tipo correto
-2. Os parênteses são fechados na ordem correta
-
-**Exemplos:**
-- \`"()"\` → \`true\`
-- \`"()[]{}"  \` → \`true\`
-- \`"(]"\` → \`false\`
-- \`"([)]"\` → \`false\``,
-      starterCode: `/**
- * @param {string} s
- * @return {boolean}
- */
-function isValid(s) {
-  
-}`,
-      testFn: `
-function runTests(fn) {
-  const cases = [
-    { args:["()"],      expected:true },
-    { args:["()[]{}"], expected:true },
-    { args:["(]"],      expected:false },
-    { args:["([)]"],    expected:false },
-    { args:["{[]}"],    expected:true },
-    { args:[""],        expected:true },
-    { args:["["],       expected:false },
-  ];
-  return cases.map(({args,expected}) => {
-    try {
-      const res = fn(...args);
-      return { ok:res===expected, input:'"'+args[0]+'"', expected:String(expected), got:String(res) };
-    } catch(e) { return { ok:false, input:'"'+args[0]+'"', expected:String(expected), got:'Erro: '+e.message }; }
-  });
-}`,
-      fnName: 'isValid',
+      id: 'js_4', title: 'Máximo Subarray', difficulty: 'medium', tags: ['array','dp'],
+      description: 'Dado um array <code>nums</code>, encontre o subarray contíguo com a <strong>maior soma</strong> e retorne essa soma.\n\n<pre class="lc-code-block"><code>[-2,1,-3,4,-1,2,1,-5,4] → 6  (subarray [4,-1,2,1])\n[1]                      → 1\n[5,4,-1,7,8]             → 23</code></pre>',
+      starterCode: '/**\n * @param {number[]} nums\n * @return {number}\n */\nfunction maxSubArray(nums) {\n  \n}',
+      testFn: 'function runTests(fn){var cases=[[[-2,1,-3,4,-1,2,1,-5,4],6],[[1],1],[[5,4,-1,7,8],23],[[-1,-2,-3],-1],[[0,0,0],0]];return cases.map(function(c){try{var r=fn(c[0].slice());return{ok:r===c[1],input:JSON.stringify(c[0]),expected:String(c[1]),got:String(r)};}catch(e){return{ok:false,input:JSON.stringify(c[0]),expected:String(c[1]),got:"Erro: "+e.message};}});}',
+      fnName: 'maxSubArray'
     },
     {
-      id: 'js_5', title: 'Inverter String', difficulty: 'easy',
-      tags: ['string', 'array'],
-      description: `Escreva uma função que inverte uma string. A entrada é fornecida como um array de caracteres \`s\`.
-
-Você deve fazer isso **in-place** com O(1) de memória extra.
-
-**Exemplo 1:** \`["h","e","l","l","o"]\` → \`["o","l","l","e","h"]\`
-**Exemplo 2:** \`["H","a","n","n","a","h"]\` → \`["h","a","n","n","a","H"]\``,
-      starterCode: `/**
- * @param {character[]} s
- * @return {void} Modifica s no lugar
- */
-function reverseString(s) {
-  
-}`,
-      testFn: `
-function runTests(fn) {
-  const cases = [
-    { args:[["h","e","l","l","o"]], expected:["o","l","l","e","h"] },
-    { args:[["H","a","n","n","a","h"]], expected:["h","a","n","n","a","H"] },
-    { args:[["a"]], expected:["a"] },
-    { args:[["a","b"]], expected:["b","a"] },
-  ];
-  return cases.map(({args,expected}) => {
-    const input = [...args[0]];
-    try {
-      fn(args[0]);
-      const ok = JSON.stringify(args[0]) === JSON.stringify(expected);
-      return { ok, input:JSON.stringify(input), expected:JSON.stringify(expected), got:JSON.stringify(args[0]) };
-    } catch(e) { return { ok:false, input:JSON.stringify(input), expected:JSON.stringify(expected), got:'Erro: '+e.message }; }
-  });
-}`,
-      fnName: 'reverseString',
+      id: 'js_5', title: 'Parênteses Válidos', difficulty: 'medium', tags: ['stack','string'],
+      description: 'Dada uma string <code>s</code> com <code>(</code> <code>)</code> <code>{</code> <code>}</code> <code>[</code> <code>]</code>, determine se é <strong>válida</strong>.\n\nCada abertura deve ser fechada na ordem correta.\n\n<pre class="lc-code-block"><code>"()"      → true\n"()[]{}"  → true\n"(]"      → false\n"([)]"    → false\n"{[]}"    → true</code></pre>',
+      starterCode: '/**\n * @param {string} s\n * @return {boolean}\n */\nfunction isValid(s) {\n  \n}',
+      testFn: 'function runTests(fn){var cases=[["()",true],["()[]{}",true],["(]",false],["([)]",false],["{[]}",true],["",true],["[",false]];return cases.map(function(c){try{var r=fn(c[0]);return{ok:r===c[1],input:\'"\'+c[0]+\'"\',expected:String(c[1]),got:String(r)};}catch(e){return{ok:false,input:\'"\'+c[0]+\'"\',expected:String(c[1]),got:"Erro: "+e.message};}});}',
+      fnName: 'isValid'
     },
     {
-      id: 'js_6', title: 'Subarray de Soma Máxima', difficulty: 'medium',
-      tags: ['array', 'dp'],
-      description: `Dado um array de inteiros \`nums\`, encontre o **subarray contíguo** (com pelo menos um elemento) que tem a maior soma, e retorne essa soma.
-
-**Exemplo 1:** \`[-2,1,-3,4,-1,2,1,-5,4]\` → \`6\` (subarray \`[4,-1,2,1]\`)
-**Exemplo 2:** \`[1]\` → \`1\`
-**Exemplo 3:** \`[5,4,-1,7,8]\` → \`23\``,
-      starterCode: `/**
- * @param {number[]} nums
- * @return {number}
- */
-function maxSubArray(nums) {
-  
-}`,
-      testFn: `
-function runTests(fn) {
-  const cases = [
-    { args:[[-2,1,-3,4,-1,2,1,-5,4]], expected:6 },
-    { args:[[1]],                      expected:1 },
-    { args:[[5,4,-1,7,8]],             expected:23 },
-    { args:[[-1,-2,-3]],               expected:-1 },
-    { args:[[0,0,0]],                  expected:0 },
-  ];
-  return cases.map(({args,expected}) => {
-    try {
-      const res = fn(...args);
-      return { ok:res===expected, input:JSON.stringify(args[0]), expected:String(expected), got:String(res) };
-    } catch(e) { return { ok:false, input:JSON.stringify(args[0]), expected:String(expected), got:'Erro: '+e.message }; }
-  });
-}`,
-      fnName: 'maxSubArray',
+      id: 'js_6', title: 'Escalada de Degraus', difficulty: 'easy', tags: ['dp','math'],
+      description: 'Para subir <code>n</code> degraus, você pode subir 1 ou 2 por vez. De quantas maneiras distintas você pode chegar ao topo?\n\n<pre class="lc-code-block"><code>n=2 → 2  (1+1 ou 2)\nn=3 → 3  (1+1+1, 1+2, 2+1)\nn=5 → 8</code></pre>',
+      starterCode: '/**\n * @param {number} n\n * @return {number}\n */\nfunction climbStairs(n) {\n  \n}',
+      testFn: 'function runTests(fn){var cases=[[1,1],[2,2],[3,3],[4,5],[5,8],[10,89]];return cases.map(function(c){try{var r=fn(c[0]);return{ok:r===c[1],input:"n="+c[0],expected:String(c[1]),got:String(r)};}catch(e){return{ok:false,input:"n="+c[0],expected:String(c[1]),got:"Erro: "+e.message};}});}',
+      fnName: 'climbStairs'
     },
     {
-      id: 'js_7', title: 'Escalada de Degraus', difficulty: 'easy',
-      tags: ['dp', 'math'],
-      description: `Você está subindo uma escada. São necessários \`n\` degraus para chegar ao topo.
-
-A cada vez, você pode subir \`1\` ou \`2\` degraus. De quantas maneiras distintas você pode chegar ao topo?
-
-**Exemplo 1:** \`n = 2\` → \`2\` (1+1 ou 2)
-**Exemplo 2:** \`n = 3\` → \`3\` (1+1+1, 1+2, 2+1)`,
-      starterCode: `/**
- * @param {number} n
- * @return {number}
- */
-function climbStairs(n) {
-  
-}`,
-      testFn: `
-function runTests(fn) {
-  const cases = [
-    { args:[1], expected:1 },
-    { args:[2], expected:2 },
-    { args:[3], expected:3 },
-    { args:[4], expected:5 },
-    { args:[5], expected:8 },
-    { args:[10],expected:89 },
-  ];
-  return cases.map(({args,expected}) => {
-    try {
-      const res = fn(...args);
-      return { ok:res===expected, input:'n='+args[0], expected:String(expected), got:String(res) };
-    } catch(e) { return { ok:false, input:'n='+args[0], expected:String(expected), got:'Erro: '+e.message }; }
-  });
-}`,
-      fnName: 'climbStairs',
+      id: 'js_7', title: 'Maior Elemento', difficulty: 'easy', tags: ['array'],
+      description: 'Dado um array de inteiros, retorne o <strong>maior elemento</strong>.\n\n<pre class="lc-code-block"><code>[3,1,4,1,5,9,2,6] → 9\n[-5,-1,-3]         → -1</code></pre>',
+      starterCode: '/**\n * @param {number[]} nums\n * @return {number}\n */\nfunction findMax(nums) {\n  \n}',
+      testFn: 'function runTests(fn){var cases=[[[3,1,4,1,5,9,2,6],9],[[-5,-1,-3],-1],[[42],42],[[0,0,0],0],[[100,1,50],100]];return cases.map(function(c){try{var r=fn(c[0].slice());return{ok:r===c[1],input:JSON.stringify(c[0]),expected:String(c[1]),got:String(r)};}catch(e){return{ok:false,input:JSON.stringify(c[0]),expected:String(c[1]),got:"Erro: "+e.message};}});}',
+      fnName: 'findMax'
+    },
+    {
+      id: 'js_8', title: 'Remover Duplicatas', difficulty: 'easy', tags: ['array'],
+      description: 'Dado um array <strong>ordenado</strong> <code>nums</code>, remova os duplicados <strong>in-place</strong> e retorne o novo tamanho.\n\nOs primeiros <code>k</code> elementos do array devem conter os únicos na ordem original.\n\n<pre class="lc-code-block"><code>[1,1,2]         → 2  (array: [1,2,...])\n[0,0,1,1,1,2,2] → 3  (array: [0,1,2,...])</code></pre>',
+      starterCode: '/**\n * @param {number[]} nums\n * @return {number}\n */\nfunction removeDuplicates(nums) {\n  \n}',
+      testFn: 'function runTests(fn){var cases=[[[1,1,2],2,[1,2]],[[0,0,1,1,1,2,2],3,[0,1,2]],[[1],1,[1]],[[1,2,3],3,[1,2,3]]];return cases.map(function(c){var arr=c[0].slice();try{var k=fn(arr);var ok=k===c[1]&&JSON.stringify(arr.slice(0,k))===JSON.stringify(c[2]);return{ok:ok,input:JSON.stringify(c[0]),expected:"k="+c[1]+", arr="+JSON.stringify(c[2]),got:"k="+k+", arr="+JSON.stringify(arr.slice(0,k))};}catch(e){return{ok:false,input:JSON.stringify(c[0]),expected:"k="+c[1],got:"Erro: "+e.message};}});}',
+      fnName: 'removeDuplicates'
+    },
+    {
+      id: 'js_9', title: 'Contar Palavras', difficulty: 'easy', tags: ['string','hash'],
+      description: 'Dada uma string <code>s</code>, retorne um objeto com a <strong>frequência de cada palavra</strong> (case-insensitive, sem pontuação).\n\n<pre class="lc-code-block"><code>"hello world hello" → {hello:2, world:1}\n"The the THE"        → {the:3}</code></pre>',
+      starterCode: '/**\n * @param {string} s\n * @return {Object}\n */\nfunction wordCount(s) {\n  \n}',
+      testFn: 'function runTests(fn){var cases=[["hello world hello",{hello:2,world:1}],["the THE The",{the:3}],["a b a c b a",{a:3,b:2,c:1}],["one",{one:1}]];return cases.map(function(c){try{var r=fn(c[0]);var ok=JSON.stringify(r)===JSON.stringify(c[1]);return{ok:ok,input:\'"\'+c[0]+\'"\',expected:JSON.stringify(c[1]),got:JSON.stringify(r)};}catch(e){return{ok:false,input:\'"\'+c[0]+\'"\',expected:JSON.stringify(c[1]),got:"Erro: "+e.message};}});}',
+      fnName: 'wordCount'
+    },
+    {
+      id: 'js_10', title: 'Número Feliz', difficulty: 'medium', tags: ['math','hash'],
+      description: 'Um <strong>número feliz</strong> é definido pelo seguinte processo: substitua o número pela soma dos quadrados de seus dígitos e repita até chegar a 1 (feliz) ou entrar em ciclo sem chegar a 1 (triste).\n\n<pre class="lc-code-block"><code>19 → 1²+9²=82 → 8²+2²=68 → ... → 1  (feliz: true)\n2  → false</code></pre>',
+      starterCode: '/**\n * @param {number} n\n * @return {boolean}\n */\nfunction isHappy(n) {\n  \n}',
+      testFn: 'function runTests(fn){var cases=[[19,true],[1,true],[2,false],[7,true],[4,false],[100,true]];return cases.map(function(c){try{var r=fn(c[0]);return{ok:r===c[1],input:String(c[0]),expected:String(c[1]),got:String(r)};}catch(e){return{ok:false,input:String(c[0]),expected:String(c[1]),got:"Erro: "+e.message};}});}',
+      fnName: 'isHappy'
+    },
+    {
+      id: 'js_11', title: 'Girar Array', difficulty: 'medium', tags: ['array','math'],
+      description: 'Dado um array <code>nums</code>, gire-o <strong>à direita</strong> em <code>k</code> posições.\n\n<pre class="lc-code-block"><code>[1,2,3,4,5,6,7], k=3 → [5,6,7,1,2,3,4]\n[-1,-100,3,99],  k=2 → [3,99,-1,-100]</code></pre>',
+      starterCode: '/**\n * @param {number[]} nums\n * @param {number} k\n * @return {void} modifica in-place\n */\nfunction rotate(nums, k) {\n  \n}',
+      testFn: 'function runTests(fn){var cases=[[[1,2,3,4,5,6,7],3,[5,6,7,1,2,3,4]],[[-1,-100,3,99],2,[3,99,-1,-100]],[[1],0,[1]],[[1,2],1,[2,1]]];return cases.map(function(c){var arr=c[0].slice();try{fn(arr,c[1]);var ok=JSON.stringify(arr)===JSON.stringify(c[2]);return{ok:ok,input:JSON.stringify(c[0])+" k="+c[1],expected:JSON.stringify(c[2]),got:JSON.stringify(arr)};}catch(e){return{ok:false,input:JSON.stringify(c[0]),expected:JSON.stringify(c[2]),got:"Erro: "+e.message};}});}',
+      fnName: 'rotate'
+    },
+    {
+      id: 'js_12', title: 'Comprimento Maior Substring', difficulty: 'medium', tags: ['string','sliding window'],
+      description: 'Dado uma string <code>s</code>, retorne o <strong>comprimento da maior substring sem caracteres repetidos</strong>.\n\n<pre class="lc-code-block"><code>"abcabcbb" → 3  ("abc")\n"bbbbb"    → 1  ("b")\n"pwwkew"   → 3  ("wke")</code></pre>',
+      starterCode: '/**\n * @param {string} s\n * @return {number}\n */\nfunction lengthOfLongestSubstring(s) {\n  \n}',
+      testFn: 'function runTests(fn){var cases=[["abcabcbb",3],["bbbbb",1],["pwwkew",3],["",0],["au",2],["dvdf",3]];return cases.map(function(c){try{var r=fn(c[0]);return{ok:r===c[1],input:\'"\'+c[0]+\'"\',expected:String(c[1]),got:String(r)};}catch(e){return{ok:false,input:\'"\'+c[0]+\'"\',expected:String(c[1]),got:"Erro: "+e.message};}});}',
+      fnName: 'lengthOfLongestSubstring'
     },
   ],
 
   html: [
     {
-      id: 'html_0', title: 'Card de Perfil', difficulty: 'easy',
-      tags: ['layout', 'semântica'],
-      description: `Crie um **card de perfil** HTML com:
-- Uma imagem de avatar (pode usar \`https://i.pravatar.cc/80\`)
-- O nome **"Ada Lovelace"** em destaque
-- A descrição **"Primeira programadora da história"**
-- Um link com texto **"Ver perfil"** (href="#")
-
-Use tags semânticas corretas. O card deve ter a classe \`profile-card\`.`,
-      starterCode: `<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <title>Card de Perfil</title>
-  <style>
-    body { font-family: sans-serif; display: flex; justify-content: center; padding: 20px; }
-    /* Escreva seu CSS aqui */
-  </style>
-</head>
-<body>
-  <!-- Crie o card aqui -->
-
-</body>
-</html>`,
-      testFn: null,
-      checkFn: (doc) => {
-        const card = doc.querySelector('.profile-card');
-        const img  = doc.querySelector('img');
-        const link = doc.querySelector('a');
-        const checks = [
-          { ok: !!card,                               msg: 'Existe elemento com classe profile-card' },
-          { ok: !!img,                                msg: 'Existe uma imagem <img>' },
-          { ok: !!doc.querySelector('h1,h2,h3'),      msg: 'Nome em tag de título (h1/h2/h3)' },
-          { ok: !!link && link.textContent.toLowerCase().includes('perfil'), msg: 'Link "Ver perfil" presente' },
-          { ok: !!doc.querySelector('p'),             msg: 'Descrição em parágrafo <p>' },
+      id: 'html_0', title: 'Card de Perfil', difficulty: 'easy', tags: ['layout','semântica'],
+      description: 'Crie um <strong>card de perfil</strong> com a classe <code>profile-card</code> contendo:\n<ul><li>Imagem de avatar (use <code>https://i.pravatar.cc/80</code>)</li><li>Nome <strong>"Ada Lovelace"</strong> em tag h2 ou h3</li><li>Descrição <strong>"Primeira programadora da história"</strong> em parágrafo</li><li>Link <strong>"Ver perfil"</strong> com href="#"</li></ul>',
+      starterCode: '<!DOCTYPE html>\n<html lang="pt-BR">\n<head>\n  <meta charset="UTF-8">\n  <title>Card</title>\n  <style>\n    body { font-family: sans-serif; display:flex; justify-content:center; padding:20px; }\n    /* Estilize o card aqui */\n  </style>\n</head>\n<body>\n  <!-- Crie o card aqui -->\n\n</body>\n</html>',
+      checkFn: function(doc) {
+        var card=doc.querySelector('.profile-card');
+        var img=doc.querySelector('img');
+        var link=doc.querySelector('a');
+        var heading=doc.querySelector('h1,h2,h3');
+        return [
+          {ok:!!card,msg:'Elemento com classe profile-card'},
+          {ok:!!img,msg:'Imagem <img> presente'},
+          {ok:!!heading,msg:'Nome em tag de título (h1/h2/h3)'},
+          {ok:!!link&&link.textContent.toLowerCase().includes('perfil'),msg:'Link "Ver perfil" presente'},
+          {ok:!!doc.querySelector('p'),msg:'Descrição em parágrafo <p>'},
         ];
-        return checks;
       },
-      fnName: null, isHTML: true,
+      isHTML: true
     },
     {
-      id: 'html_1', title: 'Formulário de Contato', difficulty: 'easy',
-      tags: ['form', 'acessibilidade'],
-      description: `Construa um **formulário de contato** semântico com:
-- Campo \`<input type="text">\` para **Nome** com \`<label>\` associado
-- Campo \`<input type="email">\` para **Email** com \`<label>\`
-- \`<textarea>\` para **Mensagem** com \`<label>\`
-- Botão \`<button type="submit">\` com texto "Enviar"
-
-Use atributos \`for\`/\`id\` para associar labels corretamente. O form deve ter \`id="contact-form"\`.`,
-      starterCode: `<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <title>Formulário de Contato</title>
-  <style>
-    body { font-family: sans-serif; max-width: 400px; margin: 20px auto; }
-    label { display: block; margin-top: 12px; font-weight: bold; }
-    input, textarea { width: 100%; padding: 8px; box-sizing: border-box; }
-  </style>
-</head>
-<body>
-  <!-- Construa o formulário aqui -->
-
-</body>
-</html>`,
-      testFn: null,
-      checkFn: (doc) => {
-        const form     = doc.querySelector('#contact-form');
-        const labels   = doc.querySelectorAll('label');
-        const nameIn   = doc.querySelector('input[type="text"]');
-        const emailIn  = doc.querySelector('input[type="email"]');
-        const textarea = doc.querySelector('textarea');
-        const submit   = doc.querySelector('button[type="submit"], input[type="submit"]');
-        const labelsLinked = [...labels].some(l => l.htmlFor && doc.getElementById(l.htmlFor));
+      id: 'html_1', title: 'Formulário de Contato', difficulty: 'easy', tags: ['form','acessibilidade'],
+      description: 'Construa um formulário com <code>id="contact-form"</code>:\n<ul><li><code>input[type=text]</code> para Nome com <code>&lt;label&gt;</code></li><li><code>input[type=email]</code> para Email com <code>&lt;label&gt;</code></li><li><code>&lt;textarea&gt;</code> para Mensagem com <code>&lt;label&gt;</code></li><li><code>button[type=submit]</code> com texto "Enviar"</li></ul>\nUse atributos <code>for/id</code> para associar labels.',
+      starterCode: '<!DOCTYPE html>\n<html lang="pt-BR">\n<head>\n  <meta charset="UTF-8">\n  <title>Contato</title>\n  <style>\n    body { font-family: sans-serif; max-width:400px; margin:20px auto; }\n    label { display:block; margin-top:12px; font-weight:bold; }\n    input, textarea { width:100%; padding:8px; box-sizing:border-box; }\n  </style>\n</head>\n<body>\n  <!-- Formulário aqui -->\n\n</body>\n</html>',
+      checkFn: function(doc) {
+        var form=doc.querySelector('#contact-form');
+        var labels=doc.querySelectorAll('label');
+        var nameIn=doc.querySelector('input[type="text"]');
+        var emailIn=doc.querySelector('input[type="email"]');
+        var ta=doc.querySelector('textarea');
+        var btn=doc.querySelector('button[type="submit"],input[type="submit"]');
+        var linked=[].slice.call(labels).some(function(l){return l.htmlFor&&doc.getElementById(l.htmlFor);});
         return [
-          { ok: !!form,       msg: 'Form com id="contact-form"' },
-          { ok: !!nameIn,     msg: 'Input type="text" para Nome' },
-          { ok: !!emailIn,    msg: 'Input type="email" para Email' },
-          { ok: !!textarea,   msg: 'Textarea para Mensagem' },
-          { ok: !!submit,     msg: 'Botão de submit' },
-          { ok: labels.length >= 3, msg: 'Pelo menos 3 labels' },
-          { ok: labelsLinked, msg: 'Labels associadas via for/id' },
+          {ok:!!form,msg:'Form com id="contact-form"'},
+          {ok:!!nameIn,msg:'Input type="text" para Nome'},
+          {ok:!!emailIn,msg:'Input type="email" para Email'},
+          {ok:!!ta,msg:'Textarea para Mensagem'},
+          {ok:!!btn,msg:'Botão submit'},
+          {ok:labels.length>=3,msg:'Pelo menos 3 labels'},
+          {ok:linked,msg:'Labels associadas via for/id'},
         ];
       },
-      fnName: null, isHTML: true,
+      isHTML: true
     },
     {
-      id: 'html_2', title: 'Tabela de Notas', difficulty: 'medium',
-      tags: ['table', 'semântica'],
-      description: `Crie uma **tabela de notas** com as seguintes especificações:
-- Use \`<table>\`, \`<thead>\`, \`<tbody>\`, \`<tfoot>\`
-- **Cabeçalho:** Disciplina | Nota | Status
-- **3 linhas de dados** com disciplinas, notas e status
-- **Rodapé** com uma célula mostrando "Média:" e a média das notas
-- A tabela deve ter \`id="grades-table"\``,
-      starterCode: `<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <title>Tabela de Notas</title>
-  <style>
-    body { font-family: sans-serif; padding: 20px; }
-    table { border-collapse: collapse; width: 100%; }
-    th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
-    thead { background: #f0f0f0; }
-    tfoot { font-weight: bold; background: #f9f9f9; }
-  </style>
-</head>
-<body>
-  <!-- Crie a tabela aqui -->
-
-</body>
-</html>`,
-      testFn: null,
-      checkFn: (doc) => {
-        const table  = doc.querySelector('#grades-table');
-        const thead  = doc.querySelector('thead');
-        const tbody  = doc.querySelector('tbody');
-        const tfoot  = doc.querySelector('tfoot');
-        const rows   = doc.querySelectorAll('tbody tr');
-        const ths    = doc.querySelectorAll('th');
+      id: 'html_2', title: 'Tabela de Notas', difficulty: 'medium', tags: ['table','semântica'],
+      description: 'Crie uma tabela <code>id="grades-table"</code> com:\n<ul><li><code>&lt;thead&gt;</code>, <code>&lt;tbody&gt;</code>, <code>&lt;tfoot&gt;</code></li><li>Colunas: Disciplina | Nota | Status</li><li>3 linhas de dados no tbody</li><li>Rodapé com "Média:" e valor calculado</li></ul>',
+      starterCode: '<!DOCTYPE html>\n<html lang="pt-BR">\n<head>\n  <meta charset="UTF-8">\n  <title>Notas</title>\n  <style>\n    body { font-family: sans-serif; padding:20px; }\n    table { border-collapse:collapse; width:100%; }\n    th, td { border:1px solid #ccc; padding:10px; text-align:left; }\n    thead { background:#f0f0f0; }\n    tfoot { font-weight:bold; }\n  </style>\n</head>\n<body>\n  <!-- Tabela aqui -->\n\n</body>\n</html>',
+      checkFn: function(doc) {
+        var table=doc.querySelector('#grades-table');
+        var thead=doc.querySelector('thead');
+        var tbody=doc.querySelector('tbody');
+        var tfoot=doc.querySelector('tfoot');
+        var rows=doc.querySelectorAll('tbody tr');
+        var ths=doc.querySelectorAll('th');
         return [
-          { ok: !!table,       msg: 'Tabela com id="grades-table"' },
-          { ok: !!thead,       msg: 'Elemento <thead>' },
-          { ok: !!tbody,       msg: 'Elemento <tbody>' },
-          { ok: !!tfoot,       msg: 'Elemento <tfoot>' },
-          { ok: rows.length >= 3, msg: 'Pelo menos 3 linhas no tbody' },
-          { ok: ths.length >= 3,  msg: 'Pelo menos 3 colunas no cabeçalho' },
+          {ok:!!table,msg:'Tabela com id="grades-table"'},
+          {ok:!!thead,msg:'<thead> presente'},
+          {ok:!!tbody,msg:'<tbody> presente'},
+          {ok:!!tfoot,msg:'<tfoot> presente'},
+          {ok:rows.length>=3,msg:'Pelo menos 3 linhas no tbody'},
+          {ok:ths.length>=3,msg:'Pelo menos 3 colunas no cabeçalho'},
         ];
       },
-      fnName: null, isHTML: true,
+      isHTML: true
+    },
+    {
+      id: 'html_3', title: 'Lista de Tarefas', difficulty: 'easy', tags: ['form','interatividade'],
+      description: 'Crie uma lista de tarefas com:\n<ul><li>Input <code>id="task-input"</code> para digitar nova tarefa</li><li>Botão <code>id="add-btn"</code> "Adicionar"</li><li>Lista <code>id="task-list"</code> (ul ou ol)</li><li>JavaScript: ao clicar Adicionar, cria um <code>&lt;li&gt;</code> com o texto do input</li></ul>',
+      starterCode: '<!DOCTYPE html>\n<html lang="pt-BR">\n<head>\n  <meta charset="UTF-8">\n  <title>Tarefas</title>\n  <style>\n    body { font-family: sans-serif; max-width:400px; margin:20px auto; }\n    #task-list li { padding:8px; border-bottom:1px solid #eee; }\n  </style>\n</head>\n<body>\n  <h2>Minhas Tarefas</h2>\n  <!-- Input, botão e lista aqui -->\n\n  <script>\n    // Lógica aqui\n  </script>\n</body>\n</html>',
+      checkFn: function(doc) {
+        var input=doc.querySelector('#task-input');
+        var btn=doc.querySelector('#add-btn');
+        var list=doc.querySelector('#task-list');
+        return [
+          {ok:!!input,msg:'Input com id="task-input"'},
+          {ok:!!btn,msg:'Botão com id="add-btn"'},
+          {ok:!!list,msg:'Lista com id="task-list"'},
+          {ok:!!doc.querySelector('script'),msg:'Tag <script> com lógica'},
+        ];
+      },
+      isHTML: true
+    },
+    {
+      id: 'html_4', title: 'Galeria de Imagens', difficulty: 'medium', tags: ['grid','figure'],
+      description: 'Crie uma galeria com <code>id="gallery"</code> contendo pelo menos 4 imagens usando <code>&lt;figure&gt;</code> e <code>&lt;figcaption&gt;</code>.\n\nCada imagem deve ter um <code>alt</code> descritivo. Use https://picsum.photos/200/150?random=N para as imagens.',
+      starterCode: '<!DOCTYPE html>\n<html lang="pt-BR">\n<head>\n  <meta charset="UTF-8">\n  <title>Galeria</title>\n  <style>\n    body { font-family: sans-serif; padding:20px; }\n    #gallery { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; }\n    figure { margin:0; }\n    img { width:100%; border-radius:8px; }\n    figcaption { text-align:center; margin-top:6px; color:#666; }\n  </style>\n</head>\n<body>\n  <h2>Minha Galeria</h2>\n  <!-- Galeria aqui -->\n\n</body>\n</html>',
+      checkFn: function(doc) {
+        var gallery=doc.querySelector('#gallery');
+        var figures=doc.querySelectorAll('figure');
+        var imgs=doc.querySelectorAll('img');
+        var captions=doc.querySelectorAll('figcaption');
+        var alts=[].slice.call(imgs).every(function(i){return i.alt&&i.alt.length>0;});
+        return [
+          {ok:!!gallery,msg:'Elemento com id="gallery"'},
+          {ok:figures.length>=4,msg:'Pelo menos 4 elementos <figure>'},
+          {ok:imgs.length>=4,msg:'Pelo menos 4 imagens'},
+          {ok:captions.length>=4,msg:'Pelo menos 4 <figcaption>'},
+          {ok:alts,msg:'Todas as imagens têm atributo alt'},
+        ];
+      },
+      isHTML: true
+    },
+    {
+      id: 'html_5', title: 'Nav Responsiva', difficulty: 'hard', tags: ['nav','mobile'],
+      description: 'Crie uma barra de navegação <code>&lt;nav id="main-nav"&gt;</code> com:\n<ul><li>Logo/brand à esquerda</li><li>Links: Home, Sobre, Contato</li><li>Botão hamburguer <code>id="menu-btn"</code> visível apenas em mobile (&lt;600px)</li><li>Em mobile, o menu deve toggle ao clicar no hamburguer</li></ul>',
+      starterCode: '<!DOCTYPE html>\n<html lang="pt-BR">\n<head>\n  <meta charset="UTF-8">\n  <meta name="viewport" content="width=device-width,initial-scale=1">\n  <title>Nav</title>\n  <style>\n    * { box-sizing:border-box; margin:0; padding:0; }\n    body { font-family:sans-serif; }\n    nav { background:#1a1a2e; color:white; padding:0 20px; }\n    /* Estilos aqui */\n  </style>\n</head>\n<body>\n  <!-- Nav aqui -->\n  <script>\n    /* Toggle menu aqui */\n  </script>\n</body>\n</html>',
+      checkFn: function(doc) {
+        var nav=doc.querySelector('#main-nav');
+        var links=doc.querySelectorAll('nav a');
+        var btn=doc.querySelector('#menu-btn');
+        var hasHome=[].slice.call(links).some(function(l){return l.textContent.toLowerCase().includes('home');});
+        return [
+          {ok:!!nav,msg:'Nav com id="main-nav"'},
+          {ok:links.length>=3,msg:'Pelo menos 3 links de navegação'},
+          {ok:hasHome,msg:'Link "Home" presente'},
+          {ok:!!btn,msg:'Botão hamburguer com id="menu-btn"'},
+          {ok:!!doc.querySelector('script'),msg:'Script para toggle do menu'},
+        ];
+      },
+      isHTML: true
     },
   ],
 
   css: [
     {
-      id: 'css_0', title: 'Botão Animado', difficulty: 'easy',
-      tags: ['animação', 'hover'],
-      description: `Estilize um botão com id \`#animated-btn\` que já existe no HTML:
-- Fundo com cor primária (ex: \`#7c3aed\`) e texto branco
-- Padding de 12px 28px, border-radius de 8px
-- **No hover:** o botão deve escalar (\`scale(1.08)\`) e ficar mais escuro
-- Transição suave de **0.2s** em todas as propriedades
-- Remova a borda padrão e adicione cursor pointer`,
-      starterCode: `<!-- HTML fixo — edite apenas o <style> -->
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <title>Botão Animado</title>
-  <style>
-    body { display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #f5f5f5; }
-
-    /* Escreva o CSS do botão aqui */
-    #animated-btn {
-
-    }
-
-    #animated-btn:hover {
-
-    }
-  </style>
-</head>
-<body>
-  <button id="animated-btn">Clique em mim!</button>
-</body>
-</html>`,
-      testFn: null,
-      checkFn: (doc) => {
-        const btn = doc.querySelector('#animated-btn');
-        if (!btn) return [{ ok:false, msg:'Botão #animated-btn não encontrado' }];
-        const style = doc.defaultView?.getComputedStyle(btn) || {};
-        const hasBg    = style.backgroundColor && style.backgroundColor !== 'rgba(0, 0, 0, 0)' && style.backgroundColor !== 'transparent';
-        const hasRad   = parseFloat(style.borderRadius) > 0;
-        const hasTrans = style.transition && style.transition !== 'all 0s ease 0s' && style.transition !== 'none';
-        const hasCursor= style.cursor === 'pointer';
+      id: 'css_0', title: 'Botão Animado', difficulty: 'easy', tags: ['animação','hover'],
+      description: 'Estilize o botão <code>#animated-btn</code>:\n<ul><li>Fundo roxo (#7c3aed), texto branco</li><li>Padding 12px 28px, border-radius 8px</li><li>Hover: scale(1.08) e cor mais escura</li><li>Transição suave de 0.2s</li><li>cursor: pointer, sem borda padrão</li></ul>',
+      starterCode: '<!DOCTYPE html>\n<html lang="pt-BR">\n<head>\n  <meta charset="UTF-8">\n  <title>Botão</title>\n  <style>\n    body { display:flex; justify-content:center; align-items:center; min-height:100vh; background:#f5f5f5; }\n\n    #animated-btn {\n      /* Escreva aqui */\n    }\n\n    #animated-btn:hover {\n      /* Hover aqui */\n    }\n  </style>\n</head>\n<body>\n  <button id="animated-btn">Clique em mim!</button>\n</body>\n</html>',
+      checkFn: function(doc) {
+        var btn=doc.querySelector('#animated-btn');
+        if(!btn) return [{ok:false,msg:'#animated-btn não encontrado'}];
+        var s=doc.defaultView.getComputedStyle(btn);
         return [
-          { ok: !!btn,      msg: 'Elemento #animated-btn existe' },
-          { ok: hasBg,      msg: 'Cor de fundo definida' },
-          { ok: hasRad,     msg: 'Border-radius aplicado' },
-          { ok: hasTrans,   msg: 'Transição CSS definida' },
-          { ok: hasCursor,  msg: 'cursor: pointer' },
+          {ok:!!btn,msg:'Elemento #animated-btn existe'},
+          {ok:s.backgroundColor!='rgba(0, 0, 0, 0)'&&s.backgroundColor!='transparent',msg:'Cor de fundo definida'},
+          {ok:parseFloat(s.borderRadius)>0,msg:'Border-radius aplicado'},
+          {ok:s.transition&&s.transition!='all 0s ease 0s'&&s.transition!='none',msg:'Transição CSS definida'},
+          {ok:s.cursor==='pointer',msg:'cursor: pointer'},
         ];
       },
-      fnName: null, isHTML: true,
+      isHTML: true
     },
     {
-      id: 'css_1', title: 'Layout com Flexbox', difficulty: 'medium',
-      tags: ['flexbox', 'layout'],
-      description: `Use **Flexbox** para criar um layout de 3 colunas de igual largura dentro de um container \`#flex-container\`.
-
-Requisitos:
-- Três \`<div>\` com classes \`.col\` lado a lado
-- Gap de 16px entre as colunas
-- Cada coluna com altura mínima de 100px e um fundo diferente
-- Em telas < 600px, as colunas devem empilhar verticalmente (uma por linha)`,
-      starterCode: `<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <title>Flexbox Layout</title>
-  <style>
-    * { box-sizing: border-box; }
-    body { padding: 20px; font-family: sans-serif; }
-
-    /* Container */
-    #flex-container {
-
-    }
-
-    /* Colunas */
-    .col {
-      min-height: 100px;
-      padding: 16px;
-      border-radius: 8px;
-    }
-
-    .col:nth-child(1) { background: #e0e7ff; }
-    .col:nth-child(2) { background: #fce7f3; }
-    .col:nth-child(3) { background: #d1fae5; }
-
-    @media (max-width: 600px) {
-      /* Empilhar aqui */
-    }
-  </style>
-</head>
-<body>
-  <div id="flex-container">
-    <div class="col">Coluna 1</div>
-    <div class="col">Coluna 2</div>
-    <div class="col">Coluna 3</div>
-  </div>
-</body>
-</html>`,
-      testFn: null,
-      checkFn: (doc) => {
-        const container = doc.querySelector('#flex-container');
-        if (!container) return [{ ok:false, msg:'#flex-container não encontrado' }];
-        const style  = doc.defaultView?.getComputedStyle(container) || {};
-        const cols   = doc.querySelectorAll('.col');
-        const isFlex = style.display === 'flex' || style.display === 'inline-flex';
-        const hasGap = parseFloat(style.gap || style.columnGap) > 0;
+      id: 'css_1', title: 'Flexbox 3 Colunas', difficulty: 'medium', tags: ['flexbox','layout'],
+      description: 'Use Flexbox no <code>#flex-container</code> para criar 3 colunas iguais:\n<ul><li>display: flex com 3 colunas de igual largura</li><li>Gap de 16px entre colunas</li><li>Em telas &lt;600px: colunas empilhadas (flex-direction: column)</li><li>Altura mínima de 100px por coluna</li></ul>',
+      starterCode: '<!DOCTYPE html>\n<html lang="pt-BR">\n<head>\n  <meta charset="UTF-8">\n  <meta name="viewport" content="width=device-width,initial-scale=1">\n  <title>Flexbox</title>\n  <style>\n    * { box-sizing:border-box; }\n    body { padding:20px; font-family:sans-serif; }\n\n    #flex-container {\n      /* Flexbox aqui */\n    }\n\n    .col {\n      min-height:100px;\n      padding:16px;\n      border-radius:8px;\n    }\n    .col:nth-child(1) { background:#e0e7ff; }\n    .col:nth-child(2) { background:#fce7f3; }\n    .col:nth-child(3) { background:#d1fae5; }\n\n    @media (max-width:600px) {\n      /* Empilhar aqui */\n    }\n  </style>\n</head>\n<body>\n  <div id="flex-container">\n    <div class="col">Coluna 1</div>\n    <div class="col">Coluna 2</div>\n    <div class="col">Coluna 3</div>\n  </div>\n</body>\n</html>',
+      checkFn: function(doc) {
+        var c=doc.querySelector('#flex-container');
+        if(!c) return [{ok:false,msg:'#flex-container não encontrado'}];
+        var s=doc.defaultView.getComputedStyle(c);
+        var cols=doc.querySelectorAll('.col');
         return [
-          { ok: !!container,    msg: '#flex-container existe' },
-          { ok: isFlex,         msg: 'display: flex no container' },
-          { ok: hasGap,         msg: 'gap entre colunas definido' },
-          { ok: cols.length===3,msg: 'Exatamente 3 .col dentro do container' },
+          {ok:!!c,msg:'#flex-container existe'},
+          {ok:s.display==='flex'||s.display==='inline-flex',msg:'display: flex no container'},
+          {ok:parseFloat(s.gap||s.columnGap||0)>0,msg:'Gap entre colunas definido'},
+          {ok:cols.length===3,msg:'Exatamente 3 .col'},
         ];
       },
-      fnName: null, isHTML: true,
+      isHTML: true
     },
     {
-      id: 'css_2', title: 'Dark Mode com Variáveis', difficulty: 'medium',
-      tags: ['variáveis', 'dark mode'],
-      description: `Implemente um **tema escuro** usando **CSS custom properties** (variáveis CSS).
-
-Requisitos:
-- Defina variáveis em \`:root\`: \`--bg\`, \`--text\`, \`--card-bg\`, \`--primary\`
-- Crie um \`.dark\` class na \`<body>\` que **redefine** as variáveis para cores escuras
-- Um card com \`id="theme-card"\` deve usar essas variáveis para fundo e texto
-- Um botão \`#toggle-btn\` que ao clicar adiciona/remove a classe \`.dark\` no body`,
-      starterCode: `<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <title>Dark Mode</title>
-  <style>
-    :root {
-      /* Defina suas variáveis aqui */
-    }
-
-    body.dark {
-      /* Redefina as variáveis no modo escuro */
-    }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: sans-serif;
-      transition: background .3s, color .3s;
-      padding: 20px;
-    }
-
-    #theme-card {
-      background: var(--card-bg);
-      padding: 20px;
-      border-radius: 8px;
-      margin-bottom: 16px;
-    }
-  </style>
-</head>
-<body>
-  <div id="theme-card">
-    <h2>Card de exemplo</h2>
-    <p>Este card usa variáveis CSS para tematização.</p>
-  </div>
-  <button id="toggle-btn" onclick="document.body.classList.toggle('dark')">
-    Alternar tema
-  </button>
-</body>
-</html>`,
-      testFn: null,
-      checkFn: (doc) => {
-        const card = doc.querySelector('#theme-card');
-        const btn  = doc.querySelector('#toggle-btn');
-        const root = doc.documentElement;
-        const rootStyle = doc.defaultView?.getComputedStyle(root) || {};
-        const hasBgVar  = doc.documentElement.style.getPropertyValue('--bg') !== undefined;
-        // Check CSS vars in stylesheet
-        const sheets = [...(doc.styleSheets || [])];
-        let hasVars = false, hasDark = false;
-        sheets.forEach(sheet => {
-          try {
-            [...sheet.cssRules].forEach(r => {
-              if (r.selectorText === ':root' && r.style?.cssText?.includes('--')) hasVars = true;
-              if (r.selectorText?.includes('.dark')) hasDark = true;
-            });
-          } catch(e) {}
-        });
+      id: 'css_2', title: 'Dark Mode com Variáveis', difficulty: 'medium', tags: ['variáveis','dark mode'],
+      description: 'Implemente dark mode com CSS custom properties:\n<ul><li>Defina <code>--bg</code>, <code>--text</code>, <code>--card-bg</code> em <code>:root</code></li><li>Classe <code>.dark</code> no body redefine as variáveis para cores escuras</li><li>Card <code>#theme-card</code> usa as variáveis</li><li>Botão <code>#toggle-btn</code> faz toggle da classe <code>.dark</code></li></ul>',
+      starterCode: '<!DOCTYPE html>\n<html lang="pt-BR">\n<head>\n  <meta charset="UTF-8">\n  <title>Dark Mode</title>\n  <style>\n    :root {\n      /* Defina variáveis claras aqui */\n    }\n    body.dark {\n      /* Redefina para escuro aqui */\n    }\n    body { background:var(--bg); color:var(--text); font-family:sans-serif; transition:.3s; padding:20px; }\n    #theme-card { background:var(--card-bg); padding:20px; border-radius:8px; margin-bottom:16px; }\n  </style>\n</head>\n<body>\n  <div id="theme-card"><h2>Card</h2><p>Conteúdo aqui.</p></div>\n  <button id="toggle-btn" onclick="document.body.classList.toggle(\'dark\')">Alternar</button>\n</body>\n</html>',
+      checkFn: function(doc) {
+        var card=doc.querySelector('#theme-card');
+        var btn=doc.querySelector('#toggle-btn');
+        var hasVars=false,hasDark=false;
+        try{[].slice.call(doc.styleSheets).forEach(function(ss){try{[].slice.call(ss.cssRules).forEach(function(r){if(r.selectorText===':root'&&r.style&&r.style.cssText&&r.style.cssText.indexOf('--')>=0)hasVars=true;if(r.selectorText&&r.selectorText.indexOf('.dark')>=0)hasDark=true;});}catch(e){}});}catch(e){}
         return [
-          { ok: !!card,    msg: '#theme-card existe' },
-          { ok: !!btn,     msg: '#toggle-btn existe' },
-          { ok: hasVars,   msg: 'Variáveis CSS definidas em :root' },
-          { ok: hasDark,   msg: 'Classe .dark redefine variáveis' },
+          {ok:!!card,msg:'#theme-card existe'},
+          {ok:!!btn,msg:'#toggle-btn existe'},
+          {ok:hasVars,msg:'CSS variables definidas em :root'},
+          {ok:hasDark,msg:'Classe .dark redefine variáveis'},
         ];
       },
-      fnName: null, isHTML: true,
+      isHTML: true
+    },
+    {
+      id: 'css_3', title: 'Card com Sombra e Hover', difficulty: 'easy', tags: ['box-shadow','hover'],
+      description: 'Estilize o <code>.card</code>:\n<ul><li>Background branco, border-radius 12px</li><li>Sombra suave: <code>box-shadow: 0 2px 8px rgba(0,0,0,.1)</code></li><li>Padding interno de 24px</li><li>No hover: sombra maior e translateY(-4px)</li><li>Transição de 0.25s</li></ul>',
+      starterCode: '<!DOCTYPE html>\n<html lang="pt-BR">\n<head>\n  <meta charset="UTF-8">\n  <title>Card</title>\n  <style>\n    body { background:#f5f5f5; display:flex; justify-content:center; padding:40px; font-family:sans-serif; }\n\n    .card {\n      width:280px;\n      /* Escreva aqui */\n    }\n\n    .card:hover {\n      /* Hover aqui */\n    }\n  </style>\n</head>\n<body>\n  <div class="card">\n    <h3>Título do Card</h3>\n    <p>Conteúdo de exemplo do card com estilos CSS.</p>\n  </div>\n</body>\n</html>',
+      checkFn: function(doc) {
+        var card=doc.querySelector('.card');
+        if(!card) return [{ok:false,msg:'.card não encontrado'}];
+        var s=doc.defaultView.getComputedStyle(card);
+        return [
+          {ok:!!card,msg:'.card existe'},
+          {ok:s.boxShadow&&s.boxShadow!=='none',msg:'box-shadow definido'},
+          {ok:parseFloat(s.borderRadius)>=8,msg:'border-radius >= 8px'},
+          {ok:parseFloat(s.paddingTop)>=16,msg:'Padding interno >= 16px'},
+          {ok:s.transition&&s.transition!=='all 0s ease 0s',msg:'Transição definida'},
+        ];
+      },
+      isHTML: true
+    },
+    {
+      id: 'css_4', title: 'Grid Responsivo', difficulty: 'medium', tags: ['grid','responsivo'],
+      description: 'Crie um grid responsivo com <code>#grid-container</code>:\n<ul><li>CSS Grid com colunas automáticas: <code>repeat(auto-fill, minmax(180px,1fr))</code></li><li>Gap de 16px</li><li>Pelo menos 6 itens <code>.grid-item</code></li><li>Cada item com fundo colorido, padding e border-radius</li></ul>',
+      starterCode: '<!DOCTYPE html>\n<html lang="pt-BR">\n<head>\n  <meta charset="UTF-8">\n  <meta name="viewport" content="width=device-width,initial-scale=1">\n  <title>Grid</title>\n  <style>\n    body { font-family:sans-serif; padding:20px; }\n\n    #grid-container {\n      /* Grid aqui */\n    }\n\n    .grid-item {\n      padding:20px;\n      border-radius:8px;\n      text-align:center;\n      font-weight:bold;\n    }\n  </style>\n</head>\n<body>\n  <div id="grid-container">\n    <div class="grid-item" style="background:#e0e7ff">1</div>\n    <div class="grid-item" style="background:#fce7f3">2</div>\n    <div class="grid-item" style="background:#d1fae5">3</div>\n    <div class="grid-item" style="background:#fef3c7">4</div>\n    <div class="grid-item" style="background:#ffe4e6">5</div>\n    <div class="grid-item" style="background:#e0f2fe">6</div>\n  </div>\n</body>\n</html>',
+      checkFn: function(doc) {
+        var g=doc.querySelector('#grid-container');
+        if(!g) return [{ok:false,msg:'#grid-container não encontrado'}];
+        var s=doc.defaultView.getComputedStyle(g);
+        var items=doc.querySelectorAll('.grid-item');
+        return [
+          {ok:!!g,msg:'#grid-container existe'},
+          {ok:s.display==='grid',msg:'display: grid'},
+          {ok:s.gap!=='0px'&&s.gap!=='normal',msg:'Gap definido'},
+          {ok:items.length>=6,msg:'Pelo menos 6 .grid-item'},
+        ];
+      },
+      isHTML: true
+    },
+    {
+      id: 'css_5', title: 'Loader Animado', difficulty: 'hard', tags: ['animação','keyframes'],
+      description: 'Crie um loader com <code>#loader</code> usando apenas CSS:\n<ul><li>Círculo de 48px com borda parcial colorida</li><li>Animação de rotação contínua via <code>@keyframes</code></li><li>Centralizado na tela</li><li>Nome da animação deve ser <code>spin</code> ou <code>rotate</code></li></ul>',
+      starterCode: '<!DOCTYPE html>\n<html lang="pt-BR">\n<head>\n  <meta charset="UTF-8">\n  <title>Loader</title>\n  <style>\n    body { display:flex; justify-content:center; align-items:center; min-height:100vh; background:#111; }\n\n    #loader {\n      /* Loader aqui */\n    }\n\n    @keyframes spin {\n      /* Keyframes aqui */\n    }\n  </style>\n</head>\n<body>\n  <div id="loader"></div>\n</body>\n</html>',
+      checkFn: function(doc) {
+        var loader=doc.querySelector('#loader');
+        if(!loader) return [{ok:false,msg:'#loader não encontrado'}];
+        var s=doc.defaultView.getComputedStyle(loader);
+        var hasKf=false;
+        try{[].slice.call(doc.styleSheets).forEach(function(ss){try{[].slice.call(ss.cssRules).forEach(function(r){if(r.type===7)hasKf=true;});}catch(e){}});}catch(e){}
+        return [
+          {ok:!!loader,msg:'#loader existe'},
+          {ok:s.borderRadius==='50%',msg:'border-radius: 50% (círculo)'},
+          {ok:s.animationName&&s.animationName!=='none',msg:'animation-name definido'},
+          {ok:hasKf,msg:'@keyframes definido no CSS'},
+          {ok:s.display!=='none',msg:'Loader visível'},
+        ];
+      },
+      isHTML: true
     },
   ],
 
   c: [
     {
-      id: 'c_0', title: 'Olá, Mundo!', difficulty: 'easy',
-      tags: ['básico', 'I/O'],
-      description: `Escreva um programa C que imprime exatamente:
-\`\`\`
-Olá, Mundo!
-\`\`\`
-
-Use \`printf\` com quebra de linha (\`\\n\`).`,
-      starterCode: `#include <stdio.h>
-
-int main() {
-    // Escreva seu código aqui
-    
-    return 0;
-}`,
-      expectedOutput: 'Olá, Mundo!',
-      fnName: null, isC: true,
+      id: 'c_0', title: 'Olá, Mundo!', difficulty: 'easy', tags: ['básico','I/O'],
+      description: 'Escreva um programa C que imprime exatamente:\n<pre class="lc-code-block"><code>Olá, Mundo!</code></pre>\nUse <code>printf</code> com quebra de linha.',
+      starterCode: '#include <stdio.h>\n\nint main() {\n    // Escreva aqui\n    \n    return 0;\n}',
+      testCases: [{input:'',expected:'Olá, Mundo!'}],
+      isC: true
     },
     {
-      id: 'c_1', title: 'Soma de N até 1', difficulty: 'easy',
-      tags: ['loop', 'math'],
-      description: `Escreva um programa C que leia um inteiro \`n\` da entrada padrão e imprima a **soma de 1 até n**.
-
-**Entrada:** Um inteiro \`n\` (ex: \`5\`)
-**Saída:** A soma (ex: \`15\`)
-
-Use um loop \`for\` ou \`while\`.`,
-      starterCode: `#include <stdio.h>
-
-int main() {
-    int n;
-    scanf("%d", &n);
-    
-    // Calcule e imprima a soma de 1 até n
-    
-    return 0;
-}`,
-      testCases: [
-        { input: '5',  expected: '15' },
-        { input: '1',  expected: '1'  },
-        { input: '10', expected: '55' },
-        { input: '0',  expected: '0'  },
-      ],
-      fnName: null, isC: true,
+      id: 'c_1', title: 'Par ou Ímpar', difficulty: 'easy', tags: ['condicional'],
+      description: 'Leia um inteiro e imprima <code>par</code> ou <code>impar</code> (sem acento).\n\n<pre class="lc-code-block"><code>Entrada: 4  → par\nEntrada: 7  → impar\nEntrada: 0  → par</code></pre>',
+      starterCode: '#include <stdio.h>\n\nint main() {\n    int n;\n    scanf("%d", &n);\n    \n    // Imprima "par" ou "impar"\n    \n    return 0;\n}',
+      testCases: [{input:'4',expected:'par'},{input:'7',expected:'impar'},{input:'0',expected:'par'},{input:'-3',expected:'impar'}],
+      isC: true
     },
     {
-      id: 'c_2', title: 'Par ou Ímpar', difficulty: 'easy',
-      tags: ['condicional', 'math'],
-      description: `Escreva um programa C que leia um inteiro e imprima \`"par"\` se for par ou \`"impar"\` se for ímpar.
-
-**Entrada:** Um inteiro
-**Saída:** \`par\` ou \`impar\` (sem acento, em minúsculo)`,
-      starterCode: `#include <stdio.h>
-
-int main() {
-    int n;
-    scanf("%d", &n);
-    
-    // Verifique e imprima "par" ou "impar"
-    
-    return 0;
-}`,
-      testCases: [
-        { input: '4',  expected: 'par'   },
-        { input: '7',  expected: 'impar' },
-        { input: '0',  expected: 'par'   },
-        { input: '-3', expected: 'impar' },
-      ],
-      fnName: null, isC: true,
+      id: 'c_2', title: 'Soma de 1 a N', difficulty: 'easy', tags: ['loop','math'],
+      description: 'Leia um inteiro <code>n</code> e imprima a soma de 1 até n.\n\n<pre class="lc-code-block"><code>Entrada: 5  → 15\nEntrada: 10 → 55\nEntrada: 1  → 1</code></pre>',
+      starterCode: '#include <stdio.h>\n\nint main() {\n    int n;\n    scanf("%d", &n);\n    \n    // Calcule e imprima a soma\n    \n    return 0;\n}',
+      testCases: [{input:'5',expected:'15'},{input:'1',expected:'1'},{input:'10',expected:'55'},{input:'0',expected:'0'}],
+      isC: true
     },
     {
-      id: 'c_3', title: 'Fibonacci', difficulty: 'medium',
-      tags: ['loop', 'math'],
-      description: `Escreva um programa C que leia \`n\` e imprima os primeiros \`n\` termos da sequência de Fibonacci, **separados por espaço**.
-
-**Entrada:** \`6\`
-**Saída:** \`0 1 1 2 3 5\`
-
-Obs: A sequência começa em 0, 1, 1, 2, 3, 5, 8...`,
-      starterCode: `#include <stdio.h>
-
-int main() {
-    int n;
-    scanf("%d", &n);
-    
-    // Imprima os n primeiros termos de Fibonacci
-    
-    return 0;
-}`,
-      testCases: [
-        { input: '1',  expected: '0'             },
-        { input: '2',  expected: '0 1'           },
-        { input: '6',  expected: '0 1 1 2 3 5'  },
-        { input: '8',  expected: '0 1 1 2 3 5 8 13' },
-      ],
-      fnName: null, isC: true,
+      id: 'c_3', title: 'Maior de Três', difficulty: 'easy', tags: ['condicional'],
+      description: 'Leia três inteiros e imprima o maior.\n\n<pre class="lc-code-block"><code>Entrada: 3 7 2  → 7\nEntrada: -1 -5 -2 → -1</code></pre>',
+      starterCode: '#include <stdio.h>\n\nint main() {\n    int a, b, c;\n    scanf("%d %d %d", &a, &b, &c);\n    \n    // Imprima o maior\n    \n    return 0;\n}',
+      testCases: [{input:'3 7 2',expected:'7'},{input:'-1 -5 -2',expected:'-1'},{input:'10 10 5',expected:'10'},{input:'1 1 1',expected:'1'}],
+      isC: true
     },
     {
-      id: 'c_4', title: 'Maior de Três', difficulty: 'easy',
-      tags: ['condicional'],
-      description: `Leia três inteiros e imprima o maior deles.
-
-**Entrada:** Três inteiros na mesma linha separados por espaço
-**Saída:** O maior dos três
-
-**Exemplo:**
-- Entrada: \`3 7 2\` → Saída: \`7\`
-- Entrada: \`-1 -5 -2\` → Saída: \`-1\``,
-      starterCode: `#include <stdio.h>
-
-int main() {
-    int a, b, c;
-    scanf("%d %d %d", &a, &b, &c);
-    
-    // Imprima o maior dos três
-    
-    return 0;
-}`,
-      testCases: [
-        { input: '3 7 2',    expected: '7'  },
-        { input: '-1 -5 -2', expected: '-1' },
-        { input: '10 10 5',  expected: '10' },
-        { input: '1 1 1',    expected: '1'  },
-      ],
-      fnName: null, isC: true,
+      id: 'c_4', title: 'Fibonacci', difficulty: 'medium', tags: ['loop','math'],
+      description: 'Leia <code>n</code> e imprima os primeiros <code>n</code> termos de Fibonacci separados por espaço.\n\n<pre class="lc-code-block"><code>Entrada: 6  → 0 1 1 2 3 5\nEntrada: 1  → 0\nEntrada: 2  → 0 1</code></pre>',
+      starterCode: '#include <stdio.h>\n\nint main() {\n    int n;\n    scanf("%d", &n);\n    \n    // Imprima os n primeiros termos de Fibonacci\n    \n    return 0;\n}',
+      testCases: [{input:'1',expected:'0'},{input:'2',expected:'0 1'},{input:'6',expected:'0 1 1 2 3 5'},{input:'8',expected:'0 1 1 2 3 5 8 13'}],
+      isC: true
     },
     {
-      id: 'c_5', title: 'Contador de Vogais', difficulty: 'medium',
-      tags: ['string', 'loop'],
-      description: `Leia uma string e conte quantas **vogais** (a,e,i,o,u — maiúsculas e minúsculas) ela contém. Imprima o total.
-
-**Entrada:** Uma string sem espaços (ex: \`programacao\`)
-**Saída:** O número de vogais (ex: \`5\`)`,
-      starterCode: `#include <stdio.h>
-#include <string.h>
-#include <ctype.h>
-
-int main() {
-    char s[256];
-    scanf("%s", s);
-    
-    int count = 0;
-    // Conte as vogais
-    
-    printf("%d\\n", count);
-    return 0;
-}`,
-      testCases: [
-        { input: 'programacao', expected: '5' },
-        { input: 'hello',       expected: '2' },
-        { input: 'rhythm',      expected: '0' },
-        { input: 'AEIOU',       expected: '5' },
-      ],
-      fnName: null, isC: true,
+      id: 'c_5', title: 'Contador de Vogais', difficulty: 'medium', tags: ['string','loop'],
+      description: 'Leia uma string e conte as vogais (a,e,i,o,u — maiúsculas e minúsculas). Imprima o total.\n\n<pre class="lc-code-block"><code>programacao → 5\nhello        → 2\nrhythm       → 0</code></pre>',
+      starterCode: '#include <stdio.h>\n#include <string.h>\n#include <ctype.h>\n\nint main() {\n    char s[256];\n    scanf("%s", s);\n    int count = 0;\n    // Conte vogais\n    printf("%d\\n", count);\n    return 0;\n}',
+      testCases: [{input:'programacao',expected:'5'},{input:'hello',expected:'2'},{input:'rhythm',expected:'0'},{input:'AEIOU',expected:'5'}],
+      isC: true
+    },
+    {
+      id: 'c_6', title: 'Tabuada', difficulty: 'easy', tags: ['loop','I/O'],
+      description: 'Leia um inteiro <code>n</code> e imprima sua tabuada de 1 a 10, um por linha no formato: <code>n x i = resultado</code>\n\n<pre class="lc-code-block"><code>Entrada: 3\nSaída:\n3 x 1 = 3\n3 x 2 = 6\n...\n3 x 10 = 30</code></pre>',
+      starterCode: '#include <stdio.h>\n\nint main() {\n    int n;\n    scanf("%d", &n);\n    \n    // Imprima a tabuada\n    \n    return 0;\n}',
+      testCases: [{input:'3',expected:'3 x 1 = 3\n3 x 2 = 6\n3 x 3 = 9\n3 x 4 = 12\n3 x 5 = 15\n3 x 6 = 18\n3 x 7 = 21\n3 x 8 = 24\n3 x 9 = 27\n3 x 10 = 30'}],
+      isC: true
+    },
+    {
+      id: 'c_7', title: 'Inverter String', difficulty: 'medium', tags: ['string','array'],
+      description: 'Leia uma string e imprima ela ao contrário.\n\n<pre class="lc-code-block"><code>hello   → olleh\nUSP     → PSU\nabc     → cba</code></pre>',
+      starterCode: '#include <stdio.h>\n#include <string.h>\n\nint main() {\n    char s[256];\n    scanf("%s", s);\n    \n    // Imprima invertida\n    \n    return 0;\n}',
+      testCases: [{input:'hello',expected:'olleh'},{input:'USP',expected:'PSU'},{input:'abc',expected:'cba'},{input:'a',expected:'a'}],
+      isC: true
+    },
+    {
+      id: 'c_8', title: 'Fatorial', difficulty: 'easy', tags: ['recursão','math'],
+      description: 'Leia um inteiro <code>n</code> (0 ≤ n ≤ 12) e imprima seu fatorial.\n\n<pre class="lc-code-block"><code>0 → 1\n5 → 120\n10 → 3628800</code></pre>',
+      starterCode: '#include <stdio.h>\n\nlong long fatorial(int n) {\n    // Implemente aqui (recursivo ou iterativo)\n}\n\nint main() {\n    int n;\n    scanf("%d", &n);\n    printf("%lld\\n", fatorial(n));\n    return 0;\n}',
+      testCases: [{input:'0',expected:'1'},{input:'1',expected:'1'},{input:'5',expected:'120'},{input:'10',expected:'3628800'}],
+      isC: true
+    },
+    {
+      id: 'c_9', title: 'Número Primo', difficulty: 'medium', tags: ['math','loop'],
+      description: 'Leia um inteiro e imprima <code>primo</code> se for primo, ou <code>nao primo</code> caso contrário.\n\n<pre class="lc-code-block"><code>7   → primo\n4   → nao primo\n1   → nao primo\n2   → primo</code></pre>',
+      starterCode: '#include <stdio.h>\n\nint main() {\n    int n;\n    scanf("%d", &n);\n    \n    // Verifique e imprima\n    \n    return 0;\n}',
+      testCases: [{input:'7',expected:'primo'},{input:'4',expected:'nao primo'},{input:'1',expected:'nao primo'},{input:'2',expected:'primo'},{input:'13',expected:'primo'}],
+      isC: true
     },
   ],
 };
 
 // ─── RENDER ───────────────────────────────────────────────────────────────────
 function initLeetcode() {
-  const container = document.getElementById('lc-app');
+  var container = document.getElementById('lc-app');
   if (!container) return;
-
-  // Load persisted state
   try {
-    const saved = localStorage.getItem('lc_state');
+    var saved = localStorage.getItem('lc_state_v2');
     if (saved) {
-      const p = JSON.parse(saved);
+      var p = JSON.parse(saved);
       lcState.solved = p.solved || {};
       lcState.code   = p.code   || {};
       lcState.lang   = p.lang   || 'javascript';
     }
   } catch(e) {}
-
-  if (lcState.view === 'editor') {
-    renderEditor(container);
-  } else {
-    lcState.view = 'list';
-    renderList(container);
-  }
+  lcState.view = 'list';
+  renderList(container);
 }
 
 function saveState() {
-  try {
-    localStorage.setItem('lc_state', JSON.stringify({
-      solved: lcState.solved,
-      code:   lcState.code,
-      lang:   lcState.lang,
-    }));
-  } catch(e) {}
+  try { localStorage.setItem('lc_state_v2', JSON.stringify({solved:lcState.solved,code:lcState.code,lang:lcState.lang})); } catch(e) {}
 }
 
-// ─── LIST VIEW ────────────────────────────────────────────────────────────────
+// ─── LIST ─────────────────────────────────────────────────────────────────────
 function renderList(container) {
-  const langs = [
-    { key: 'javascript', label: 'JavaScript', icon: '🟨' },
-    { key: 'html',       label: 'HTML',        icon: '🟧' },
-    { key: 'css',        label: 'CSS',         icon: '🟦' },
-    { key: 'c',          label: 'C',           icon: '⬛' },
+  var langs = [
+    {key:'javascript',label:'JavaScript',icon:'🟨'},
+    {key:'html',label:'HTML',icon:'🟧'},
+    {key:'css',label:'CSS',icon:'🟦'},
+    {key:'c',label:'C',icon:'⬛'},
   ];
-  const difficulties = ['all','easy','medium','hard'];
-  const challenges = LC_CHALLENGES[lcState.lang] || [];
-  const filtered = lcState.filter === 'all' ? challenges : challenges.filter(c => c.difficulty === lcState.filter);
+  var challenges = LC_CHALLENGES[lcState.lang] || [];
+  var filtered = lcState.filter === 'all' ? challenges : challenges.filter(function(c){return c.difficulty===lcState.filter;});
+  var totalSolved = challenges.filter(function(c){return lcState.solved[c.id];}).length;
+  var pct = challenges.length ? Math.round(totalSolved/challenges.length*100) : 0;
 
-  const totalSolved = challenges.filter(c => lcState.solved[c.id]).length;
-  const pct = challenges.length ? Math.round(totalSolved / challenges.length * 100) : 0;
+  var html = '<div class="lc-header">';
+  html += '<div class="lc-lang-tabs">';
+  langs.forEach(function(l) {
+    html += '<button class="lc-lang-tab'+(lcState.lang===l.key?' active':'')+'" onclick="lcSetLang(\''+l.key+'\')">';
+    html += '<span>'+l.icon+'</span> '+l.label+'</button>';
+  });
+  html += '</div>';
+  html += '<div class="lc-progress-row">';
+  html += '<span class="lc-progress-label">'+totalSolved+'/'+challenges.length+' resolvidos</span>';
+  html += '<div class="lc-progress-bar"><div class="lc-progress-fill" style="width:'+pct+'%"></div></div>';
+  html += '<span class="lc-progress-pct">'+pct+'%</span></div></div>';
 
-  container.innerHTML = `
-    <div class="lc-header">
-      <div class="lc-lang-tabs">
-        ${langs.map(l => `
-          <button class="lc-lang-tab ${lcState.lang === l.key ? 'active' : ''}"
-                  onclick="lcSetLang('${l.key}')">
-            <span>${l.icon}</span> ${l.label}
-          </button>
-        `).join('')}
-      </div>
-      <div class="lc-progress-row">
-        <span class="lc-progress-label">${totalSolved}/${challenges.length} resolvidos</span>
-        <div class="lc-progress-bar"><div class="lc-progress-fill" style="width:${pct}%"></div></div>
-        <span class="lc-progress-pct">${pct}%</span>
-      </div>
-    </div>
-    <div class="lc-filters">
-      ${difficulties.map(d => `
-        <button class="lc-filter-btn ${lcState.filter === d ? 'active' : ''}" onclick="lcSetFilter('${d}')">
-          ${d === 'all' ? 'Todos' : d === 'easy' ? 'Fácil' : d === 'medium' ? 'Médio' : 'Difícil'}
-        </button>
-      `).join('')}
-      <span class="lc-count">${filtered.length} desafio${filtered.length !== 1 ? 's' : ''}</span>
-    </div>
-    <div class="lc-grid">
-      ${filtered.length ? filtered.map((c, i) => buildChallengeCard(c, i)).join('') : `
-        <div class="lc-empty">Nenhum desafio nesta categoria ainda.</div>
-      `}
-    </div>
-  `;
+  html += '<div class="lc-filters">';
+  ['all','easy','medium','hard'].forEach(function(d) {
+    var label = d==='all'?'Todos':d==='easy'?'Fácil':d==='medium'?'Médio':'Difícil';
+    html += '<button class="lc-filter-btn'+(lcState.filter===d?' active':'')+'" onclick="lcSetFilter(\''+d+'\')">'+label+'</button>';
+  });
+  html += '<span class="lc-count">'+filtered.length+' desafio'+(filtered.length!==1?'s':'')+'</span></div>';
+
+  html += '<div class="lc-grid">';
+  if (filtered.length === 0) {
+    html += '<div class="lc-empty">Nenhum desafio nesta categoria ainda.</div>';
+  } else {
+    filtered.forEach(function(c, i) {
+      var solved = lcState.solved[c.id];
+      var diffLabel = {easy:'Fácil',medium:'Médio',hard:'Difícil'}[c.difficulty];
+      var origIdx = challenges.indexOf(c);
+      html += '<button class="lc-card'+(solved?' lc-card-solved':'')+' anim-fade-up" style="animation-delay:'+( i*0.04)+'s" onclick="lcOpenChallenge(\''+c.id+'\')">';
+      html += '<div class="lc-card-top">';
+      html += '<span class="lc-card-num">#'+(origIdx+1)+'</span>';
+      html += '<span class="lc-diff-badge lc-diff-'+c.difficulty+'">'+diffLabel+'</span>';
+      if (solved) html += '<span class="lc-solved-check">✓</span>';
+      html += '</div>';
+      html += '<div class="lc-card-title">'+c.title+'</div>';
+      html += '<div class="lc-card-tags">'+c.tags.map(function(t){return'<span class="lc-tag">'+t+'</span>';}).join('')+'</div>';
+      html += '</button>';
+    });
+  }
+  html += '</div>';
+  container.innerHTML = html;
 }
 
-function buildChallengeCard(c, i) {
-  const solved = lcState.solved[c.id];
-  const diffClass = { easy: 'lc-diff-easy', medium: 'lc-diff-medium', hard: 'lc-diff-hard' }[c.difficulty];
-  const diffLabel = { easy: 'Fácil', medium: 'Médio', hard: 'Difícil' }[c.difficulty];
-  return `
-    <button class="lc-card ${solved ? 'lc-card-solved' : ''} anim-fade-up"
-            style="animation-delay:${i*0.04}s"
-            onclick="lcOpenChallenge('${c.id}')">
-      <div class="lc-card-top">
-        <span class="lc-card-num">#${i+1}</span>
-        <span class="lc-diff-badge ${diffClass}">${diffLabel}</span>
-        ${solved ? '<span class="lc-solved-check">✓</span>' : ''}
-      </div>
-      <div class="lc-card-title">${c.title}</div>
-      <div class="lc-card-tags">${c.tags.map(t => `<span class="lc-tag">${t}</span>`).join('')}</div>
-    </button>
-  `;
-}
-
-// ─── EDITOR VIEW ─────────────────────────────────────────────────────────────
+// ─── EDITOR ───────────────────────────────────────────────────────────────────
 function lcOpenChallenge(id) {
-  const all = Object.values(LC_CHALLENGES).flat();
-  const challenge = all.find(c => c.id === id);
+  var all = [].concat(LC_CHALLENGES.javascript, LC_CHALLENGES.html, LC_CHALLENGES.css, LC_CHALLENGES.c);
+  var challenge = null;
+  for (var i=0;i<all.length;i++) { if (all[i].id===id){challenge=all[i];break;} }
   if (!challenge) return;
-  lcState.challengeIndex = LC_CHALLENGES[lcState.lang].indexOf(challenge);
+  var challenges = LC_CHALLENGES[lcState.lang];
+  lcState.challengeIndex = challenges.indexOf(challenge);
   lcState.view = 'editor';
-  lcState.testResults = null;
-  const container = document.getElementById('lc-app');
+  var container = document.getElementById('lc-app');
   if (container) renderEditor(container, challenge);
 }
 
 function renderEditor(container, challenge) {
-  const lang = lcState.lang;
-  const challenges = LC_CHALLENGES[lang] || [];
-  if (!challenge) {
-    challenge = challenges[Math.max(0, lcState.challengeIndex)] || challenges[0];
+  var challenges = LC_CHALLENGES[lcState.lang] || [];
+  if (!challenge) challenge = challenges[Math.max(0,lcState.challengeIndex)] || challenges[0];
+  if (!challenge) { lcState.view='list'; renderList(container); return; }
+
+  var savedCode = lcState.code[challenge.id] || challenge.starterCode;
+  var solved = lcState.solved[challenge.id];
+  var idx = challenges.indexOf(challenge);
+  var hasPrev = idx>0, hasNext = idx<challenges.length-1;
+  var diffLabel = {easy:'Fácil',medium:'Médio',hard:'Difícil'}[challenge.difficulty];
+  var langLabel = {javascript:'JavaScript',html:'HTML',css:'CSS',c:'C'}[lcState.lang];
+
+  var html = '<div class="lc-editor-layout">';
+
+  // Left: problem
+  html += '<div class="lc-problem-panel">';
+  html += '<div class="lc-editor-nav">';
+  html += '<button class="lc-back-btn" onclick="lcGoList()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Desafios</button>';
+  html += '<div class="lc-nav-arrows">';
+  html += '<button class="lc-arrow-btn" '+(hasPrev?'':'disabled')+' onclick="lcNavChallenge(-1)">‹</button>';
+  html += '<span class="lc-nav-pos">'+(idx+1)+' / '+challenges.length+'</span>';
+  html += '<button class="lc-arrow-btn" '+(hasNext?'':'disabled')+' onclick="lcNavChallenge(1)">›</button>';
+  html += '</div></div>';
+
+  html += '<div class="lc-problem-content">';
+  html += '<div class="lc-problem-head">';
+  html += '<h2 class="lc-problem-title">'+challenge.title+'</h2>';
+  html += '<span class="lc-diff-badge lc-diff-'+challenge.difficulty+'">'+diffLabel+'</span>';
+  if (solved) html += '<span class="lc-solved-badge">✓ Resolvido</span>';
+  html += '</div>';
+  html += '<div class="lc-problem-tags">'+challenge.tags.map(function(t){return'<span class="lc-tag">'+t+'</span>';}).join('')+'</div>';
+  html += '<div class="lc-problem-desc">'+challenge.description+'</div>';
+  html += '</div>';
+  html += '<div class="lc-results" id="lc-results" style="display:none"></div>';
+  html += '</div>'; // end problem-panel
+
+  // Right: editor
+  html += '<div class="lc-code-panel">';
+  html += '<div class="lc-code-toolbar">';
+  html += '<span class="lc-lang-badge">'+langLabel+'</span>';
+  html += '<div class="lc-code-actions">';
+  html += '<button class="lc-btn-reset" onclick="lcResetCode(\''+challenge.id+'\')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-5.5"/></svg> Resetar</button>';
+  html += '<button class="lc-btn-run" id="lc-run-btn" onclick="lcRun(\''+challenge.id+'\')">▶ Executar</button>';
+  html += '</div></div>';
+
+  html += '<div class="lc-editor-wrap">';
+  html += '<div class="lc-line-numbers" id="lc-lines"></div>';
+  html += '<textarea class="lc-editor" id="lc-editor" spellcheck="false" autocorrect="off" autocapitalize="off">'+escHtml(savedCode)+'</textarea>';
+  html += '</div>';
+
+  if (challenge.isHTML) {
+    html += '<div class="lc-preview-wrap">';
+    html += '<div class="lc-preview-label"><span>Pré-visualização</span>';
+    html += '<button class="lc-preview-refresh" onclick="lcRefreshPreview()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-5.5"/></svg> Atualizar</button></div>';
+    html += '<iframe id="lc-preview" class="lc-preview" sandbox="allow-scripts"></iframe>';
+    html += '</div>';
   }
-  if (!challenge) { lcState.view = 'list'; renderList(container); return; }
 
-  const codeKey = challenge.id;
-  const savedCode = lcState.code[codeKey] || challenge.starterCode;
-  const solved = lcState.solved[challenge.id];
-  const idx = challenges.indexOf(challenge);
-  const hasPrev = idx > 0;
-  const hasNext = idx < challenges.length - 1;
+  html += '</div>'; // end code-panel
+  html += '</div>'; // end editor-layout
 
-  const descHtml = mdToHtml(challenge.description);
+  container.innerHTML = html;
 
-  container.innerHTML = `
-    <div class="lc-editor-layout">
-      <!-- Left: problem -->
-      <div class="lc-problem-panel">
-        <div class="lc-editor-nav">
-          <button class="lc-back-btn" onclick="lcGoList()">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
-            Desafios
-          </button>
-          <div class="lc-nav-arrows">
-            <button class="lc-arrow-btn" ${!hasPrev ? 'disabled' : ''} onclick="lcNavChallenge(-1)" title="Anterior">‹</button>
-            <span class="lc-nav-pos">${idx+1} / ${challenges.length}</span>
-            <button class="lc-arrow-btn" ${!hasNext ? 'disabled' : ''} onclick="lcNavChallenge(1)" title="Próximo">›</button>
-          </div>
-        </div>
-        <div class="lc-problem-content">
-          <div class="lc-problem-head">
-            <h2 class="lc-problem-title">${challenge.title}</h2>
-            <span class="lc-diff-badge lc-diff-${challenge.difficulty}">
-              ${{easy:'Fácil',medium:'Médio',hard:'Difícil'}[challenge.difficulty]}
-            </span>
-            ${solved ? '<span class="lc-solved-badge">✓ Resolvido</span>' : ''}
-          </div>
-          <div class="lc-problem-tags">${challenge.tags.map(t=>`<span class="lc-tag">${t}</span>`).join('')}</div>
-          <div class="lc-problem-desc">${descHtml}</div>
-        </div>
-        <!-- Test results panel -->
-        <div class="lc-results" id="lc-results" style="display:none"></div>
-      </div>
-      <!-- Right: editor -->
-      <div class="lc-code-panel">
-        <div class="lc-code-toolbar">
-          <span class="lc-lang-badge">${lcLangLabel(lang)}</span>
-          <div class="lc-code-actions">
-            <button class="lc-btn-reset" onclick="lcResetCode('${challenge.id}')" title="Resetar código">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-5.5"/></svg>
-              Resetar
-            </button>
-            <button class="lc-btn-run ${lcState.running ? 'lc-btn-running' : ''}" id="lc-run-btn"
-                    onclick="lcRun('${challenge.id}')" ${lcState.running ? 'disabled' : ''}>
-              ${lcState.running ? '<span class="lc-spinner"></span> Executando...' : '▶ Executar'}
-            </button>
-          </div>
-        </div>
-        <div class="lc-editor-wrap">
-          <textarea class="lc-editor" id="lc-editor"
-                    spellcheck="false" autocorrect="off" autocapitalize="off"
-                    oninput="lcSaveCode('${challenge.id}', this.value)">${escHtml(savedCode)}</textarea>
-          <div class="lc-line-numbers" id="lc-lines"></div>
-        </div>
-        ${challenge.isHTML ? `
-          <div class="lc-preview-wrap">
-            <div class="lc-preview-label">
-              <span>Pré-visualização</span>
-              <button class="lc-preview-refresh" onclick="lcRefreshPreview('${challenge.id}')">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-5.5"/></svg>
-                Atualizar
-              </button>
-            </div>
-            <iframe id="lc-preview" class="lc-preview" sandbox="allow-scripts"></iframe>
-          </div>
-        ` : ''}
-      </div>
-    </div>
-  `;
-
-  // Init editor
-  setTimeout(() => {
+  // Wire up editor
+  setTimeout(function() {
     updateLineNumbers();
-    if (challenge.isHTML) lcRefreshPreview(challenge.id);
-  }, 50);
-
-  // Tab key in textarea
-  const editor = document.getElementById('lc-editor');
-  if (editor) {
-    editor.addEventListener('keydown', (e) => {
-      if (e.key === 'Tab') {
-        e.preventDefault();
-        const s = editor.selectionStart, end = editor.selectionEnd;
-        editor.value = editor.value.substring(0, s) + '  ' + editor.value.substring(end);
-        editor.selectionStart = editor.selectionEnd = s + 2;
+    if (challenge.isHTML) lcRefreshPreview();
+    var editor = document.getElementById('lc-editor');
+    if (editor) {
+      editor.addEventListener('keydown', function(e) {
+        if (e.key==='Tab') {
+          e.preventDefault();
+          var s=editor.selectionStart, end=editor.selectionEnd;
+          editor.value=editor.value.substring(0,s)+'  '+editor.value.substring(end);
+          editor.selectionStart=editor.selectionEnd=s+2;
+          lcSaveCode(challenge.id, editor.value);
+          updateLineNumbers();
+        }
+      });
+      editor.addEventListener('input', function() {
         lcSaveCode(challenge.id, editor.value);
         updateLineNumbers();
-      }
-    });
-    editor.addEventListener('input', updateLineNumbers);
-    editor.addEventListener('scroll', syncScroll);
-  }
+      });
+      editor.addEventListener('scroll', syncScroll);
+    }
+  }, 40);
 }
 
-function lcLangLabel(lang) {
-  return { javascript:'JavaScript', html:'HTML', css:'CSS', c:'C' }[lang] || lang;
-}
-
-function lcGoList() {
-  lcState.view = 'list';
-  lcState.testResults = null;
-  const c = document.getElementById('lc-app');
-  if (c) renderList(c);
-}
-
-function lcSetLang(lang) {
-  lcState.lang = lang;
-  lcState.view = 'list';
-  lcState.filter = 'all';
-  saveState();
-  const c = document.getElementById('lc-app');
-  if (c) renderList(c);
-}
-
-function lcSetFilter(f) {
-  lcState.filter = f;
-  const c = document.getElementById('lc-app');
-  if (c) renderList(c);
-}
-
-function lcNavChallenge(dir) {
-  const challenges = LC_CHALLENGES[lcState.lang] || [];
-  const ni = Math.max(0, Math.min(challenges.length - 1, lcState.challengeIndex + dir));
-  lcState.challengeIndex = ni;
-  lcState.view = 'editor';
-  lcState.testResults = null;
-  const c = document.getElementById('lc-app');
-  if (c) renderEditor(c, challenges[ni]);
-}
-
-function lcSaveCode(id, code) {
-  lcState.code[id] = code;
-  saveState();
-}
-
-function lcResetCode(id) {
-  const all = Object.values(LC_CHALLENGES).flat();
-  const ch = all.find(c => c.id === id);
-  if (!ch) return;
-  delete lcState.code[id];
-  saveState();
-  const c = document.getElementById('lc-app');
-  if (c) renderEditor(c, ch);
-}
-
-// ─── LINE NUMBERS ─────────────────────────────────────────────────────────────
 function updateLineNumbers() {
-  const editor = document.getElementById('lc-editor');
-  const lines  = document.getElementById('lc-lines');
-  if (!editor || !lines) return;
-  const count = editor.value.split('\n').length;
-  lines.innerHTML = Array.from({ length: count }, (_, i) => `<span>${i + 1}</span>`).join('');
+  var editor=document.getElementById('lc-editor');
+  var lines=document.getElementById('lc-lines');
+  if (!editor||!lines) return;
+  var count=editor.value.split('\n').length;
+  var out='';
+  for(var i=1;i<=count;i++) out+='<span>'+i+'</span>';
+  lines.innerHTML=out;
 }
 
 function syncScroll() {
-  const editor = document.getElementById('lc-editor');
-  const lines  = document.getElementById('lc-lines');
-  if (editor && lines) lines.scrollTop = editor.scrollTop;
+  var editor=document.getElementById('lc-editor');
+  var lines=document.getElementById('lc-lines');
+  if(editor&&lines) lines.scrollTop=editor.scrollTop;
 }
 
-// ─── HTML PREVIEW ─────────────────────────────────────────────────────────────
-function lcRefreshPreview(id) {
-  const editor  = document.getElementById('lc-editor');
-  const preview = document.getElementById('lc-preview');
-  if (!editor || !preview) return;
-  const code = editor.value;
-  preview.srcdoc = code;
+function lcGoList() {
+  lcState.view='list';
+  var c=document.getElementById('lc-app');
+  if(c) renderList(c);
+}
+function lcSetLang(lang) {
+  lcState.lang=lang; lcState.filter='all'; saveState();
+  var c=document.getElementById('lc-app');
+  if(c) renderList(c);
+}
+function lcSetFilter(f) {
+  lcState.filter=f;
+  var c=document.getElementById('lc-app');
+  if(c) renderList(c);
+}
+function lcNavChallenge(dir) {
+  var challenges=LC_CHALLENGES[lcState.lang]||[];
+  var ni=Math.max(0,Math.min(challenges.length-1,lcState.challengeIndex+dir));
+  lcState.challengeIndex=ni; lcState.view='editor';
+  var c=document.getElementById('lc-app');
+  if(c) renderEditor(c, challenges[ni]);
+}
+function lcSaveCode(id, code) { lcState.code[id]=code; saveState(); }
+function lcResetCode(id) {
+  var all=[].concat(LC_CHALLENGES.javascript,LC_CHALLENGES.html,LC_CHALLENGES.css,LC_CHALLENGES.c);
+  var ch=null; for(var i=0;i<all.length;i++){if(all[i].id===id){ch=all[i];break;}}
+  if(!ch) return;
+  delete lcState.code[id]; saveState();
+  var c=document.getElementById('lc-app');
+  if(c) renderEditor(c,ch);
 }
 
-// ─── RUN CODE ────────────────────────────────────────────────────────────────
+function lcRefreshPreview() {
+  var editor=document.getElementById('lc-editor');
+  var preview=document.getElementById('lc-preview');
+  if(!editor||!preview) return;
+  preview.srcdoc=editor.value;
+}
+
+// ─── RUN ──────────────────────────────────────────────────────────────────────
 async function lcRun(challengeId) {
   if (lcState.running) return;
-  const all = Object.values(LC_CHALLENGES).flat();
-  const challenge = all.find(c => c.id === challengeId);
-  if (!challenge) return;
+  var all=[].concat(LC_CHALLENGES.javascript,LC_CHALLENGES.html,LC_CHALLENGES.css,LC_CHALLENGES.c);
+  var challenge=null;
+  for(var i=0;i<all.length;i++){if(all[i].id===challengeId){challenge=all[i];break;}}
+  if(!challenge) return;
 
-  lcState.running = true;
-  const runBtn = document.getElementById('lc-run-btn');
-  if (runBtn) {
-    runBtn.disabled = true;
-    runBtn.innerHTML = '<span class="lc-spinner"></span> Executando...';
-  }
+  lcState.running=true;
+  var runBtn=document.getElementById('lc-run-btn');
+  if(runBtn){runBtn.disabled=true;runBtn.innerHTML='<span class="lc-spinner"></span> Executando...';}
 
-  const editor = document.getElementById('lc-editor');
-  const code = editor?.value || lcState.code[challengeId] || challenge.starterCode;
-
-  let results = [];
+  var editor=document.getElementById('lc-editor');
+  var code=editor?editor.value:(lcState.code[challengeId]||challenge.starterCode);
+  var results=[];
 
   try {
-    if (challenge.isC) {
-      results = await runCChallenge(challenge, code);
-    } else if (challenge.isHTML) {
-      results = await runHTMLChallenge(challenge, code);
-    } else {
-      results = runJSChallenge(challenge, code);
-    }
+    if (challenge.isC) results=await runCChallenge(challenge,code);
+    else if (challenge.isHTML) results=await runHTMLChallenge(challenge,code);
+    else results=runJSChallenge(challenge,code);
   } catch(e) {
-    results = [{ ok: false, input: '—', expected: '—', got: 'Erro interno: ' + e.message }];
+    results=[{ok:false,input:'—',expected:'—',got:'Erro interno: '+e.message}];
   }
 
-  lcState.running = false;
-  if (runBtn) {
-    runBtn.disabled = false;
-    runBtn.innerHTML = '▶ Executar';
-  }
+  lcState.running=false;
+  if(runBtn){runBtn.disabled=false;runBtn.innerHTML='▶ Executar';}
 
-  const allPassed = results.length > 0 && results.every(r => r.ok);
-  if (allPassed) {
-    lcState.solved[challengeId] = true;
-    saveState();
-  }
-
-  showTestResults(results, allPassed);
+  var allPassed=results.length>0&&results.every(function(r){return r.ok;});
+  if(allPassed){lcState.solved[challengeId]=true;saveState();}
+  showTestResults(results,allPassed);
 }
 
-// ─── JS RUNNER ────────────────────────────────────────────────────────────────
-function runJSChallenge(challenge, code) {
+function runJSChallenge(challenge,code) {
   try {
-    const fullCode = code + '\n\n' + challenge.testFn + '\nreturn runTests(' + challenge.fnName + ');';
-    // eslint-disable-next-line no-new-func
-    const fn = new Function(fullCode);
+    var fullCode=code+'\n\n'+challenge.testFn+'\nreturn runTests('+challenge.fnName+');';
+    var fn=new Function(fullCode);
     return fn();
   } catch(e) {
-    return [{ ok: false, input: '—', expected: '—', got: 'Erro de sintaxe: ' + e.message }];
+    return [{ok:false,input:'—',expected:'—',got:'Erro de sintaxe: '+e.message}];
   }
 }
 
-// ─── HTML/CSS CHECKER ─────────────────────────────────────────────────────────
-async function runHTMLChallenge(challenge, code) {
-  return new Promise((resolve) => {
-    const iframe = document.createElement('iframe');
-    iframe.style.cssText = 'position:absolute;left:-9999px;top:-9999px;width:800px;height:600px;';
-    iframe.sandbox = 'allow-scripts';
+function runHTMLChallenge(challenge,code) {
+  return new Promise(function(resolve) {
+    var iframe=document.createElement('iframe');
+    iframe.style.cssText='position:absolute;left:-9999px;top:-9999px;width:800px;height:600px;';
+    iframe.sandbox='allow-scripts';
     document.body.appendChild(iframe);
-
-    const cleanup = () => { try { document.body.removeChild(iframe); } catch(e) {} };
-
-    iframe.onload = () => {
+    var done=false;
+    function finish() {
+      if(done)return; done=true;
+      try{document.body.removeChild(iframe);}catch(e){}
+    }
+    function check() {
       try {
-        const doc = iframe.contentDocument || iframe.contentWindow?.document;
-        const checks = challenge.checkFn ? challenge.checkFn(doc) : [];
-        cleanup();
-        resolve(checks.map(c => ({ ok: c.ok, input: '—', expected: c.ok ? '✓' : '✗', got: c.msg })));
-      } catch(e) {
-        cleanup();
-        resolve([{ ok: false, input: '—', expected: '—', got: 'Erro ao verificar: ' + e.message }]);
-      }
-    };
-
-    iframe.srcdoc = code;
-    setTimeout(() => { iframe.onload?.(); }, 1500);
+        var doc=iframe.contentDocument||iframe.contentWindow.document;
+        var checks=challenge.checkFn?challenge.checkFn(doc):[];
+        finish();
+        resolve(checks.map(function(c){return{ok:c.ok,input:'—',expected:c.ok?'✓':'✗',got:c.msg};}));
+      } catch(e) { finish(); resolve([{ok:false,input:'—',expected:'—',got:'Erro: '+e.message}]); }
+    }
+    iframe.onload=function(){setTimeout(check,300);};
+    iframe.srcdoc=code;
+    setTimeout(function(){if(!done){check();}},2000);
   });
 }
 
-// ─── C RUNNER (via Anthropic API) ────────────────────────────────────────────
-async function runCChallenge(challenge, code) {
-  const testCases = challenge.testCases || (challenge.expectedOutput ? [{ input: '', expected: challenge.expectedOutput }] : []);
-  const results = [];
-
-  for (const tc of testCases) {
+async function runCChallenge(challenge,code) {
+  var cases=challenge.testCases||[];
+  var results=[];
+  for(var i=0;i<cases.length;i++){
+    var tc=cases[i];
     try {
-      const output = await executeC(code, tc.input, challenge.title);
-      const got = output.trim();
-      const expected = tc.expected.trim();
-      results.push({ ok: got === expected, input: tc.input || '(sem entrada)', expected, got });
+      var output=await executeC(code,tc.input);
+      var got=output.trim().replace(/\r/g,'');
+      var expected=tc.expected.trim().replace(/\r/g,'');
+      results.push({ok:got===expected,input:tc.input||'(sem entrada)',expected:expected,got:got});
     } catch(e) {
-      results.push({ ok: false, input: tc.input || '—', expected: tc.expected, got: 'Erro: ' + e.message });
+      results.push({ok:false,input:tc.input||'—',expected:tc.expected,got:'Erro: '+e.message});
     }
   }
   return results;
 }
 
-async function executeC(code, input, title) {
-  const prompt = `Você é um compilador e executor de C. Execute mentalmente o seguinte código C com a entrada fornecida e retorne APENAS a saída do programa — exatamente como printf/puts produziria, sem explicações, sem markdown, sem prefixos.
-
-Código C:
-\`\`\`c
-${code}
-\`\`\`
-
-Entrada stdin: ${input || '(vazia)'}
-
-Responda APENAS com a saída exata do programa (o que seria impresso no terminal). Se houver erro de compilação, responda com: COMPILE_ERROR: [motivo]`;
-
-  const response = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 256,
-      messages: [{ role: 'user', content: prompt }],
-    }),
+async function executeC(code,input) {
+  var prompt='Você é um compilador e executor de C. Execute o código a seguir com a entrada fornecida e responda APENAS com a saída exata do programa (o que seria impresso no terminal). Sem explicações, sem markdown, sem prefixo.\n\nSe houver erro de compilação, responda com: ERRO_COMPILACAO: [motivo breve]\n\nCódigo C:\n```c\n'+code+'\n```\n\nEntrada stdin: '+(input||'(vazia)');
+  var response=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:300,messages:[{role:'user',content:prompt}]})
   });
-
-  if (!response.ok) throw new Error('API error ' + response.status);
-  const data = await response.json();
-  const text = data.content?.[0]?.text || '';
-  if (text.startsWith('COMPILE_ERROR:')) throw new Error(text.replace('COMPILE_ERROR:', '').trim());
+  if(!response.ok) throw new Error('API error '+response.status);
+  var data=await response.json();
+  var text=(data.content&&data.content[0]&&data.content[0].text)||'';
+  if(text.startsWith('ERRO_COMPILACAO:')) throw new Error(text.replace('ERRO_COMPILACAO:','').trim());
   return text;
 }
 
-// ─── RESULTS UI ──────────────────────────────────────────────────────────────
-function showTestResults(results, allPassed) {
-  const panel = document.getElementById('lc-results');
-  if (!panel) return;
-  panel.style.display = 'block';
-
-  const passCount = results.filter(r => r.ok).length;
-
-  panel.innerHTML = `
-    <div class="lc-results-header ${allPassed ? 'lc-results-pass' : 'lc-results-fail'}">
-      <span class="lc-results-icon">${allPassed ? '🎉' : '❌'}</span>
-      <span class="lc-results-summary">
-        ${allPassed ? 'Todos os testes passaram!' : `${passCount}/${results.length} testes passaram`}
-      </span>
-      ${allPassed ? '<span class="lc-badge-solved">✓ Resolvido</span>' : ''}
-    </div>
-    <div class="lc-test-cases">
-      ${results.map((r, i) => `
-        <div class="lc-test-case ${r.ok ? 'lc-test-pass' : 'lc-test-fail'}">
-          <div class="lc-test-header">
-            <span class="lc-test-icon">${r.ok ? '✓' : '✗'}</span>
-            <span class="lc-test-label">Caso ${i + 1}</span>
-            ${r.input !== '—' ? `<span class="lc-test-input">entrada: <code>${escHtml(String(r.input))}</code></span>` : ''}
-          </div>
-          ${!r.ok ? `
-            <div class="lc-test-detail">
-              <div><span class="lc-test-key">Esperado:</span> <code>${escHtml(String(r.expected))}</code></div>
-              <div><span class="lc-test-key">Obtido:</span> <code class="lc-got-wrong">${escHtml(String(r.got))}</code></div>
-            </div>
-          ` : ''}
-          ${r.ok && r.got !== '✓' ? `<div class="lc-test-detail"><span class="lc-test-key">Saída:</span> <code>${escHtml(String(r.got))}</code></div>` : ''}
-        </div>
-      `).join('')}
-    </div>
-  `;
-
-  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-}
-
-// ─── MARKDOWN LITE ────────────────────────────────────────────────────────────
-function mdToHtml(md) {
-  return md
-    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-    .replace(/```(\w*)\n?([\s\S]*?)```/g, (_,lang,code) => `<pre class="lc-code-block"><code>${code.trim()}</code></pre>`)
-    .replace(/`([^`]+)`/g, '<code class="lc-inline-code">$1</code>')
-    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-    .replace(/^### (.+)$/gm, '<h4>$1</h4>')
-    .replace(/^## (.+)$/gm, '<h3>$1</h3>')
-    .replace(/^# (.+)$/gm, '<h2>$1</h2>')
-    .replace(/\n\n/g, '</p><p>')
-    .replace(/^/,'<p>').replace(/$/,'</p>')
-    .replace(/<p><h/g,'<h').replace(/<\/h(\d)><\/p>/g,'</h$1>')
-    .replace(/<p><pre/g,'<pre').replace(/<\/pre><\/p>/g,'</pre>');
+function showTestResults(results,allPassed) {
+  var panel=document.getElementById('lc-results');
+  if(!panel) return;
+  panel.style.display='block';
+  var passCount=results.filter(function(r){return r.ok;}).length;
+  var html='<div class="lc-results-header '+(allPassed?'lc-results-pass':'lc-results-fail')+'">';
+  html+='<span class="lc-results-icon">'+(allPassed?'🎉':'❌')+'</span>';
+  html+='<span class="lc-results-summary">'+(allPassed?'Todos os testes passaram!':passCount+'/'+results.length+' testes passaram')+'</span>';
+  if(allPassed) html+='<span class="lc-badge-solved">✓ Resolvido</span>';
+  html+='</div><div class="lc-test-cases">';
+  results.forEach(function(r,i) {
+    html+='<div class="lc-test-case '+(r.ok?'lc-test-pass':'lc-test-fail')+'">';
+    html+='<div class="lc-test-header"><span class="lc-test-icon">'+(r.ok?'✓':'✗')+'</span>';
+    html+='<span class="lc-test-label">Caso '+(i+1)+'</span>';
+    if(r.input&&r.input!=='—') html+='<span class="lc-test-input">entrada: <code>'+escHtml(String(r.input))+'</code></span>';
+    html+='</div>';
+    if(!r.ok) {
+      html+='<div class="lc-test-detail">';
+      html+='<div><span class="lc-test-key">Esperado:</span> <code>'+escHtml(String(r.expected))+'</code></div>';
+      html+='<div><span class="lc-test-key">Obtido:</span> <code class="lc-got-wrong">'+escHtml(String(r.got))+'</code></div>';
+      html+='</div>';
+    } else if(r.got&&r.got!=='✓') {
+      html+='<div class="lc-test-detail"><span class="lc-test-key">OK: </span><code>'+escHtml(String(r.got))+'</code></div>';
+    }
+    html+='</div>';
+  });
+  html+='</div>';
+  panel.innerHTML=html;
+  panel.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 
 function escHtml(s) {
