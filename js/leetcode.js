@@ -548,6 +548,9 @@ function renderEditor(container, challenge) {
   html += '<div class="lc-code-toolbar">';
   html += '<span class="lc-lang-badge">'+langLabel+'</span>';
   html += '<div class="lc-code-actions">';
+  if (challenge.isC) {
+    html += '<button class="lc-btn-external" onclick="lcOpenExternal(\''+challenge.id+'\')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> Abrir externo</button>';
+  }
   html += '<button class="lc-btn-reset" onclick="lcResetCode(\''+challenge.id+'\')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-5.5"/></svg> Resetar</button>';
   html += '<button class="lc-btn-run" id="lc-run-btn" onclick="lcRun(\''+challenge.id+'\')">▶ Executar</button>';
   html += '</div></div>';
@@ -557,11 +560,11 @@ function renderEditor(container, challenge) {
   html += '<textarea class="lc-editor" id="lc-editor" spellcheck="false" autocorrect="off" autocapitalize="off">'+escHtml(savedCode)+'</textarea>';
   html += '</div>';
 
-  if (challenge.isHTML) {
+  if (challenge.isHTML || challenge.isCSS) {
     html += '<div class="lc-preview-wrap">';
     html += '<div class="lc-preview-label"><span>Pré-visualização</span>';
     html += '<button class="lc-preview-refresh" onclick="lcRefreshPreview()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-5.5"/></svg> Atualizar</button></div>';
-    html += '<iframe id="lc-preview" class="lc-preview" sandbox="allow-scripts"></iframe>';
+    html += '<iframe id="lc-preview" class="lc-preview" sandbox="allow-scripts allow-same-origin"></iframe>';
     html += '</div>';
   }
 
@@ -573,7 +576,7 @@ function renderEditor(container, challenge) {
   // Wire up editor
   setTimeout(function() {
     updateLineNumbers();
-    if (challenge.isHTML) lcRefreshPreview();
+    if (challenge.isHTML || challenge.isCSS) lcRefreshPreview();
     var editor = document.getElementById('lc-editor');
     if (editor) {
       editor.addEventListener('keydown', function(e) {
@@ -589,6 +592,7 @@ function renderEditor(container, challenge) {
       editor.addEventListener('input', function() {
         lcSaveCode(challenge.id, editor.value);
         updateLineNumbers();
+        if (challenge.isHTML || challenge.isCSS) lcRefreshPreview();
       });
       editor.addEventListener('scroll', syncScroll);
     }
@@ -643,11 +647,16 @@ function lcResetCode(id) {
   if(c) renderEditor(c,ch);
 }
 
+var _lcPreviewTimer = null;
 function lcRefreshPreview() {
-  var editor=document.getElementById('lc-editor');
-  var preview=document.getElementById('lc-preview');
-  if(!editor||!preview) return;
-  preview.srcdoc=editor.value;
+  clearTimeout(_lcPreviewTimer);
+  _lcPreviewTimer = setTimeout(function() {
+    var editor=document.getElementById('lc-editor');
+    var preview=document.getElementById('lc-preview');
+    if(!editor||!preview) return;
+    // Use srcdoc for live preview
+    preview.srcdoc = editor.value;
+  }, 150);
 }
 
 // ─── RUN ──────────────────────────────────────────────────────────────────────
@@ -668,7 +677,11 @@ async function lcRun(challengeId) {
 
   try {
     if (challenge.isC) results=await runCChallenge(challenge,code);
-    else if (challenge.isHTML) results=await runHTMLChallenge(challenge,code);
+    else if (challenge.isHTML || challenge.isCSS) {
+      // Refresh live preview too
+      lcRefreshPreview();
+      results=await runHTMLChallenge(challenge,code);
+    }
     else results=runJSChallenge(challenge,code);
   } catch(e) {
     results=[{ok:false,input:'—',expected:'—',got:'Erro interno: '+e.message}];
@@ -682,70 +695,206 @@ async function lcRun(challengeId) {
   showTestResults(results,allPassed);
 }
 
-function runJSChallenge(challenge,code) {
-  try {
-    var fullCode=code+'\n\n'+challenge.testFn+'\nreturn runTests('+challenge.fnName+');';
-    var fn=new Function(fullCode);
-    return fn();
-  } catch(e) {
-    return [{ok:false,input:'—',expected:'—',got:'Erro de sintaxe: '+e.message}];
-  }
-}
-
-function runHTMLChallenge(challenge,code) {
+// ─── JS: WEB WORKER LOCAL (100% no navegador, sandbox isolado) ────────────────
+function runJSChallenge(challenge, code) {
   return new Promise(function(resolve) {
-    var iframe=document.createElement('iframe');
-    iframe.style.cssText='position:absolute;left:-9999px;top:-9999px;width:800px;height:600px;';
-    iframe.sandbox='allow-scripts';
-    document.body.appendChild(iframe);
-    var done=false;
-    function finish() {
-      if(done)return; done=true;
-      try{document.body.removeChild(iframe);}catch(e){}
-    }
-    function check() {
-      try {
-        var doc=iframe.contentDocument||iframe.contentWindow.document;
-        var checks=challenge.checkFn?challenge.checkFn(doc):[];
-        finish();
-        resolve(checks.map(function(c){return{ok:c.ok,input:'—',expected:c.ok?'✓':'✗',got:c.msg};}));
-      } catch(e) { finish(); resolve([{ok:false,input:'—',expected:'—',got:'Erro: '+e.message}]); }
-    }
-    iframe.onload=function(){setTimeout(check,300);};
-    iframe.srcdoc=code;
-    setTimeout(function(){if(!done){check();}},2000);
+    // Captura console.log dentro do worker para exibir como output
+    var workerSrc = [
+      '// Worker sandbox para JS',
+      'var _logs = [];',
+      'var console = {',
+      '  log: function() { _logs.push(Array.prototype.slice.call(arguments).map(String).join(" ")); },',
+      '  error: function() { _logs.push("ERROR: " + Array.prototype.slice.call(arguments).map(String).join(" ")); },',
+      '  warn: function() { _logs.push("WARN: " + Array.prototype.slice.call(arguments).map(String).join(" ")); },',
+      '};',
+      'self.onmessage = function(e) {',
+      '  var payload = e.data;',
+      '  try {',
+      '    var fn = new Function(payload.code + "\n\n" + payload.testFn + "\nreturn runTests(" + payload.fnName + ");");',
+      '    var results = fn();',
+      '    self.postMessage({ ok: true, results: results, logs: _logs });',
+      '  } catch(err) {',
+      '    self.postMessage({ ok: false, error: err.message, logs: _logs });',
+      '  }',
+      '};',
+    ].join('\n');
+
+    var blob = new Blob([workerSrc], { type: 'application/javascript' });
+    var url  = URL.createObjectURL(blob);
+    var worker = new Worker(url);
+    var timer = setTimeout(function() {
+      worker.terminate();
+      URL.revokeObjectURL(url);
+      resolve([{ ok:false, input:'—', expected:'—', got:'Timeout: execução demorou mais de 5s' }]);
+    }, 5000);
+
+    worker.onmessage = function(e) {
+      clearTimeout(timer);
+      worker.terminate();
+      URL.revokeObjectURL(url);
+      var d = e.data;
+      if (!d.ok) {
+        resolve([{ ok:false, input:'—', expected:'—', got:'Erro: ' + d.error }]);
+      } else {
+        resolve(d.results || []);
+      }
+    };
+    worker.onerror = function(e) {
+      clearTimeout(timer);
+      worker.terminate();
+      URL.revokeObjectURL(url);
+      resolve([{ ok:false, input:'—', expected:'—', got:'Erro no worker: ' + e.message }]);
+    };
+    worker.postMessage({ code: code, testFn: challenge.testFn, fnName: challenge.fnName });
   });
 }
 
-async function runCChallenge(challenge,code) {
-  var cases=challenge.testCases||[];
-  var results=[];
-  for(var i=0;i<cases.length;i++){
-    var tc=cases[i];
+// ─── HTML/CSS: IFRAME LOCAL (100% no navegador) ────────────────────────────────
+function runHTMLChallenge(challenge, code) {
+  return new Promise(function(resolve) {
+    var iframe = document.createElement('iframe');
+    // Posição fora da viewport mas ainda "renderizável" para getComputedStyle funcionar
+    iframe.style.cssText = 'position:fixed;left:-9999px;top:0;width:960px;height:800px;visibility:hidden;pointer-events:none;border:none;';
+    iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin');
+    document.body.appendChild(iframe);
+    var done = false;
+    function finish() {
+      if (done) return; done = true;
+      setTimeout(function() { try { document.body.removeChild(iframe); } catch(e) {} }, 200);
+    }
+    function check() {
+      try {
+        var doc = iframe.contentDocument || iframe.contentWindow.document;
+        var checks = challenge.checkFn ? challenge.checkFn(doc) : [];
+        finish();
+        resolve(checks.map(function(c) { return { ok:c.ok, input:'—', expected:c.ok?'✓':'✗', got:c.msg }; }));
+      } catch(e) {
+        finish();
+        resolve([{ ok:false, input:'—', expected:'—', got:'Erro ao verificar: ' + e.message }]);
+      }
+    }
+    iframe.onload = function() { setTimeout(check, 600); };
+    iframe.srcdoc = code;
+    setTimeout(function() { if (!done) check(); }, 4000);
+  });
+}
+
+// ─── C: WANDBOX API (gratuita, sem chave, CORS habilitado) ──────────────────
+// Wandbox é um compilador online japonês, gratuito e de código aberto.
+// Não exige cadastro nem chave de API. CORS liberado para o browser.
+async function runCChallenge(challenge, code) {
+  var cases = challenge.testCases || [];
+  var results = [];
+  for (var i = 0; i < cases.length; i++) {
+    var tc = cases[i];
     try {
-      var output=await executeC(code,tc.input);
-      var got=output.trim().replace(/\r/g,'');
-      var expected=tc.expected.trim().replace(/\r/g,'');
-      results.push({ok:got===expected,input:tc.input||'(sem entrada)',expected:expected,got:got});
+      var output = await executeCWandbox(code, tc.input || '');
+      var got      = output.trim().replace(/\r/g, '');
+      var expected = (tc.expected || '').trim().replace(/\r/g, '');
+      results.push({ ok: got === expected, input: tc.input || '(sem entrada)', expected: expected, got: got });
     } catch(e) {
-      results.push({ok:false,input:tc.input||'—',expected:tc.expected,got:'Erro: '+e.message});
+      results.push({ ok:false, input: tc.input||'—', expected: tc.expected||'—', got: 'Erro: ' + e.message });
     }
   }
   return results;
 }
 
-async function executeC(code,input) {
-  var prompt='Você é um compilador e executor de C. Execute o código a seguir com a entrada fornecida e responda APENAS com a saída exata do programa (o que seria impresso no terminal). Sem explicações, sem markdown, sem prefixo.\n\nSe houver erro de compilação, responda com: ERRO_COMPILACAO: [motivo breve]\n\nCódigo C:\n```c\n'+code+'\n```\n\nEntrada stdin: '+(input||'(vazia)');
-  var response=await fetch('https://api.anthropic.com/v1/messages',{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:300,messages:[{role:'user',content:prompt}]})
+async function executeCWandbox(code, stdin) {
+  // Wandbox API: https://wandbox.org/api/compile.json
+  // compiler: gcc-head (GCC mais recente), sem necessidade de auth
+  var body = JSON.stringify({
+    compiler:  'gcc-head',
+    code:       code,
+    stdin:      stdin || '',
+    'compiler-option-raw': '-O0 -lm',
+    'save':     false
   });
-  if(!response.ok) throw new Error('API error '+response.status);
-  var data=await response.json();
-  var text=(data.content&&data.content[0]&&data.content[0].text)||'';
-  if(text.startsWith('ERRO_COMPILACAO:')) throw new Error(text.replace('ERRO_COMPILACAO:','').trim());
-  return text;
+
+  var response;
+  try {
+    response = await fetch('https://wandbox.org/api/compile.json', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json; charset=UTF-8' },
+      body:    body,
+    });
+  } catch(e) {
+    throw new Error('Sem conexão com o compilador Wandbox. Verifique sua internet. ' +
+      'Você pode testar o código em: https://wandbox.org');
+  }
+
+  if (!response.ok) {
+    throw new Error('Wandbox retornou erro HTTP ' + response.status +
+      '. Tente abrir em: https://wandbox.org');
+  }
+
+  var data = await response.json();
+
+  // Erro de compilação
+  if (data.status !== '0' && data['compiler_error']) {
+    var errMsg = data['compiler_error'] || 'Erro de compilação desconhecido';
+    // Limpar mensagens longas do GCC para exibição mais amigável
+    var lines = errMsg.split('\n').filter(function(l) { return l.trim(); }).slice(0, 6);
+    throw new Error('Erro de compilação:\n' + lines.join('\n'));
+  }
+
+  // Retorna stdout (program_output) ou string vazia
+  return data['program_output'] || data['program_error'] || '';
+}
+
+// ─── EXTERNAL FALLBACKS ──────────────────────────────────────────────────────
+function lcOpenExternal(challengeId) {
+  var all = [].concat(LC_CHALLENGES.javascript, LC_CHALLENGES.html, LC_CHALLENGES.css, LC_CHALLENGES.c);
+  var ch = null;
+  for (var i=0;i<all.length;i++) { if (all[i].id===challengeId){ch=all[i];break;} }
+  var editor = document.getElementById('lc-editor');
+  var code = editor ? editor.value : (ch ? ch.starterCode : '');
+
+  // Build a small menu with external options
+  var existing = document.getElementById('lc-external-menu');
+  if (existing) { existing.remove(); return; }
+
+  var options = [
+    { name:'Wandbox (GCC online)', url:'https://wandbox.org/', note:'Cole o código lá', icon:'🔧' },
+    { name:'Godbolt (Compiler Explorer)', url:'https://godbolt.org/', note:'Visualize assembly + output', icon:'⚙️' },
+    { name:'OnlineGDB', url:'https://www.onlinegdb.com/online_c_compiler', note:'IDE completa online', icon:'🐛' },
+    { name:'Ideone', url:'https://ideone.com/', note:'Simples e rápido', icon:'💡' },
+  ];
+
+  var menu = document.createElement('div');
+  menu.id = 'lc-external-menu';
+  menu.className = 'lc-external-menu';
+  menu.innerHTML = '<div class="lc-ext-title"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> Compiladores externos</div>' +
+    '<div class="lc-ext-hint">O código abaixo foi copiado para a área de transferência.</div>' +
+    options.map(function(o) {
+      return '<a href="'+o.url+'" target="_blank" rel="noopener" class="lc-ext-option">'+
+        '<span class="lc-ext-icon">'+o.icon+'</span>'+
+        '<span class="lc-ext-info"><strong>'+o.name+'</strong><small>'+o.note+'</small></span>'+
+        '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>'+
+        '</a>';
+    }).join('') +
+    '<button class="lc-ext-close" onclick="document.getElementById(\'lc-external-menu\').remove()">Fechar</button>';
+
+  // Copy code to clipboard
+  try { navigator.clipboard.writeText(code); } catch(e) {}
+
+  // Position below the toolbar
+  var toolbar = document.querySelector('.lc-code-toolbar');
+  if (toolbar) {
+    toolbar.style.position = 'relative';
+    toolbar.appendChild(menu);
+  } else {
+    document.getElementById('lc-app').appendChild(menu);
+  }
+
+  // Close on outside click
+  setTimeout(function() {
+    document.addEventListener('click', function handler(e) {
+      if (menu && !menu.contains(e.target)) {
+        menu.remove();
+        document.removeEventListener('click', handler);
+      }
+    });
+  }, 100);
 }
 
 function showTestResults(results,allPassed) {

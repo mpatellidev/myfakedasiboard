@@ -106,10 +106,16 @@ function renderGPA() {
     <div class="gpa-semesters" id="gpa-semesters">
       ${gpaData.semesters.map(sem => buildSemBlock(sem)).join('')}
     </div>
-    <button class="gpa-add-semester-btn" style="margin-top:16px" onclick="gpaAddSemester()">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-      Adicionar semestre
-    </button>
+    <div class="gpa-actions-row">
+      <button class="gpa-add-semester-btn" onclick="gpaAddSemester()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Adicionar semestre
+      </button>
+      <button class="gpa-restore-btn" onclick="gpaOpenRestoreModal()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-5.5"/></svg>
+        Restaurar padrão
+      </button>
+    </div>
   `;
 
   const statEl = document.getElementById('stat-gpa');
@@ -261,4 +267,90 @@ async function initGPA() {
     gpaSave();
   }
   renderGPA();
+}
+
+// ===== RESTORE MODAL =====
+async function gpaOpenRestoreModal() {
+  const defaults = await gpaLoadDefaults();
+
+  document.getElementById('gpa-restore-overlay')?.remove();
+
+  const overlay = document.createElement('div');
+  overlay.id = 'gpa-restore-overlay';
+  overlay.className = 'modal-overlay';
+  overlay.style.cssText = 'display:flex;z-index:9999';
+
+  const semRows = defaults.map((sem, i) => {
+    const saved = gpaData.semesters.find(s => s.id === sem.id);
+    const hasGrades = saved && saved.disciplines.some(d => d.grade !== null && d.grade !== '');
+    return `
+      <div class="gpa-restore-row" id="restore-row-${sem.id}">
+        <div class="gpa-restore-row-info">
+          <span class="gpa-restore-sem-label">${escGPA(sem.label)}</span>
+          <span class="gpa-restore-disc-count">${sem.disciplines.length} disciplina${sem.disciplines.length !== 1 ? 's' : ''}</span>
+          ${hasGrades ? '<span class="gpa-restore-warn">⚠ tem notas salvas</span>' : ''}
+        </div>
+        <button class="gpa-restore-one-btn" onclick="gpaRestoreOneSemester('${sem.id}')">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-5.5"/></svg>
+          Restaurar
+        </button>
+      </div>`;
+  }).join('');
+
+  overlay.innerHTML = `
+    <div class="modal-box" style="max-width:480px;width:100%">
+      <button class="modal-close" onclick="document.getElementById('gpa-restore-overlay').remove()">&#215;</button>
+      <div style="margin-bottom:18px">
+        <h2 style="font-size:17px;font-weight:700;margin-bottom:4px">Restaurar semestres padrão</h2>
+        <p style="font-size:13px;color:var(--text-muted)">Restaure um semestre específico ou todos de uma vez. As disciplinas voltam ao padrão do curso — <strong>notas serão apagadas</strong>.</p>
+      </div>
+      <div class="gpa-restore-list">${semRows}</div>
+      <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--glass-border);display:flex;gap:10px;justify-content:flex-end">
+        <button class="btn btn-ghost btn-sm" onclick="document.getElementById('gpa-restore-overlay').remove()">Cancelar</button>
+        <button class="gpa-restore-all-btn" onclick="gpaRestoreAllSemesters()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-5.5"/></svg>
+          Restaurar todos os 8 semestres
+        </button>
+      </div>
+    </div>`;
+
+  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
+  document.body.appendChild(overlay);
+}
+
+async function gpaRestoreOneSemester(semId) {
+  const defaults = await gpaLoadDefaults();
+  const def = defaults.find(s => s.id === semId);
+  if (!def) return;
+
+  const saved = gpaData.semesters.find(s => s.id === semId);
+  const hasGrades = saved && saved.disciplines.some(d => d.grade !== null && d.grade !== '');
+  if (hasGrades && !confirm(`Restaurar "${def.label}"? As notas salvas serão apagadas.`)) return;
+
+  const restored = JSON.parse(JSON.stringify(def));
+  // preserve grades if user didn't confirm wipe (already confirmed above if hasGrades)
+  const idx = gpaData.semesters.findIndex(s => s.id === semId);
+  if (idx >= 0) {
+    restored.collapsed = gpaData.semesters[idx].collapsed;
+    gpaData.semesters[idx] = restored;
+  } else {
+    gpaData.semesters.push(restored);
+  }
+
+  gpaSave();
+  document.getElementById('gpa-restore-overlay')?.remove();
+  renderGPA();
+  showToast(`${def.label} restaurado para o padrão!`);
+}
+
+async function gpaRestoreAllSemesters() {
+  const hasAnyGrade = gpaData.semesters.some(s => s.disciplines.some(d => d.grade !== null && d.grade !== ''));
+  if (hasAnyGrade && !confirm('Restaurar TODOS os 8 semestres? Todas as notas salvas serão apagadas.')) return;
+
+  const defaults = await gpaLoadDefaults();
+  gpaData.semesters = JSON.parse(JSON.stringify(defaults));
+  gpaSave();
+  document.getElementById('gpa-restore-overlay')?.remove();
+  renderGPA();
+  showToast('Todos os semestres restaurados para o padrão do curso!');
 }
