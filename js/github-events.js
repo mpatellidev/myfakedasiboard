@@ -84,19 +84,63 @@ async function ghGetMainEvents() {
 }
 
 // ── Leitura dos eventos pendentes (pasta events-pending/) ─────────────────────
+// Para repositórios públicos, a API do GitHub pode ser usada sem autenticação
+// (com limite de 60 req/hora por IP). O token, quando presente, eleva esse
+// limite para 5000 req/hora — mas NÃO é obrigatório para leitura.
 async function ghGetPendingEvents() {
-  if (!ghHasToken()) return []; // sem token não tenta — rate limit severo
   try {
-    const items = await ghFetch(`/contents/${GH_PENDING_DIR}?ref=${GH_BRANCH}&t=${Date.now()}`);
+    // Tenta primeiro via fetch local (funciona em GitHub Pages pois os arquivos
+    // são servidos estaticamente — sem depender da API do GitHub nem de token)
+    const indexRes = await fetch(`./data/events-pending/.gitkeep`, { method: 'HEAD', cache: 'no-store' });
+    // Se o servidor de desenvolvimento local serve a pasta, tenta listar via API
+    // pública do GitHub (sem autenticação, funciona para repos públicos)
+    const apiUrl = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PENDING_DIR}?ref=${GH_BRANCH}`;
+    const headers = ghHasToken()
+      ? ghHeaders(true)   // com token: 5000 req/h
+      : { 'Accept': 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' }; // sem token: 60 req/h
+
+    const res = await fetch(apiUrl + `&t=${Date.now()}`, { headers, cache: 'no-store' });
+    if (!res.ok) {
+      if (res.status === 404) return [];
+      // 403/429 = rate limit sem token → tenta fallback via raw
+      if ((res.status === 403 || res.status === 429) && !ghHasToken()) {
+        return await ghGetPendingEventsFallback();
+      }
+      throw new Error(`HTTP ${res.status}`);
+    }
+    const items = await res.json();
     if (!Array.isArray(items)) return [];
     const jsonFiles = items.filter(f => f.name.endsWith('.json') && f.type === 'file');
     const results = await Promise.allSettled(
-      jsonFiles.map(f => fetch(f.download_url + '?t=' + Date.now()).then(r => r.json()).catch(() => null))
+      jsonFiles.map(f => fetch(f.download_url + '?t=' + Date.now(), { cache: 'no-store' }).then(r => r.json()).catch(() => null))
     );
     return results.filter(r => r.status === 'fulfilled' && r.value).map(r => r.value);
   } catch (e) {
     if (e.status === 404) return [];
-    console.warn('[DaSIboard] Pendentes indisponíveis:', e.message);
+    console.warn('[DaSIboard] Pendentes indisponíveis via API, tentando fallback:', e.message);
+    return await ghGetPendingEventsFallback();
+  }
+}
+
+// ── Fallback: lê eventos pendentes diretamente via URL do GitHub Pages ────────
+// Quando a API pública atinge rate limit, tenta carregar os arquivos que já
+// estão no events-pending/ diretamente como arquivos estáticos do site.
+async function ghGetPendingEventsFallback() {
+  try {
+    // Tenta carregar o índice de pendentes (arquivo gerado automaticamente, se existir)
+    const idxRes = await fetch('./data/events-pending/index.json?t=' + Date.now(), { cache: 'no-store' });
+    if (idxRes.ok) {
+      const filenames = await idxRes.json();
+      if (Array.isArray(filenames)) {
+        const results = await Promise.allSettled(
+          filenames.map(name => fetch(`./data/events-pending/${name}?t=${Date.now()}`, { cache: 'no-store' }).then(r => r.json()).catch(() => null))
+        );
+        return results.filter(r => r.status === 'fulfilled' && r.value).map(r => r.value);
+      }
+    }
+    return [];
+  } catch (e) {
+    console.warn('[DaSIboard] Fallback de pendentes também falhou:', e.message);
     return [];
   }
 }
@@ -235,9 +279,58 @@ async function ghProposePRForEvent(newEvent) {
   const { _filename, ...eventToSave } = newEvent;
   await ghCommitEventFile(branchName, filename, eventToSave, commitMsg);
 
-  // 6. Abrir PR
+  // 6. Atualizar index.json dos pendentes para que dispositivos sem token
+  //    também consigam carregar os eventos via fallback estático.
+  //    Lê o index atual da main e adiciona o novo filename.
+  try {
+    await ghUpdatePendingIndex(branchName, filename);
+  } catch (e) {
+    // Não bloqueia o PR se o índice falhar — o caminho principal (API pública) ainda funciona
+    console.warn('[DaSIboard] Falha ao atualizar index.json de pendentes:', e.message);
+  }
+
+  // 7. Abrir PR
   const pr = await ghOpenPR(branchName, newEvent);
   return { prUrl: pr.html_url, prNumber: pr.number, branchName, filename };
+}
+
+// ── Atualizar index.json dos eventos pendentes na branch do PR ────────────────
+// Garante que o fallback estático (para usuários sem token) também inclua
+// o novo evento após o merge do PR.
+async function ghUpdatePendingIndex(branchName, newFilename) {
+  const indexPath = `${GH_PENDING_DIR}/index.json`;
+
+  // Tenta ler o index.json atual da main para obter SHA e conteúdo
+  let currentList = [];
+  let currentSha  = null;
+  try {
+    const fileData = await ghFetch(`/contents/${indexPath}?ref=${GH_BRANCH}`);
+    currentSha  = fileData.sha;
+    currentList = JSON.parse(ghBase64Decode(fileData.content));
+    if (!Array.isArray(currentList)) currentList = [];
+  } catch (e) {
+    // index.json ainda não existe — começa vazio
+    currentList = [];
+    currentSha  = null;
+  }
+
+  // Adiciona o novo arquivo (sem duplicar)
+  if (!currentList.includes(newFilename)) {
+    currentList.push(newFilename);
+  }
+
+  const content = ghBase64Encode(JSON.stringify(currentList, null, 2));
+  const body = {
+    message: `[DaSIboard] Atualizar índice de eventos pendentes`,
+    content,
+    branch: branchName
+  };
+  if (currentSha) body.sha = currentSha; // necessário para atualizar arquivo existente
+
+  return ghFetch(`/contents/${indexPath}`, {
+    method: 'PUT',
+    body:   JSON.stringify(body)
+  });
 }
 
 // ── Modal: formulário de proposta de evento ───────────────────────────────────
