@@ -90,6 +90,11 @@
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
         <span>Ferramentas</span>
       </button>
+      <button class="sidebar-link" data-page="leetcode" onclick="navigateTo('leetcode')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        <span>Desafios</span>
+        <span class="sidebar-badge sidebar-badge-new">Beta</span>
+      </button>
     </nav>
     <div class="sidebar-footer">
       <!-- Unified theme control -->
@@ -448,6 +453,16 @@
         </div>
       </div>
 
+      <!-- LEETCODE / DESAFIOS -->
+      <div id="leetcode-page" class="page">
+        <div class="page-header">
+          <div class="page-header-label">Prática de código</div>
+          <h1>Desafios de Programação</h1>
+          <p>Resolva desafios de HTML, CSS, JavaScript e C diretamente no navegador — com testes automáticos e feedback em tempo real.</p>
+        </div>
+        <div id="lc-app"></div>
+      </div>
+
     </main>
   </div>
 
@@ -541,6 +556,7 @@
   <script src="js/gpa.js" defer></script>
   <script src="js/search.js" defer></script>
   <script src="js/pacman.js" defer></script>
+  <script src="js/leetcode.js" defer></script>
   <script src="js/app.js" defer></script>
 </body>
 </html>

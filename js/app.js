@@ -147,6 +147,7 @@ function navigateTo(page) {
   if (page === 'notas-gpa') initGPA?.();
   if (page === 'kanban') { initKanban?.(); }
   if (page === 'entidades') initEntidades?.();
+  if (page === 'leetcode') initLeetcode?.();
   // Track easter egg navigation sequence
   if (typeof trackEggNavigation === 'function') trackEggNavigation(page);
   history.pushState(null, '', `#${page}`);
