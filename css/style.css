@@ -662,79 +662,553 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 @keyframes moonTextShow{0%{opacity:0;transform:translateX(-50%) translateY(12px) scale(.88)}18%{opacity:1;transform:translateX(-50%) translateY(0) scale(1)}68%{opacity:1}100%{opacity:0;transform:translateX(-50%) translateY(-10px) scale(.95)}}
 
 /* ==========================================================
-   D20 — RAINBOW MULTIVERSE (full prismatic experience)
+   D20 — RGB LED GAMER ULTRA (videogame rainbow multiverse)
+   Inspirado em: Mario, Sonic, Crash, God of War, DMC, Hollow Knight,
+   Pac-Man, Luigi, Zelda, Metroid, Street Fighter, Castlevania e mais.
    ========================================================== */
-@keyframes rainbowShift{0%{background-position:0% 50%}100%{background-position:300% 50%}}
-@keyframes rainbowBorder{0%,100%{border-color:rgba(192,132,252,.5)}25%{border-color:rgba(251,146,60,.5)}50%{border-color:rgba(52,211,153,.5)}75%{border-color:rgba(96,165,250,.5)}}
-@keyframes d20TextRainbow{0%{filter:hue-rotate(0deg)}100%{filter:hue-rotate(360deg)}}
-@keyframes d20OrbFloat{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(20px,-15px) scale(1.05)}66%{transform:translate(-10px,10px) scale(.96)}}
 
-/* Rainbow gradient helper */
-.d20-rainbow-bg { background:linear-gradient(90deg,#c084fc,#f472b6,#fb923c,#fbbf24,#34d399,#60a5fa,#c084fc) !important; background-size:300% 100% !important; animation:rainbowShift 4s linear infinite !important; }
-
-/* Core buttons + active states */
-[data-theme="d20"] .btn-primary,
-[data-theme="d20"] .sidebar-link.active,
-[data-theme="d20"] .nav-link.active,
-[data-theme="d20"] .sem-btn.active,
-[data-theme="d20"] .cal-filter-btn.active {
-  background:linear-gradient(90deg,#c084fc,#f472b6,#fb923c,#fbbf24,#34d399,#60a5fa,#c084fc) !important;
-  background-size:300% 100% !important;
-  animation:rainbowShift 4s linear infinite !important;
-  border-color:transparent !important;
-  color:#fff !important;
-  box-shadow:0 4px 20px rgba(192,132,252,.45),0 0 0 1px rgba(255,255,255,.1) !important;
+/* ── KEYFRAMES ── */
+/* Continuous LED strip: sweeps all hues 0→360 like a real RGB strip */
+@keyframes d20LedStrip {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 400% 50%; }
 }
-/* Sidebar active bar — rainbow */
+/* Hue-rotate for filter-based elements (text, icons, SVGs) */
+@keyframes d20Hue {
+  0%   { filter: hue-rotate(0deg)   drop-shadow(0 0 8px #c084fc); }
+  16%  { filter: hue-rotate(60deg)  drop-shadow(0 0 8px #f472b6); }
+  33%  { filter: hue-rotate(120deg) drop-shadow(0 0 8px #34d399); }
+  50%  { filter: hue-rotate(180deg) drop-shadow(0 0 8px #60a5fa); }
+  66%  { filter: hue-rotate(240deg) drop-shadow(0 0 8px #fb923c); }
+  83%  { filter: hue-rotate(300deg) drop-shadow(0 0 8px #fbbf24); }
+  100% { filter: hue-rotate(360deg) drop-shadow(0 0 8px #c084fc); }
+}
+/* Border LED cycle */
+@keyframes d20BorderLed {
+  0%   { border-color: #c084fc; box-shadow: 0 0 12px #c084fc66, inset 0 0 6px #c084fc22; }
+  14%  { border-color: #f472b6; box-shadow: 0 0 12px #f472b666, inset 0 0 6px #f472b622; }
+  28%  { border-color: #fb923c; box-shadow: 0 0 12px #fb923c66, inset 0 0 6px #fb923c22; }
+  42%  { border-color: #fbbf24; box-shadow: 0 0 12px #fbbf2466, inset 0 0 6px #fbbf2422; }
+  57%  { border-color: #34d399; box-shadow: 0 0 12px #34d39966, inset 0 0 6px #34d39922; }
+  71%  { border-color: #60a5fa; box-shadow: 0 0 12px #60a5fa66, inset 0 0 6px #60a5fa22; }
+  85%  { border-color: #a78bfa; box-shadow: 0 0 12px #a78bfa66, inset 0 0 6px #a78bfa22; }
+  100% { border-color: #c084fc; box-shadow: 0 0 12px #c084fc66, inset 0 0 6px #c084fc22; }
+}
+/* Glow pulse for important cards */
+@keyframes d20GlowPulse {
+  0%,100% { box-shadow: 0 0 20px #c084fc55, 0 4px 30px #c084fc33; }
+  25%     { box-shadow: 0 0 20px #f472b655, 0 4px 30px #f472b633; }
+  50%     { box-shadow: 0 0 20px #34d39955, 0 4px 30px #34d39933; }
+  75%     { box-shadow: 0 0 20px #60a5fa55, 0 4px 30px #60a5fa33; }
+}
+/* Orb float for background blobs */
+@keyframes d20OrbFloat {
+  0%,100% { transform: translate(0,0) scale(1); filter: hue-rotate(0deg); }
+  25%     { transform: translate(18px,-22px) scale(1.06); filter: hue-rotate(90deg); }
+  50%     { transform: translate(-8px,14px) scale(.94); filter: hue-rotate(180deg); }
+  75%     { transform: translate(14px,8px) scale(1.04); filter: hue-rotate(270deg); }
+}
+/* Scanline effect (retro videogame CRT) */
+@keyframes d20Scanline {
+  0%   { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+/* Pixel flash for badges */
+@keyframes d20PixelFlash {
+  0%,90%,100% { opacity: 1; }
+  95%         { opacity: 0; }
+}
+/* Star twinkle */
+@keyframes d20Twinkle {
+  0%,100% { opacity:.3; transform:scale(.8); }
+  50%     { opacity:1;  transform:scale(1.2); }
+}
+/* Score pop (Mario coin) */
+@keyframes d20ScorePop {
+  0%   { transform: scale(.6) translateY(4px); opacity:0; }
+  60%  { transform: scale(1.15) translateY(-4px); opacity:1; }
+  100% { transform: scale(1) translateY(0); opacity:1; }
+}
+
+/* ── LED STRIP GRADIENT (the core rainbow palette) ── */
+:root {
+  --d20-led: linear-gradient(90deg,
+    #ff0080,#ff4400,#ffaa00,#aaff00,
+    #00ffaa,#00aaff,#4400ff,#aa00ff,
+    #ff0080,#ff4400,#ffaa00,#aaff00,
+    #00ffaa,#00aaff,#4400ff,#aa00ff,
+    #ff0080);
+}
+
+/* ── SIDEBAR: LED strip on left edge (the "LED strip" effect) ── */
+[data-theme="d20"] .sidebar::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0; width: 3px;
+  background: var(--d20-led);
+  background-size: 400% 100%;
+  animation: d20LedStrip 3s linear infinite;
+  z-index: 10;
+}
+/* Top edge LED strip on topbar (mobile) */
+[data-theme="d20"] .topbar::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: 0; height: 2px;
+  background: var(--d20-led);
+  background-size: 400% 100%;
+  animation: d20LedStrip 3s linear infinite;
+  z-index: 10;
+}
+/* Bottom LED on page */
+[data-theme="d20"] .footer::before {
+  background: var(--d20-led) !important;
+  background-size: 400% 100% !important;
+  animation: d20LedStrip 3s linear infinite !important;
+  height: 2px !important;
+}
+
+/* ── ACTIVE SIDEBAR LINK: full rainbow bg ── */
+[data-theme="d20"] .sidebar-link.active {
+  background: var(--d20-led) !important;
+  background-size: 400% 100% !important;
+  animation: d20LedStrip 3s linear infinite !important;
+  border-color: transparent !important;
+  color: #fff !important;
+  text-shadow: 0 0 10px rgba(255,255,255,.6) !important;
+  box-shadow: 0 0 20px rgba(192,132,252,.4) !important;
+}
 [data-theme="d20"] .sidebar-link.active::before {
-  background:linear-gradient(180deg,#c084fc,#f472b6,#fb923c,#34d399) !important;
-  box-shadow:0 0 14px rgba(192,132,252,.7) !important;
-  animation:d20TextRainbow 4s linear infinite !important;
+  background: #fff !important;
+  box-shadow: 0 0 12px #fff !important;
+  animation: none !important;
 }
-/* Stat values — hue-rotate rainbow */
+/* All sidebar links: hue-rotate icons on hover */
+[data-theme="d20"] .sidebar-link:hover {
+  animation: d20BorderLed 4s linear infinite !important;
+}
+[data-theme="d20"] .sidebar-link:hover svg {
+  animation: d20Hue 4s linear infinite !important;
+}
+
+/* ── BUTTONS: rainbow LED ── */
+[data-theme="d20"] .btn-primary,
+[data-theme="d20"] .sem-btn.active,
+[data-theme="d20"] .cal-filter-btn.active,
+[data-theme="d20"] .nav-link.active {
+  background: var(--d20-led) !important;
+  background-size: 400% 100% !important;
+  animation: d20LedStrip 3s linear infinite !important;
+  border-color: transparent !important;
+  color: #fff !important;
+  text-shadow: 0 1px 4px rgba(0,0,0,.4) !important;
+  box-shadow: 0 4px 20px rgba(192,132,252,.45), 0 0 0 1px rgba(255,255,255,.1) !important;
+}
+
+/* ── CARDS: LED border animation always-on (not just hover) ── */
+[data-theme="d20"] .card,
+[data-theme="d20"] .next-class-card,
+[data-theme="d20"] .countdown-card,
+[data-theme="d20"] .quote-card,
+[data-theme="d20"] #quote-card {
+  animation: d20BorderLed 6s linear infinite !important;
+  transition: none !important;
+}
+[data-theme="d20"] .card:hover,
+[data-theme="d20"] .next-class-card:hover {
+  animation: d20BorderLed 2s linear infinite, d20GlowPulse 2s ease-in-out infinite !important;
+  transform: translateY(-3px) scale(1.01) !important;
+}
+
+/* ── EVENT ITEMS: rainbow left border ── */
+[data-theme="d20"] .event-item {
+  border-left-width: 3px !important;
+  animation: d20BorderLed 5s linear infinite !important;
+}
+
+/* ── STAT VALUES: rainbow text ── */
 [data-theme="d20"] .stat-value {
-  background:linear-gradient(135deg,#c084fc,#f472b6,#fb923c) !important;
-  -webkit-background-clip:text !important; -webkit-text-fill-color:transparent !important;
-  background-clip:text !important;
-  animation:d20TextRainbow 6s linear infinite !important;
-  filter:drop-shadow(0 0 12px rgba(192,132,252,.55)) !important;
+  background: var(--d20-led) !important;
+  background-size: 400% 100% !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  animation: d20LedStrip 4s linear infinite !important;
+  filter: drop-shadow(0 0 10px rgba(192,132,252,.5)) !important;
 }
-/* Page header h1 */
+
+/* ── PAGE HEADER H1: LED rainbow text ── */
 [data-theme="d20"] .page-header h1 {
-  background:linear-gradient(135deg,#c084fc 0%,#f472b6 35%,#fb923c 65%,#34d399 100%) !important;
-  -webkit-background-clip:text !important; -webkit-text-fill-color:transparent !important;
-  background-clip:text !important;
-  animation:d20TextRainbow 8s linear infinite !important;
+  background: var(--d20-led) !important;
+  background-size: 400% 100% !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  animation: d20LedStrip 5s linear infinite !important;
+  filter: drop-shadow(0 0 16px rgba(192,132,252,.3)) !important;
 }
-/* Hero gradient */
+
+/* ── HOME HERO ── */
 [data-theme="d20"] .home-hero h2 span {
-  background:linear-gradient(135deg,#c084fc,#f472b6,#fb923c,#34d399) !important;
-  -webkit-background-clip:text !important; -webkit-text-fill-color:transparent !important;
-  background-clip:text !important;
-  filter:drop-shadow(0 0 20px rgba(192,132,252,.5)) !important;
-  animation:d20TextRainbow 6s linear infinite !important;
+  background: var(--d20-led) !important;
+  background-size: 400% 100% !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  animation: d20LedStrip 4s linear infinite !important;
+  filter: drop-shadow(0 0 18px rgba(192,132,252,.45)) !important;
 }
-/* Cards — rainbow border on hover */
-[data-theme="d20"] .card:hover { animation:rainbowBorder 2s linear infinite !important; }
-/* Calendar today — rainbow ring */
-[data-theme="d20"] .cal-day.today {
-  box-shadow:0 0 0 2px #c084fc,0 0 0 2px #c084fc !important;
-  animation:rainbowBorder 2s linear infinite !important;
-}
-/* Countdown num */
+/* Hero eyebrow dot */
+[data-theme="d20"] .hero-dot { animation: d20Hue 3s linear infinite !important; }
+
+/* ── COUNTDOWN NUMBERS: big rainbow LED digits ── */
 [data-theme="d20"] .countdown-num {
-  background:linear-gradient(135deg,#c084fc,#f472b6,#fb923c) !important;
-  -webkit-background-clip:text !important; -webkit-text-fill-color:transparent !important;
-  background-clip:text !important;
-  animation:d20TextRainbow 5s linear infinite !important;
-  filter:drop-shadow(0 0 18px rgba(192,132,252,.6)) !important;
+  background: var(--d20-led) !important;
+  background-size: 400% 100% !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  animation: d20LedStrip 3s linear infinite !important;
+  filter: drop-shadow(0 0 18px rgba(192,132,252,.7)) !important;
 }
-/* Next class label */
-[data-theme="d20"] .next-class-label { animation:d20TextRainbow 6s linear infinite !important; }
-/* Theme dot */
-[data-theme="d20"] .theme-dot { animation:d20TextRainbow 3s linear infinite,dotPulse 2.5s ease-in-out infinite !important; }
-/* Orbs float */
-[data-theme="d20"] .orb { animation:d20OrbFloat 8s ease-in-out infinite !important; }
+/* Countdown units: LED border */
+[data-theme="d20"] .countdown-unit {
+  animation: d20BorderLed 5s linear infinite !important;
+}
+
+/* ── SECTION TITLES: rainbow underline + icon hue ── */
+[data-theme="d20"] .section-title { animation: d20Hue 8s linear infinite !important; }
+[data-theme="d20"] .section-title::after {
+  background: var(--d20-led) !important;
+  background-size: 400% 100% !important;
+  animation: d20LedStrip 3s linear infinite !important;
+  height: 2px !important;
+}
+
+/* ── NEXT CLASS: label rainbow ── */
+[data-theme="d20"] .next-class-label {
+  background: var(--d20-led) !important;
+  background-size: 400% 100% !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  animation: d20LedStrip 4s linear infinite !important;
+}
+[data-theme="d20"] .next-class-label::before {
+  background: var(--d20-led) !important;
+  background-size: 400% 100% !important;
+  animation: d20LedStrip 2s linear infinite !important;
+}
+
+/* ── KANBAN CARDS: LED tag dots cycling ── */
+[data-theme="d20"] .kanban-peek-tag-dot { animation: d20Hue 3s linear infinite !important; }
+[data-theme="d20"] .kanban-peek-item { animation: d20BorderLed 7s linear infinite !important; }
+
+/* ── CALENDAR TODAY: rainbow ring ── */
+[data-theme="d20"] .cal-day.today { animation: d20BorderLed 3s linear infinite !important; }
+[data-theme="d20"] .cal-day.has-events .cal-event-dot { animation: d20Hue 4s linear infinite !important; }
+
+/* ── THEME DOT + SWITCHER ── */
+[data-theme="d20"] .theme-dot {
+  background: var(--d20-led) !important;
+  background-size: 400% 100% !important;
+  animation: d20LedStrip 2s linear infinite, dotPulse 2.5s ease-in-out infinite !important;
+}
+[data-theme="d20"] .theme-cycle-btn { animation: d20BorderLed 4s linear infinite !important; }
+
+/* ── ORBS: hue-rotating background blobs ── */
+[data-theme="d20"] .orb { animation: d20OrbFloat 10s ease-in-out infinite !important; }
+
+/* ── SIDEBAR BADGE: LED ── */
+[data-theme="d20"] .sidebar-badge {
+  background: var(--d20-led) !important;
+  background-size: 400% 100% !important;
+  animation: d20LedStrip 3s linear infinite !important;
+  color: #fff !important;
+}
+
+/* ── GPA CHART LINE: rainbow stroke ── */
+[data-theme="d20"] .gpa-chart-wrap polyline { animation: d20Hue 6s linear infinite !important; }
+[data-theme="d20"] .gpa-semester-avg { animation: d20Hue 5s linear infinite !important; }
+[data-theme="d20"] .gpa-big-num {
+  background: var(--d20-led) !important;
+  background-size: 400% 100% !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  animation: d20LedStrip 4s linear infinite !important;
+}
+
+/* ── INPUTS + SELECTS: LED border on focus ── */
+[data-theme="d20"] input:focus,
+[data-theme="d20"] textarea:focus,
+[data-theme="d20"] select:focus { animation: d20BorderLed 3s linear infinite !important; outline: none !important; }
+
+/* ── SCROLLBAR: rainbow LED track ── */
+[data-theme="d20"] ::-webkit-scrollbar-thumb {
+  background: var(--d20-led) !important;
+  background-size: 400% 100% !important;
+  animation: d20LedStrip 4s linear infinite !important;
+}
+
+/* ── PROGRESS/FILTER BARS: rainbow fill ── */
+[data-theme="d20"] .lc-progress-fill,
+[data-theme="d20"] .gpa-bar-fill {
+  background: var(--d20-led) !important;
+  background-size: 400% 100% !important;
+  animation: d20LedStrip 3s linear infinite !important;
+}
+
+/* ── NEWSLETTER HOME CARD ── */
+[data-theme="d20"] #home-newsletter { animation: d20BorderLed 6s linear infinite !important; }
+
+/* ── STUDY CARDS ── */
+[data-theme="d20"] .estudos-card { animation: d20BorderLed 7s linear infinite !important; }
+[data-theme="d20"] .estudos-card:hover { animation: d20BorderLed 2s linear infinite, d20GlowPulse 2s ease infinite !important; }
+
+/* ── ENTITY/ENTIDADE CARDS ── */
+[data-theme="d20"] .ent-card { animation: d20BorderLed 6s linear infinite !important; }
+[data-theme="d20"] .ent-card:hover { animation: d20BorderLed 2s linear infinite !important; }
+
+/* ────────────────────────────────────────────────────────────
+   VIDEOGAME ICON REFERENCES via ::after pseudo-elements
+   Mario ·  Sonic · Crash · Pac-Man · Luigi · Hollow Knight ·
+   God of War · Devil May Cry · Zelda · Metroid · Kirby · etc.
+   ──────────────────────────────────────────────────────────── */
+
+/* Sidebar nav links: add game emoji icons next to page icons */
+/* Calendar → 🗡️ Zelda Diary of Time */
+[data-theme="d20"] [data-page="calendar"]::after {
+  content: "🗡️"; font-size: 10px; opacity: .55;
+  animation: d20Twinkle 3s ease-in-out infinite;
+  margin-left: auto; padding-right: 4px;
+}
+/* Schedule → ⭐ Mario Star */
+[data-theme="d20"] [data-page="schedule"]::after {
+  content: "⭐"; font-size: 10px; opacity: .55;
+  animation: d20Twinkle 2.5s ease-in-out infinite .3s;
+  margin-left: auto; padding-right: 4px;
+}
+/* Kanban → 🎮 Controller */
+[data-theme="d20"] [data-page="kanban"]::after {
+  content: "🎮"; font-size: 10px; opacity: .55;
+  animation: d20Twinkle 3.2s ease-in-out infinite .1s;
+  margin-left: auto; padding-right: 4px;
+}
+/* Newsletter → 📜 Scroll (Hollow Knight lore) */
+[data-theme="d20"] [data-page="newsletter"]::after {
+  content: "📜"; font-size: 10px; opacity: .55;
+  animation: d20Twinkle 2.8s ease-in-out infinite .5s;
+  margin-left: auto; padding-right: 4px;
+}
+/* Docentes → 🧙 Gandalf/Merlin/Yoda */
+[data-theme="d20"] [data-page="docentes"]::after {
+  content: "🧙"; font-size: 10px; opacity: .55;
+  animation: d20Twinkle 3.5s ease-in-out infinite .2s;
+  margin-left: auto; padding-right: 4px;
+}
+/* Estudos → 📚 BG Study (Crash Bandicoot collection) */
+[data-theme="d20"] [data-page="estudos"]::after {
+  content: "📚"; font-size: 10px; opacity: .55;
+  animation: d20Twinkle 3s ease-in-out infinite .4s;
+  margin-left: auto; padding-right: 4px;
+}
+/* Entidades → 🏰 Castle (Castlevania) */
+[data-theme="d20"] [data-page="entidades"]::after {
+  content: "🏰"; font-size: 10px; opacity: .55;
+  animation: d20Twinkle 2.6s ease-in-out infinite .6s;
+  margin-left: auto; padding-right: 4px;
+}
+/* Notas GPA → 💎 Crystal (Final Fantasy) */
+[data-theme="d20"] [data-page="notas-gpa"]::after {
+  content: "💎"; font-size: 10px; opacity: .55;
+  animation: d20Twinkle 3.1s ease-in-out infinite .15s;
+  margin-left: auto; padding-right: 4px;
+}
+/* Ferramentas → 🔧 Ratchet & Clank */
+[data-theme="d20"] [data-page="ferramentas"]::after {
+  content: "🔧"; font-size: 10px; opacity: .55;
+  animation: d20Twinkle 2.9s ease-in-out infinite .35s;
+  margin-left: auto; padding-right: 4px;
+}
+/* Leetcode/Desafios → 🗡️ DMC / God of War Axe */
+[data-theme="d20"] [data-page="leetcode"]::after {
+  content: "⚔️"; font-size: 10px; opacity: .55;
+  animation: d20Twinkle 3.3s ease-in-out infinite .25s;
+  margin-left: auto; padding-right: 4px;
+}
+
+/* ── STAT CARD ICONS: replace with game emoji on D20 ── */
+/* via CSS attr trick — add data-d20-icon via JS or use ::after overlay */
+[data-theme="d20"] .stat-card:nth-child(1) .stat-icon::after { content: " 👾"; }
+[data-theme="d20"] .stat-card:nth-child(2) .stat-icon::after { content: " 🎲"; }
+[data-theme="d20"] .stat-card:nth-child(3) .stat-icon::after { content: " ⚔️"; }
+[data-theme="d20"] .stat-card:nth-child(4) .stat-icon::after { content: " 💎"; }
+[data-theme="d20"] .stat-card .stat-icon { animation: d20Twinkle 3s ease-in-out infinite !important; }
+
+/* ── GAME FLAVOR TEXT on section titles ── */
+[data-theme="d20"] .section-title[data-d20]::before { content: attr(data-d20); margin-right: 6px; }
+
+/* ── QUOTE CARD: looks like a game dialog box ── */
+[data-theme="d20"] #quote-card,
+[data-theme="d20"] .quote-card {
+  border-radius: 4px !important;
+  border-width: 2px !important;
+  position: relative !important;
+}
+/* NPC dialog indicator triangle */
+[data-theme="d20"] .quote-card::after,
+[data-theme="d20"] #quote-card::after {
+  content: "▼";
+  position: absolute;
+  bottom: 8px; right: 14px;
+  font-size: 10px;
+  animation: d20PixelFlash 1.5s step-end infinite, d20Hue 4s linear infinite !important;
+}
+/* Quote mark → looks like a speech bubble */
+[data-theme="d20"] .quote-mark {
+  content: "💬" !important;
+  animation: d20Hue 4s linear infinite !important;
+}
+
+/* ── HOME HERO SUBTITLE: "PRESS START" vibe ── */
+[data-theme="d20"] .home-hero .page-header-label::after,
+[data-theme="d20"] .home-hero-eyebrow::after {
+  content: " · INSERT COIN";
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 2px;
+  opacity: .45;
+  animation: d20PixelFlash 2s step-end infinite, d20Hue 6s linear infinite;
+  margin-left: 4px;
+  vertical-align: middle;
+}
+
+/* ── LOADING SPINNER: rainbow LED ring ── */
+[data-theme="d20"] .spinner {
+  border-top-color: transparent !important;
+  animation: spin .8s linear infinite !important;
+  border-image: none !important;
+}
+[data-theme="d20"] .loading-spinner { animation: d20Hue 3s linear infinite !important; }
+
+/* ── GPA STATUS PILL: rainbow ── */
+[data-theme="d20"] .gpa-status-pill { animation: d20LedStrip 4s linear infinite, d20BorderLed 4s linear infinite !important; }
+
+/* ── KANBAN TAG BADGES ── */
+[data-theme="d20"] .kanban-tag { animation: d20BorderLed 5s linear infinite !important; }
+
+/* ── EVENT TYPE DOTS ── */
+[data-theme="d20"] .cal-event-dot { animation: d20Hue 3s linear infinite !important; }
+[data-theme="d20"] .event-type-badge { animation: d20Hue 4s linear infinite !important; }
+
+/* ── NEWSLETTER READ BTN ── */
+[data-theme="d20"] .newsletter-read-btn,
+[data-theme="d20"] .btn-ghost {
+  animation: d20BorderLed 6s linear infinite !important;
+}
+
+/* ── ENTITY BADGE ── */
+[data-theme="d20"] .cal-entidade-badge { animation: d20BorderLed 5s linear infinite !important; }
+
+/* ── DOCENTES: card action icons ── */
+[data-theme="d20"] .docente-action-btn { animation: d20Hue 4s linear infinite !important; }
+
+/* ── LEET CODE / DESAFIOS: run button full LED ── */
+[data-theme="d20"] .lc-btn-run {
+  background: var(--d20-led) !important;
+  background-size: 400% 100% !important;
+  animation: d20LedStrip 2s linear infinite !important;
+}
+[data-theme="d20"] .lc-solved-badge { animation: d20Hue 3s linear infinite !important; }
+[data-theme="d20"] .lc-diff-badge { animation: d20BorderLed 5s linear infinite !important; }
+[data-theme="d20"] .lc-lang-tab.active {
+  background: var(--d20-led) !important;
+  background-size: 400% 100% !important;
+  animation: d20LedStrip 3s linear infinite !important;
+}
+
+/* ── PACMAN EASTER EGG: always glowing on D20 ── */
+[data-theme="d20"] .pacman-game { animation: d20GlowPulse 3s ease infinite !important; }
+
+/* ── SIDEBAR BRAND LOGO: rainbow glow ── */
+[data-theme="d20"] .sidebar-brand {
+  animation: d20Hue 8s linear infinite !important;
+  filter: drop-shadow(0 0 8px rgba(192,132,252,.5)) !important;
+}
+
+/* ── HERO GREETING TEXT ── */
+[data-theme="d20"] #hero-greeting { animation: d20Hue 6s linear infinite !important; }
+
+/* DISABLE in lite mode */
+body.lite-mode [data-theme="d20"] .sidebar::before,
+body.lite-mode [data-theme="d20"] .topbar::after { animation: none !important; }
+
+/* ── D20 JS-INJECTED ELEMENTS ── */
+/* Game tag badge next to section titles */
+.d20-game-tag {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 3px;
+  margin-left: 8px;
+  background: var(--d20-led, linear-gradient(90deg,#c084fc,#f472b6,#34d399));
+  background-size: 400% 100%;
+  animation: d20LedStrip 3s linear infinite;
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0,0,0,.5);
+  vertical-align: middle;
+  opacity: .8;
+  flex-shrink: 0;
+}
+
+/* Player 1 badge */
+.d20-p1-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  padding: 2px 8px;
+  border-radius: 3px;
+  margin-left: 10px;
+  background: var(--d20-led, linear-gradient(90deg,#c084fc,#f472b6));
+  background-size: 400% 100%;
+  animation: d20LedStrip 2s linear infinite, d20PixelFlash 4s step-end infinite;
+  color: #fff;
+  vertical-align: middle;
+  text-shadow: 0 0 6px rgba(255,255,255,.6);
+}
+
+/* Floating pixel decorations */
+#d20-pixel-layer {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.d20-pixel {
+  position: fixed;
+  display: block;
+  line-height: 1;
+  animation: d20Twinkle 3s ease-in-out infinite, d20Hue 6s linear infinite;
+  pointer-events: none;
+  user-select: none;
+  opacity: .25;
+  z-index: 0;
+}
+
+/* Lite mode: hide pixel layer */
+body.lite-mode #d20-pixel-layer { display: none !important; }
 
 /* LIGHT THEME CARDS */
 [data-theme="grifinho"] .card,[data-theme="bidu"] .card,[data-theme="laboratorio"] .card,[data-theme="sintetizado"] .card,[data-theme="masacote"] .card,[data-theme="grace"] .card,[data-theme="mamaco"] .card,[data-theme="jedi"] .card,[data-theme="ocean"] .card{background:rgba(255,255,255,.8);box-shadow:0 2px 14px rgba(0,0,0,.06)}
@@ -798,6 +1272,15 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
   .kanban-select{width:100%}
   .gpa-semesters .gpa-discipline-row{flex-wrap:wrap;gap:8px}
   .gpa-note-input{width:64px}
+  /* Countdown 480px: even tighter */
+  .countdown-unit{min-width:0!important;padding:8px 3px!important;flex:1 1 0!important}
+  .countdown-num{font-size:1.35rem!important;letter-spacing:-2px!important}
+  .countdown-sep{display:none!important}
+  /* Event items on tiny screens */
+  .event-item{padding:9px 10px!important;gap:8px!important}
+  .event-date-badge{min-width:34px!important;width:34px!important;height:38px!important}
+  .event-day-num{font-size:14px!important}
+  .event-title{font-size:12.5px!important}
   .newsletter-featured{padding:18px}
   .newsletter-title{font-size:17px}
 }
@@ -4478,14 +4961,77 @@ body.lite-mode .btn-primary {
   .next-class-card { padding: 16px; }
   .next-class-time-big { font-size: 28px !important; }
 
-  /* Countdown card: compact nums */
-  .countdown-nums { gap: 10px !important; }
-  .countdown-num { font-size: 30px !important; }
-  .countdown-unit { font-size: 9px !important; }
+  /* ── COUNTDOWN: fix overflow on small screens ── */
+  .countdown-card { padding: 16px 10px !important; overflow: hidden !important; }
+  .countdown-units {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    width: 100% !important;
+    overflow: hidden !important;
+  }
+  .countdown-unit {
+    min-width: 0 !important;
+    flex: 1 1 0 !important;
+    padding: 10px 4px !important;
+    font-size: 9px !important;
+    gap: 4px !important;
+  }
+  .countdown-num {
+    font-size: 1.6rem !important;
+    letter-spacing: -1px !important;
+    min-width: 0 !important;
+  }
+  .countdown-lbl { font-size: 8px !important; letter-spacing: 1px !important; }
+  .countdown-sep { font-size: 16px !important; padding-top: 8px !important; }
+  .countdown-event-name {
+    font-size: 12px !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+    padding: 0 4px !important;
+  }
 
-  /* Quote card: shorter */
-  .quote-card { padding: 16px; }
+  /* ── QUOTE CARD: full width, no overflow ── */
+  .quote-card, #quote-card {
+    padding: 16px !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+    word-break: break-word !important;
+  }
   .quote-text { font-size: 14px !important; line-height: 1.55 !important; }
+  .quote-mark { font-size: 36px !important; }
+
+  /* ── EVENTS: prevent horizontal stretch ── */
+  .event-list { width: 100% !important; box-sizing: border-box !important; }
+  .event-item {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+    padding: 11px 12px !important;
+  }
+  .event-title { word-break: break-word !important; }
+  .event-date-badge { min-width: 38px !important; width: 38px !important; flex-shrink: 0 !important; }
+
+  /* ── NEWSLETTER HOME CARD ── */
+  #home-newsletter {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+    word-break: break-word !important;
+  }
+  #home-newsletter .newsletter-date { font-size: 11px !important; }
+
+  /* ── NEXT CLASS CARD ── */
+  .next-class-card {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+  }
+  .next-class-meta { flex-wrap: wrap !important; gap: 6px !important; }
+  .next-class-meta-item { font-size: 11.5px !important; }
+  .next-class-name { font-size: 16px !important; word-break: break-word !important; }
 
   /* Kanban peek */
   .kanban-peek { max-height: 180px; overflow-y: auto; }

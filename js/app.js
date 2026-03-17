@@ -66,6 +66,107 @@ function applyTheme(theme) {
   // Also save as last-used for this mode
   const modeKey = (theme.dark !== false) ? 'dasitheme_dark' : 'dasitheme_light';
   localStorage.setItem(modeKey, theme.key);
+
+  // ── D20 THEME: inject videogame flavor ──
+  if (theme.key === 'd20') {
+    applyD20GameFlavor();
+  } else {
+    removeD20GameFlavor();
+  }
+}
+
+// ===== D20 VIDEOGAME FLAVOR =====
+const D20_GAME_LABELS = {
+  // section-title text → [game emoji, game reference]
+  'Próxima aula':        ['🎮', 'NEXT STAGE'],
+  'Próximos eventos':    ['📅', 'QUEST LOG'],
+  'Reflexão do dia':     ['💬', 'NPC DIALOG'],
+  'Contagem regressiva': ['⏱️', 'TIME ATTACK'],
+  'Tarefas pendentes':   ['⚔️', 'SIDE QUESTS'],
+  'Última newsletter':   ['📜', 'LORE ENTRY'],
+  'Filtros':             ['🎛️', 'SELECT CHAR'],
+  'Evolução de médias':  ['📈', 'LEVEL UP'],
+  'Minhas turmas':       ['🎓', 'GUILD HALL'],
+  'Disciplinas':         ['📖', 'SKILL TREE'],
+};
+
+// Game quotes for the home hero eyebrow
+const D20_GAME_QUOTES = [
+  { text: "Praising the sun since 1106 A.D.", src: "Dark Souls" },
+  { text: "It's dangerous to study alone!", src: "Zelda (adaptado)" },
+  { text: "Do you know de wey of SI?", src: "Knuckles" },
+  { text: "Every 60 seconds in Africa, a minute passes.", src: "Sonic" },
+  { text: "Stay a while, and listen.", src: "Deckard Cain - Diablo" },
+  { text: "The cake was a lie, but the diploma is real.", src: "Portal" },
+  { text: "Fus Ro GPA!", src: "Skyrim" },
+  { text: "You died. Retry? (Y/N)", src: "Hollow Knight" },
+  { text: "Crash sensed danger ahead... and crashed anyway.", src: "Crash Bandicoot" },
+  { text: "Wahoo! One more semestre!", src: "Mario" },
+  { text: "Go for it, Sparda! - but first, study.", src: "Devil May Cry" },
+  { text: "I was never the hero this course needed. But the one it got.", src: "God of War" },
+  { text: "Gotta study fast.", src: "Sonic the Hedgehog" },
+  { text: "Crikey! That's a lot de creditos!", src: "Crash Bandicoot" },
+  { text: "Player 2 has joined the curso.", src: "Luigi" },
+  { text: "The world record for procrastination is yours.", src: "Achievement Unlocked" },];
+
+let _d20QuoteInterval = null;
+
+function applyD20GameFlavor() {
+  // Inject game labels into section titles
+  document.querySelectorAll('.section-title').forEach(el => {
+    const text = el.textContent.trim();
+    const match = Object.keys(D20_GAME_LABELS).find(k => text.includes(k));
+    if (match) {
+      const [emoji, tag] = D20_GAME_LABELS[match];
+      el.setAttribute('data-d20-orig', el.textContent);
+      el.setAttribute('data-d20', emoji);
+      // Add game tag badge after the title
+      if (!el.querySelector('.d20-game-tag')) {
+        const badge = document.createElement('span');
+        badge.className = 'd20-game-tag';
+        badge.textContent = tag;
+        el.appendChild(badge);
+      }
+    }
+  });
+
+  // Add "PLAYER 1" badge to the hero greeting
+  const greeting = document.getElementById('hero-greeting');
+  if (greeting && !document.getElementById('d20-p1-badge')) {
+    const p1 = document.createElement('span');
+    p1.id = 'd20-p1-badge';
+    p1.className = 'd20-p1-badge';
+    p1.textContent = 'P1';
+    greeting.parentElement?.appendChild(p1);
+  }
+
+  // Inject floating pixel decorations on the body
+  if (!document.getElementById('d20-pixel-layer')) {
+    const layer = document.createElement('div');
+    layer.id = 'd20-pixel-layer';
+    layer.setAttribute('aria-hidden', 'true');
+    layer.innerHTML = [
+      '<span class="d20-pixel" style="top:8vh;left:3%;font-size:18px;animation-delay:0s">⭐</span>',
+      '<span class="d20-pixel" style="top:20vh;right:4%;font-size:14px;animation-delay:.8s">👾</span>',
+      '<span class="d20-pixel" style="top:35vh;left:2%;font-size:16px;animation-delay:1.5s">🎮</span>',
+      '<span class="d20-pixel" style="top:55vh;right:3%;font-size:13px;animation-delay:.4s">🍄</span>',
+      '<span class="d20-pixel" style="top:70vh;left:4%;font-size:15px;animation-delay:2s">⚔️</span>',
+      '<span class="d20-pixel" style="top:85vh;right:5%;font-size:12px;animation-delay:1.2s">💎</span>',
+      '<span class="d20-pixel" style="top:15vh;left:90%;font-size:13px;animation-delay:.6s">🔴</span>',
+      '<span class="d20-pixel" style="top:42vh;left:93%;font-size:16px;animation-delay:1.8s">🎲</span>',
+    ].join('');
+    document.body.appendChild(layer);
+  }
+}
+
+function removeD20GameFlavor() {
+  // Remove game tag badges
+  document.querySelectorAll('.d20-game-tag').forEach(el => el.remove());
+  document.querySelectorAll('[data-d20]').forEach(el => el.removeAttribute('data-d20'));
+  // Remove P1 badge
+  document.getElementById('d20-p1-badge')?.remove();
+  // Remove pixel layer
+  document.getElementById('d20-pixel-layer')?.remove();
 }
 
 // ===== DARK/LIGHT SWITCH =====
@@ -138,6 +239,10 @@ function navigateTo(page) {
   document.getElementById('hamburger')?.classList.remove('open');
   document.getElementById('sidebar-overlay')?.classList.remove('show');
   window.scrollTo({ top: 0, behavior: 'smooth' });
+  // Re-apply D20 game flavor if active (section titles may have been re-rendered)
+  if (document.documentElement.getAttribute('data-theme') === 'd20') {
+    setTimeout(applyD20GameFlavor, 120);
+  }
   if (page === 'calendar') initCalendar();
   if (page === 'schedule') initSchedule();
   if (page === 'newsletter') initNewsletter();
