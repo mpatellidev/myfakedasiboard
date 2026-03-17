@@ -1,45 +1,35 @@
 [
   {
+    "date": "2026-03-14",
+    "title": "Fim das inscrições Each in the Shell",
+    "description": "Prazo de inscrição encerra.",
+    "type": "deadline",
+    "entidade": "each-in-the-shell"
+  },
+  {
+    "date": "2026-03-14",
+    "title": "Inscrições Semana de SI",
+    "description": "Abertura das inscrições para o evento.",
+    "type": "evento",
+    "entidade": "semana-si"
+  },
+  {
     "date": "2026-03-15",
     "title": "Pesquisa 'A Terceira Onda'",
     "description": "Fazer um resumo de no mínimo 3 páginas sobre a obra A terceira Onda de Alvin Toffler.",
     "type": "entrega",
-    "turmas": ["2026102"]
+    "turmas": [
+      "2026102"
+    ]
   },
   {
     "date": "2026-03-16",
     "title": "Exclusivo noturno",
     "description": "teste",
     "type": "deadline",
-    "turmas": ["2026104"]
-  },
-  {
-    "date": "2026-04-10",
-    "title": "Fim das inscrições Síntese Jr.",
-    "description": "Encerramento das inscrições do processo seletivo.",
-    "type": "deadline",
-    "entidade": "sintese-jr"
-  },
-  {
-    "date": "2026-03-22",
-    "title": "Fim das inscrições Conway",
-    "description": "Encerramento das inscrições 2026.1.",
-    "type": "deadline",
-    "entidade": "conway"
-  },
-  {
-    "date": "2026-03-22",
-    "title": "Fim das inscrições Hype",
-    "description": "Inscrições gerais encerram.",
-    "type": "deadline",
-    "entidade": "hype"
-  },
-  {
-    "date": "2026-03-14",
-    "title": "Fim das inscrições Each in the Shell",
-    "description": "Prazo de inscrição encerra.",
-    "type": "deadline",
-    "entidade": "each-in-the-shell"
+    "turmas": [
+      "2026104"
+    ]
   },
   {
     "date": "2026-03-16",
@@ -49,39 +39,50 @@
     "entidade": "each-in-the-shell"
   },
   {
-    "date": "2026-04-06",
-    "title": "Entrevistas Each in the Shell",
-    "description": "Fase de entrevistas dos participantes.",
-    "type": "evento",
-    "entidade": "each-in-the-shell"
+    "date": "2026-03-16",
+    "title": "teste",
+    "description": "NA",
+    "type": "evento"
   },
   {
-    "date": "2026-04-15",
-    "title": "Aprovados Each in the Shell",
-    "description": "Divulgação dos resultados finais.",
-    "type": "evento",
-    "entidade": "each-in-the-shell"
+    "date": "2026-03-16",
+    "title": "teste 2",
+    "description": "NA",
+    "type": "evento"
   },
   {
-    "date": "2026-03-30",
-    "title": "PS Hype Iniciante",
-    "description": "Seletivo para trilha iniciante.",
+    "date": "2026-03-17",
+    "title": "Dojo GRACE: GitHub",
+    "description": "Curso de Github exclusivo para mulheres, ministrado por mulheres.",
     "type": "evento",
-    "entidade": "hype"
+    "entidade": "grace"
   },
   {
-    "date": "2026-03-23",
-    "title": "PS Hype Avançado",
-    "description": "Seletivo para trilha avançada.",
+    "date": "2026-03-18",
+    "title": "Reunião DASI Esportivo",
+    "description": "Reunião do departamento esportivo.",
     "type": "evento",
-    "entidade": "hype"
+    "entidade": "dasi"
   },
   {
-    "date": "2026-05-01",
-    "title": "Entrevistas Hype",
-    "description": "Etapa final do processo seletivo.",
+    "date": "2026-03-18",
+    "title": "Palestra + Bate-Papo com Tiago Fraga",
+    "description": "Quer saber como aproveitar ao máximo a graduação e construir um currículo de peso? Então não perde essa!",
+    "type": "apresentacao"
+  },
+  {
+    "date": "2026-03-19",
+    "title": "Reunião DASI TI",
+    "description": "Reunião do departamento de TI.",
     "type": "evento",
-    "entidade": "hype"
+    "entidade": "dasi"
+  },
+  {
+    "date": "2026-03-19",
+    "title": "Dojo GRACE: Debugging",
+    "description": "Curso de Jargões, Debugging e Boas Práticas exclusivo para mulheres.",
+    "type": "evento",
+    "entidade": "grace"
   },
   {
     "date": "2026-03-20",
@@ -98,41 +99,6 @@
     "entidade": "dasi"
   },
   {
-    "date": "2026-03-18",
-    "title": "Reunião DASI Esportivo",
-    "description": "Reunião do departamento esportivo.",
-    "type": "evento",
-    "entidade": "dasi"
-  },
-  {
-    "date": "2026-03-19",
-    "title": "Reunião DASI TI",
-    "description": "Reunião do departamento de TI.",
-    "type": "evento",
-    "entidade": "dasi"
-  },
-  {
-    "date": "2026-04-05",
-    "title": "Fim das Inscrições Grace USP",
-    "description": "Encerramento das inscrições 2026.1.",
-    "type": "deadline",
-    "entidade": "grace"
-  },
-  {
-    "date": "2026-03-17",
-    "title": "Dojo GRACE: GitHub",
-    "description": "Curso de Github exclusivo para mulheres, ministrado por mulheres.",
-    "type": "evento",
-    "entidade": "grace"
-  },
-  {
-    "date": "2026-03-19",
-    "title": "Dojo GRACE: Debugging",
-    "description": "Curso de Jargões, Debugging e Boas Práticas exclusivo para mulheres.",
-    "type": "evento",
-    "entidade": "grace"
-  },
-  {
     "date": "2026-03-20",
     "title": "Dojo GRACE: LeetCode",
     "description": "Curso de Leetcode e Roda de Conversa exclusivo para mulheres.",
@@ -140,11 +106,38 @@
     "entidade": "grace"
   },
   {
-    "date": "2026-03-14",
-    "title": "Inscrições Semana de SI",
-    "description": "Abertura das inscrições para o evento.",
+    "date": "2026-03-20",
+    "title": "teste",
+    "description": "NA",
+    "type": "evento"
+  },
+  {
+    "date": "2026-03-22",
+    "title": "Fim das inscrições Conway",
+    "description": "Encerramento das inscrições 2026.1.",
+    "type": "deadline",
+    "entidade": "conway"
+  },
+  {
+    "date": "2026-03-22",
+    "title": "Fim das inscrições Hype",
+    "description": "Inscrições gerais encerram.",
+    "type": "deadline",
+    "entidade": "hype"
+  },
+  {
+    "date": "2026-03-23",
+    "title": "PS Hype Avançado",
+    "description": "Seletivo para trilha avançada.",
     "type": "evento",
-    "entidade": "semana-si"
+    "entidade": "hype"
+  },
+  {
+    "date": "2026-03-23",
+    "title": "Conceitos de GameDev na Computação",
+    "description": "Nesta palestra, o professor João Bernardes revela como os conceitos da graduação ganham vida no universo Gamedev.",
+    "type": "apresentacao",
+    "entidade": "conway"
   },
   {
     "date": "2026-03-27",
@@ -161,18 +154,11 @@
     "entidade": "conway"
   },
   {
-    "date": "2026-03-31",
-    "title": "Fim das Inscrições CodeLab",
-    "description": "Encerramento do PS 2026.1.",
-    "type": "deadline",
-    "entidade": "codelab"
-  },
-  {
-    "date": "2026-04-10",
-    "title": "Demo Day CodeLab",
-    "description": "Apresentação dos projetos do semestre.",
-    "type": "apresentacao",
-    "entidade": "codelab"
+    "date": "2026-03-30",
+    "title": "PS Hype Iniciante",
+    "description": "Seletivo para trilha iniciante.",
+    "type": "evento",
+    "entidade": "hype"
   },
   {
     "date": "2026-03-30",
@@ -182,6 +168,41 @@
     "entidade": "pet-si"
   },
   {
+    "date": "2026-03-31",
+    "title": "Fim das Inscrições CodeLab",
+    "description": "Encerramento do PS 2026.1.",
+    "type": "deadline",
+    "entidade": "codelab"
+  },
+  {
+    "date": "2026-04-05",
+    "title": "Fim das Inscrições Grace USP",
+    "description": "Encerramento das inscrições 2026.1.",
+    "type": "deadline",
+    "entidade": "grace"
+  },
+  {
+    "date": "2026-04-06",
+    "title": "Entrevistas Each in the Shell",
+    "description": "Fase de entrevistas dos participantes.",
+    "type": "evento",
+    "entidade": "each-in-the-shell"
+  },
+  {
+    "date": "2026-04-10",
+    "title": "Fim das inscrições Síntese Jr.",
+    "description": "Encerramento das inscrições do processo seletivo.",
+    "type": "deadline",
+    "entidade": "sintese-jr"
+  },
+  {
+    "date": "2026-04-10",
+    "title": "Demo Day CodeLab",
+    "description": "Apresentação dos projetos do semestre.",
+    "type": "apresentacao",
+    "entidade": "codelab"
+  },
+  {
     "date": "2026-04-12",
     "title": "Entrevistas Síntese Jr.",
     "description": "Entrevistas para novos membros.",
@@ -189,10 +210,24 @@
     "entidade": "sintese-jr"
   },
   {
+    "date": "2026-04-15",
+    "title": "Aprovados Each in the Shell",
+    "description": "Divulgação dos resultados finais.",
+    "type": "evento",
+    "entidade": "each-in-the-shell"
+  },
+  {
     "date": "2026-04-18",
     "title": "Hackathon Lab das Minas",
     "description": "Hackathon exclusivo para mulheres e NB.",
     "type": "evento",
     "entidade": "lab-das-minas"
+  },
+  {
+    "date": "2026-05-01",
+    "title": "Entrevistas Hype",
+    "description": "Etapa final do processo seletivo.",
+    "type": "evento",
+    "entidade": "hype"
   }
 ]

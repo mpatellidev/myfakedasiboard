@@ -323,7 +323,7 @@ function linkIcon(tipo) {
 // ===== MERGE CALENDAR EVENTS INTO ENTIDADE =====
 // Called after both data sources load to inject calendar events into entity data
 async function mergeCalendarEventsIntoEntidades() {
-  const evData = await ghLoadAllEvents();
+  const evData = await fetchJSON('./data/events.json').then(d => d || []);
   if (!evData?.length || !entidadesData.length) return;
   evData.forEach(ev => {
     if (!ev.entidade) return;

@@ -256,7 +256,7 @@ async function initHome() {
   renderHeroGreeting();
 
   // Carrega dados de eventos e horários com fallback explícito
-  try { eventsData = await ghLoadAllEvents(); } catch(e) { eventsData = []; }
+  try { eventsData = await fetchJSON('./data/events.json').then(d => d || []); } catch(e) { eventsData = []; }
   try { const d = await fetchJSON('./data/schedule.json'); scheduleDataAll = d || {}; } catch(e) { scheduleDataAll = {}; }
 
   // Renderiza todos os widgets — cada um trata internamente o estado vazio
@@ -452,15 +452,6 @@ function triggerCaligrafiaEasterEgg() {
   document.body.appendChild(overlay);
 }
 
-// ===== GITHUB TOKEN STATUS =====
-function renderGhTokenStatus() {
-  const dot = document.getElementById('gh-token-dot');
-  const label = document.getElementById('gh-token-label');
-  if (!dot || !label) return;
-  const hasToken = typeof ghHasToken === 'function' && ghHasToken();
-  dot.className = 'gh-token-dot ' + (hasToken ? 'connected' : 'disconnected');
-  label.textContent = hasToken ? 'GitHub ✓' : 'GitHub';
-}
 
 // ===== INIT =====
 // ===== LITE MODE =====
@@ -493,7 +484,6 @@ document.addEventListener('DOMContentLoaded', () => {
   loadSavedTheme();
   renderThemeSwitch();
   loadLiteMode();
-  renderGhTokenStatus();
   createSidebarOverlay();
   const hash = window.location.hash.replace('#','') || 'home';
   navigateTo(hash);
@@ -511,7 +501,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // Atualiza eventsData e re-renderiza todos os widgets da home que dependem dele.
 // Chamado após merge/aceite de PR ou manualmente.
 async function refreshEventsData() {
-  eventsData = await ghLoadAllEvents();
+  eventsData = await fetchJSON('./data/events.json').then(d => d || []);
   renderUpcomingEvents();
   renderCountdown();
   updateStatEvents();
@@ -655,22 +645,7 @@ window.navigateWithFeedback = function(page) {
   }, 120);
 };
 
-// ── Auto-refresh de eventos a cada 5 min (busca pendentes novos) ──────────────
-setInterval(async () => {
-  if (!document.hidden && ghHasToken()) {
-    await refreshEventsData();
-  }
-}, 5 * 60 * 1000);
 
-// ── Integração: ao salvar token, recarregar eventos pendentes imediatamente ───
-const _ghSaveTokenOrig = window.ghSaveToken;
-if (typeof _ghSaveTokenOrig === 'function') {
-  window.ghSaveToken = function(token) {
-    _ghSaveTokenOrig(token);
-    if (token) setTimeout(refreshEventsData, 300);
-    renderGhTokenStatus();
-  };
-}
 
 // ── Badge dinâmico na sidebar para eventos de hoje ───────────────────────────
 function updateTodayEventsBadge() {
@@ -700,9 +675,6 @@ function updateTodayEventsBadge() {
 // ── Keyboard shortcut: G abre modal de proposta de evento ────────────────────
 document.addEventListener('keydown', e => {
   if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) return;
-  if (e.key === 'g' || e.key === 'G') {
-    if (typeof openAddEventModal === 'function') openAddEventModal();
-  }
   if (e.key === 'h' || e.key === 'H') navigateTo('home');
   if (e.key === 'c' || e.key === 'C') navigateTo('calendar');
   if (e.key === 'k' || e.key === 'K') navigateTo('kanban');

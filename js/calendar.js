@@ -14,8 +14,13 @@ const TYPE_DOT_COLORS = { prova:'var(--danger)', entrega:'var(--warning)', event
 
 async function initCalendar() {
   if (calEvents.length === 0) {
-    // Carrega events.json principal + eventos já aprovados em data/events-pending/
-    calEvents = await ghLoadAllEvents();
+    try {
+      const res = await fetch('./data/events.json', { cache: 'no-cache' });
+      calEvents = res.ok ? await res.json() : [];
+    } catch (e) {
+      console.warn('[DaSIboard] Falha ao carregar events.json:', e.message);
+      calEvents = [];
+    }
     const turmaSet = new Set();
     calEvents.forEach(ev => { if (Array.isArray(ev.turmas)) ev.turmas.forEach(t => turmaSet.add(t)); });
     calAvailableTurmas = [...turmaSet].sort();
@@ -123,12 +128,7 @@ function renderCalendarSidebar(dateKey, events = []) {
 
   const [y, m, d] = dateKey.split('-').map(Number);
   const dateLabel = `${String(d).padStart(2,'0')} de ${MONTH_NAMES_PT[m-1]}`;
-  panel.innerHTML = `<div class="cal-selected-date">
-    ${dateLabel}
-    <button class="cal-add-event-inline-btn" onclick="openAddEventModal('${dateKey}')" title="Adicionar evento nesta data">
-      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-    </button>
-  </div><div class="cal-day-events" id="cal-day-events-list"></div>`;
+  panel.innerHTML = `<div class="cal-selected-date">${dateLabel}</div><div class="cal-day-events" id="cal-day-events-list"></div>`;
   const list = el('#cal-day-events-list');
 
   if (!events.length) {

@@ -119,10 +119,7 @@
         <span class="lite-status" id="lite-status">off</span>
       </button>
       <div class="sidebar-time" id="current-time"></div>
-      <div class="gh-token-indicator" onclick="openGhTokenModal()" title="Configurar GitHub Token">
-        <div class="gh-token-dot" id="gh-token-dot"></div>
-        <span id="gh-token-label">GitHub</span>
-      </div>
+
     </div>
   </aside>
 
@@ -310,11 +307,7 @@
               </div>
             </div>
             <div class="cal-legend cal-filters" id="cal-filters-panel"></div>
-            <!-- Add event button -->
-            <button class="cal-add-event-btn" onclick="openAddEventModal(calSelectedDate || '')" title="Adicionar novo evento ao repositório">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-              Adicionar evento
-            </button>
+
           </div>
         </div>
       </div>
@@ -544,7 +537,6 @@
   </div>
 
   <script src="js/utils.js" defer></script>
-  <script src="js/github-events.js" defer></script>
   <script src="js/calendar.js" defer></script>
   <script src="js/schedule.js" defer></script>
   <script src="js/newsletter.js" defer></script>
