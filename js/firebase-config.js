@@ -3,13 +3,13 @@
 // https://console.firebase.google.com/
 
 const firebaseConfig = {
-    apiKey: "AIzaSyDsEK4RY_5Q0pBDkPC16mLYP5SgNdqBswc",
-    authDomain: "dasiboard.firebaseapp.com",
-    projectId: "dasiboard",
-    storageBucket: "dasiboard.firebasestorage.app",
-    messagingSenderId: "946586942129",
-    appId: "1:946586942129:web:2071934f38d1dad333c090",
-    measurementId: "G-TL1PB8NYTS"
+  apiKey: "AIzaSyDOy0T5Yc5hyoLPzJ5az7DBG9oiF1Ng2xQ",
+  authDomain: "dasiboard-db.firebaseapp.com",
+  projectId: "dasiboard-db",
+  storageBucket: "dasiboard-db.firebasestorage.app",
+  messagingSenderId: "645371345193",
+  appId: "1:645371345193:web:d7607767015098c82a1f38",
+  measurementId: "G-F2ZRXCV0F2"
 };
 
 // Inicializar Firebase
