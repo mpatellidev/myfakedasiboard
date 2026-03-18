@@ -813,3 +813,42 @@ document.addEventListener('keydown', e => {
   hint.innerHTML = '<kbd style="background:var(--glass-tint);border:1px solid var(--glass-border);border-radius:3px;padding:0 4px;font-size:8.5px">H</kbd> Home &nbsp; <kbd style="background:var(--glass-tint);border:1px solid var(--glass-border);border-radius:3px;padding:0 4px;font-size:8.5px">C</kbd> Calendário &nbsp; <kbd style="background:var(--glass-tint);border:1px solid var(--glass-border);border-radius:3px;padding:0 4px;font-size:8.5px">G</kbd> + Evento';
   footer.appendChild(hint);
 })();
+
+// ===== AUTENTICAÇÃO & PERFIL =====
+function toggleProfileMenu() {
+  const menu = document.getElementById('profile-menu');
+  if (!menu) return;
+  menu.classList.toggle('hidden');
+
+  // Fechar ao clicar fora
+  if (!menu.classList.contains('hidden')) {
+    setTimeout(() => {
+      document.addEventListener('click', closeProfileMenuOnClick, true);
+    }, 0);
+  }
+}
+
+function closeProfileMenuOnClick(e) {
+  const menu = document.getElementById('profile-menu');
+  const profileBtn = document.getElementById('profile-btn');
+  
+  if (!menu.contains(e.target) && profileBtn !== e.target) {
+    menu.classList.add('hidden');
+    document.removeEventListener('click', closeProfileMenuOnClick, true);
+  }
+}
+
+function closeProfileMenu() {
+  const menu = document.getElementById('profile-menu');
+  if (menu) menu.classList.add('hidden');
+}
+
+function confirmLogout() {
+  if (!confirm('Tem certeza que deseja sair?')) return;
+  
+  authManager.logout().then(result => {
+    if (result.success) {
+      window.location.href = 'index.html';
+    }
+  });
+}
