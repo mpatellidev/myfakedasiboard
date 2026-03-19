@@ -564,7 +564,15 @@
         <span class="footer-dev-avatar">AJ</span>
         <div class="footer-dev-info">
           <strong>Alex J.S.</strong>
-          <span>Desenvolvedor · SI-USP</span>
+          <span>Diretor Geral · SI-USP</span>
+        </div>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:.4;flex-shrink:0"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+      <button class="footer-dev-btn" onclick="openDevCardMurilo()" title="Saiba mais sobre o desenvolvedor">
+        <span class="footer-dev-avatar">MP</span>
+        <div class="footer-dev-info">
+          <strong>Murilo P. C.</strong>
+          <span>Diretor Back-end · SI-USP</span>
         </div>
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:.4;flex-shrink:0"><polyline points="9 18 15 12 9 6"/></svg>
       </button>
@@ -575,7 +583,7 @@
     </div>
   </footer>
 
-  <!-- Developer card modal -->
+  <!-- Developer card modal — Alex -->
   <div id="dev-card-overlay" class="modal-overlay hidden" onclick="if(event.target===this)closeDevCard()">
     <div class="modal-box dev-card-box">
       <button class="modal-close" onclick="closeDevCard()">×</button>
@@ -601,6 +609,40 @@
     </div>
   </div>
 
+  <!-- Developer card modal — Murilo -->
+  <div id="dev-card-overlay-murilo" class="modal-overlay hidden" onclick="if(event.target===this)closeDevCardMurilo()">
+    <div class="modal-box dev-card-box">
+      <button class="modal-close" onclick="closeDevCardMurilo()">×</button>
+      <div class="dev-card-content">
+        <div class="dev-card-avatar">MP</div>
+        <h2 class="dev-card-name">Murilo P. C.</h2>
+        <p class="dev-card-bio">Estudante de Sistemas de Informação na USP/EACH. Diretor Back-end do DaSIboard — o dashboard acadêmico do curso.</p>
+        <div class="dev-card-links">
+          <a href="https://www.instagram.com/patelli_murilo/" target="_blank" rel="noopener" class="dev-card-link dev-link-ig">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+            @patelli_murilo
+          </a>
+          <a href="https://www.linkedin.com/in/murilopatelli/" target="_blank" rel="noopener" class="dev-card-link dev-link-li">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            murilopatelli
+          </a>
+          <a href="https://github.com/mpatellidev" target="_blank" rel="noopener" class="dev-card-link dev-link-gh">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            mpatellidev
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openDevCardMurilo() {
+      document.getElementById('dev-card-overlay-murilo')?.classList.remove('hidden');
+    }
+    function closeDevCardMurilo() {
+      document.getElementById('dev-card-overlay-murilo')?.classList.add('hidden');
+    }
+  </script>
   <script src="js/utils.js" defer></script>
   <!-- Firebase v8 compat (namespace API — compatível com firebase.auth(), firebase.firestore(), etc.) -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js" defer></script>

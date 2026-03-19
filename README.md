@@ -4,9 +4,9 @@
 
 **O dashboard universitário do curso de Sistemas de Informação da EACH-USP**
 
-[![GitHub Pages](https://img.shields.io/badge/deploy-GitHub%20Pages-0969da?style=flat-square&logo=github)](https://alexzjss.github.io/dasiboard)
+[![GitHub Pages](https://img.shields.io/badge/deploy-GitHub%20Pages-0969da?style=flat-square&logo=github)](https://alexzjss.github.io/myfakedasiboard)
 [![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
-[![PRs Welcome](https://img.shields.io/badge/PRs-bem--vindos-brightgreen?style=flat-square)](https://github.com/alexzjss/dasiboard/pulls)
+[![PRs Welcome](https://img.shields.io/badge/PRs-bem--vindos-brightgreen?style=flat-square)](https://github.com/alexzjss/myfakedasiboard/pulls)
 
 *Calendário · Horários · Kanban · Notas · Ferramentas · Desafios — em um só lugar*
 
@@ -105,7 +105,7 @@ Painel central com visão geral do dia:
 ## 🗂 Estrutura do Projeto
 
 ```
-dasiboard-main/
+myfakedasiboard/
 ├── index.html              # Ponto de entrada único (SPA)
 ├── css/
 │   ├── style.css           # Estilos principais (temas, componentes, responsivo)
@@ -190,7 +190,7 @@ Edite `data/schedule.json` ou adicione um novo arquivo em `data/turmas/`.
 
 Encontrou um bug, dado errado ou tem uma sugestão?
 
-- Abra uma [Issue](https://github.com/alexzjss/dasiboard/issues) com a etiqueta adequada (`bug`, `sugestão`, `dados`, `visual`)
+- Abra uma [Issue](https://github.com/alexzjss/myfakedasiboard/issues) com a etiqueta adequada (`bug`, `sugestão`, `dados`, `visual`)
 - Para bugs, inclua: navegador, tema ativo, e o que aconteceu vs. o que era esperado
 
 ---

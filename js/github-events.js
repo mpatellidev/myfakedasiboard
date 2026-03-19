@@ -11,12 +11,12 @@
 // ocorrerem, o GitHub sinalizará no PR para resolução manual.
 
 const GH_OWNER      = 'alexzjss';
-const GH_REPO       = 'dasiboard';
+const GH_REPO       = 'myfakedasiboard';
 const GH_BRANCH     = 'main';
 const GH_EVENTS_PATH       = 'data/events.json';
 const GH_PENDING_DIR       = 'data/events-pending';
 const GH_API_BASE   = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}`;
-const GH_TOKEN_KEY  = 'dasiboard_gh_token';
+const GH_TOKEN_KEY  = 'myfakedasiboard_gh_token';
 
 // ── Token management ──────────────────────────────────────────────────────────
 function ghGetToken()       { return localStorage.getItem(GH_TOKEN_KEY) || ''; }

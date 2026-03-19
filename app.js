@@ -513,6 +513,12 @@ function openDevCard() {
 function closeDevCard() {
   document.getElementById('dev-card-overlay')?.classList.add('hidden');
 }
+function openDevCardMurilo() {
+  document.getElementById('dev-card-overlay-murilo')?.classList.remove('hidden');
+}
+function closeDevCardMurilo() {
+  document.getElementById('dev-card-overlay-murilo')?.classList.add('hidden');
+}
 
 function updateTime() {
   const el = document.getElementById('current-time');

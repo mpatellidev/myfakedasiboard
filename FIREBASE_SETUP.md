@@ -8,7 +8,7 @@ Seu sistema de autenticação está pronto! Agora você precisa configurar as cr
 
 1. Acesse [Firebase Console](https://console.firebase.google.com/)
 2. Clique em **"Criar Projeto"** (ou use um projeto existente)
-3. Nomeie como `dasiboard` (ou outro nome)
+3. Nomeie como `myfakedasiboard` (ou outro nome)
 4. Siga os passos de criação
 
 ### 2️⃣ Obtenha suas Credenciais
@@ -134,7 +134,7 @@ service firebase.storage {
 
 ```bash
 # Clone o repositório
-git clone https://github.com/seu-usuario/dasiboard.git
+git clone https://github.com/seu-usuario/myfakedasiboard.git
 
 # Abra no navegador
 # index.html → clique no botão de perfil (canto superior direito)
