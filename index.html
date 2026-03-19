@@ -19,7 +19,7 @@
   <link rel="preload" href="css/style.css" as="style" />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/animations.css" media="(prefers-reduced-motion: no-preference)" />
-  <link rel="icon" type="image/png" href="./assets/logo-dasi.png">
+  <link rel="icon" type="image/png" href="./assets/logo-dasi.jpg">
   <!-- Aplica tema salvo antes da primeira pintura — elimina FOUC -->
   <script>
     (function(){
@@ -41,7 +41,7 @@
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
       <a class="sidebar-brand" href="#home" onclick="navigateTo('home'); return false;">
-        <img src="assets/logo-dasi.png" alt="DaSI" class="sidebar-logo-img" />
+        <img src="assets/logo-dasi.jpg" alt="DaSI" class="sidebar-logo-img" />
         <div class="sidebar-brand-text">
           <span class="sidebar-title">DaSIboard</span>
           <span class="sidebar-subtitle">SI-USP / EACH</span>
@@ -145,7 +145,7 @@
       <span></span><span></span><span></span>
     </button>
     <a class="topbar-brand" href="#home" onclick="navigateTo('home'); return false;">
-      <img src="assets/logo-dasi.png" alt="DaSI" class="topbar-logo" />
+      <img src="assets/logo-dasi.jpg" alt="DaSI" class="topbar-logo" />
       <span>DaSIboard</span>
     </a>
     <div style="display: flex; align-items: center; gap: 12px;">
@@ -643,28 +643,7 @@
       document.getElementById('dev-card-overlay-murilo')?.classList.add('hidden');
     }
   </script>
-  <script src="js/utils.js" defer></script>
   <!-- Firebase v8 compat (namespace API — compatível com firebase.auth(), firebase.firestore(), etc.) -->
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js" defer></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js" defer></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js" defer></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js" defer></script>
-  <script src="js/firebase-config.js" defer></script>
-  <script src="js/auth.js" defer></script>
-  <script src="js/calendar.js" defer></script>
-  <script src="js/schedule.js" defer></script>
-  <script src="js/newsletter.js" defer></script>
-  <script src="js/docentes.js" defer></script>
-  <script src="js/estudos.js" defer></script>
-  <script src="js/ferramentas.js" defer></script>
-  <script src="js/entidades.js" defer></script>
-  <script src="js/kanban.js" defer></script>
-  <script src="js/gpa.js" defer></script>
-  <script src="js/faltas.js" defer></script>
-  <script src="js/fluxograma.js" defer></script>
-  <script src="js/search.js" defer></script>
-  <script src="js/pacman.js" defer></script>
-  <script src="js/leetcode.js" defer></script>
-  <script src="js/app.js" defer></script>
+  <script type="module" src="/src/ts/main.ts"></script>
 </body>
 </html>
