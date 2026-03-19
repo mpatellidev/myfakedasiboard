@@ -1,5 +1,8 @@
 // ===== APP MAIN — DaSIboard v2 =====
 
+// Dados de eventos embutidos como fallback (usado quando fetch falha, ex: file://)
+const EVENTS_FALLBACK = [{"date":"2026-03-14","title":"Fim das inscrições Each in the Shell","description":"Prazo de inscrição encerra.","type":"deadline","entidade":"each-in-the-shell"},{"date":"2026-03-14","title":"Inscrições Semana de SI","description":"Abertura das inscrições para o evento.","type":"evento","entidade":"semana-si"},{"date":"2026-03-15","title":"Pesquisa 'A Terceira Onda'","description":"Fazer um resumo de no mínimo 3 páginas sobre a obra A terceira Onda de Alvin Toffler.","type":"entrega","turmas":["2026102"]},{"date":"2026-03-16","title":"Exclusivo noturno","description":"teste","type":"deadline","turmas":["2026104"]},{"date":"2026-03-16","title":"Liberação dos Cases Each in the Shell","description":"Cases da competição disponibilizados.","type":"evento","entidade":"each-in-the-shell"},{"date":"2026-03-16","title":"teste","description":"NA","type":"evento"},{"date":"2026-03-16","title":"teste 2","description":"NA","type":"evento"},{"date":"2026-03-17","title":"Dojo GRACE: GitHub","description":"Curso de Github exclusivo para mulheres, ministrado por mulheres.","type":"evento","entidade":"grace"},{"date":"2026-03-18","title":"Reunião DASI Esportivo","description":"Reunião do departamento esportivo.","type":"evento","entidade":"dasi"},{"date":"2026-03-18","title":"Palestra + Bate-Papo com Tiago Fraga","description":"Quer saber como aproveitar ao máximo a graduação e construir um currículo de peso? Então não perde essa!","type":"apresentacao"},{"date":"2026-03-19","title":"Reunião DASI TI","description":"Reunião do departamento de TI.","type":"evento","entidade":"dasi"},{"date":"2026-03-19","title":"Dojo GRACE: Debugging","description":"Curso de Jargões, Debugging e Boas Práticas exclusivo para mulheres.","type":"evento","entidade":"grace"},{"date":"2026-03-20","title":"Fim das Inscrições Monitoria AcaDASI","description":"Última chance para se inscrever.","type":"deadline","entidade":"dasi"},{"date":"2026-03-20","title":"Reunião Geral DASI USP","description":"Reunião aberta a todos os alunos de SI.","type":"evento","entidade":"dasi"},{"date":"2026-03-20","title":"Dojo GRACE: LeetCode","description":"Curso de Leetcode e Roda de Conversa exclusivo para mulheres.","type":"evento","entidade":"grace"},{"date":"2026-03-20","title":"teste","description":"NA","type":"evento"},{"date":"2026-03-22","title":"Fim das inscrições Conway","description":"Encerramento das inscrições 2026.1.","type":"deadline","entidade":"conway"},{"date":"2026-03-22","title":"Fim das inscrições Hype","description":"Inscrições gerais encerram.","type":"deadline","entidade":"hype"},{"date":"2026-03-23","title":"PS Hype Avançado","description":"Seletivo para trilha avançada.","type":"evento","entidade":"hype"},{"date":"2026-03-23","title":"Conceitos de GameDev na Computação","description":"Nesta palestra, o professor João Bernardes revela como os conceitos da graduação ganham vida no universo Gamedev.","type":"apresentacao","entidade":"conway"},{"date":"2026-03-27","title":"Fim das Inscrições Semana de SI","description":"Prazo final para inscrições.","type":"deadline","entidade":"semana-si"},{"date":"2026-03-28","title":"Primeira Reunião Conway","description":"Kickoff do semestre da liga.","type":"evento","entidade":"conway"},{"date":"2026-03-30","title":"PS Hype Iniciante","description":"Seletivo para trilha iniciante.","type":"evento","entidade":"hype"},{"date":"2026-03-30","title":"Processo Seletivo PET-SI","description":"Inscrições para bolsistas do PET.","type":"evento","entidade":"pet-si"},{"date":"2026-03-31","title":"Fim das Inscrições CodeLab","description":"Encerramento do PS 2026.1.","type":"deadline","entidade":"codelab"},{"date":"2026-04-05","title":"Fim das Inscrições Grace USP","description":"Encerramento das inscrições 2026.1.","type":"deadline","entidade":"grace"},{"date":"2026-04-05","title":"Fim das Inscrições Lab das Minas","description":"Encerramento das inscrições 2026.1.","type":"deadline","entidade":"lab-das-minas"},{"date":"2026-04-06","title":"Entrevistas Each in the Shell","description":"Fase de entrevistas dos participantes.","type":"evento","entidade":"each-in-the-shell"},{"date":"2026-04-10","title":"Fim das inscrições Síntese Jr.","description":"Encerramento das inscrições do processo seletivo.","type":"deadline","entidade":"sintese-jr"},{"date":"2026-04-10","title":"Demo Day CodeLab","description":"Apresentação dos projetos do semestre.","type":"apresentacao","entidade":"codelab"},{"date":"2026-04-12","title":"Entrevistas Síntese Jr.","description":"Entrevistas para novos membros.","type":"evento","entidade":"sintese-jr"},{"date":"2026-04-15","title":"Aprovados Each in the Shell","description":"Divulgação dos resultados finais.","type":"evento","entidade":"each-in-the-shell"},{"date":"2026-04-18","title":"Hackathon Lab das Minas","description":"Hackathon exclusivo para mulheres e NB.","type":"evento","entidade":"lab-das-minas"},{"date":"2026-04-22","title":"Apresentações do Lab das Minas","description":"Na semana do dia 22/04.","type":"evento","entidade":"lab-das-minas"},{"date":"2026-04-28","title":"Aprovadas Lab das Minas","description":"","type":"evento","entidade":"lab-das-minas"},{"date":"2026-05-01","title":"Entrevistas Hype","description":"Etapa final do processo seletivo.","type":"evento","entidade":"hype"}];
+
 let eventsData = [];
 let scheduleDataAll = null;
 
@@ -363,7 +366,7 @@ async function initHome() {
   renderHeroGreeting();
 
   // Carrega dados de eventos e horários com fallback explícito
-  try { eventsData = await fetchJSON('./data/events.json').then(d => d || []); } catch(e) { eventsData = []; }
+  try { const d = await fetchJSON('./data/events.json'); eventsData = (d && d.length) ? d : EVENTS_FALLBACK; } catch(e) { eventsData = EVENTS_FALLBACK; }
   try { const d = await fetchJSON('./data/schedule.json'); scheduleDataAll = d || {}; } catch(e) { scheduleDataAll = {}; }
 
   // Renderiza todos os widgets — cada um trata internamente o estado vazio
@@ -659,8 +662,7 @@ function urgencyBadge(dateStr) {
   return '';
 }
 
-// ── renderUpcomingEvents: agora com badge de urgência e clique para calendário ─
-// Substitui a versão original com mais informação e interatividade.
+// ── renderUpcomingEvents: 4 próximos eventos com entidade em destaque ─────────
 function renderUpcomingEvents() {
   const container = document.getElementById('upcoming-events');
   if (!container) return;
@@ -668,7 +670,7 @@ function renderUpcomingEvents() {
   const upcoming = eventsData
     .filter(e => parseDate(e.date) >= today)
     .sort((a,b) => parseDate(a.date) - parseDate(b.date))
-    .slice(0, 6);
+    .slice(0, 4);
   if (!upcoming.length) {
     container.innerHTML = `<div class="no-events-msg">Nenhum evento próximo.</div>`;
     return;
@@ -678,18 +680,18 @@ function renderUpcomingEvents() {
     const day = String(d.getDate()).padStart(2,'0');
     const month = MONTH_NAMES_SHORT[d.getMonth()];
     const urg = urgencyBadge(ev.date);
-    const entBadge = (ev.entidade && typeof ENTIDADE_META !== 'undefined' && ENTIDADE_META[ev.entidade])
-      ? `<span style="font-size:11px;color:${ENTIDADE_META[ev.entidade].cor}">${ENTIDADE_META[ev.entidade].emoji} ${ENTIDADE_META[ev.entidade].nome}</span>`
-      : '';
+    const hasMeta = ev.entidade && typeof ENTIDADE_META !== 'undefined' && ENTIDADE_META[ev.entidade];
+    const entColor = hasMeta ? ENTIDADE_META[ev.entidade].cor : 'var(--text-dim)';
+    const entLabel = hasMeta
+      ? `<span style="font-size:10.5px;font-weight:600;color:${entColor};letter-spacing:0.3px">${ENTIDADE_META[ev.entidade].emoji} ${ENTIDADE_META[ev.entidade].nome}</span>`
+      : `<span style="font-size:10.5px;color:var(--text-dim)">Evento geral</span>`;
     return `<div class="event-item anim-fade-up" style="animation-delay:${i*0.06}s;cursor:pointer"
       onclick="navigateTo('calendar');setTimeout(()=>{const y=${d.getFullYear()},m=${d.getMonth()};if(typeof calYear!=='undefined'){calYear=y;calMonth=m;calSelectedDate='${ev.date}';renderCalendar();renderCalendarSidebar('${ev.date}',getFilteredEvents('${ev.date}'));}},150)">
       <div class="event-date-badge"><span class="day">${day}</span><span class="month">${month}</span></div>
       <div class="event-info" style="flex:1;min-width:0">
+        <div style="margin-bottom:2px">${entLabel}</div>
         <div class="event-title">${ev.title}</div>
-        <div class="event-desc" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
-          ${ev.description && ev.description !== 'NA' ? `<span>${ev.description}</span>` : ''}
-          ${entBadge}
-        </div>
+        ${ev.description && ev.description !== 'NA' ? `<div class="event-desc"><span>${ev.description}</span></div>` : ''}
       </div>
       <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0">
         ${typeToLabel(ev.type)}
@@ -716,24 +718,18 @@ function renderCountdown() {
   const diffMs = nextDate - today;
   const diffDays = Math.ceil(diffMs / 86400000);
 
-  // Múltiplos eventos próximos (próximos 3)
-  const moreEvents = upcoming.slice(1, 3);
-  const moreHtml = moreEvents.length
-    ? `<div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--glass-border);display:flex;flex-direction:column;gap:6px;position:relative;z-index:2">
-        <div style="font-family:var(--font-mono);font-size:9.5px;color:var(--text-dim);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px">Próximos</div>
-        ${moreEvents.map(e => {
-          const d2 = daysUntil(e.date);
-          return `<div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-muted)">
-            <span style="font-family:var(--font-mono);font-size:10px;color:var(--text-dim);min-width:28px">${d2}d</span>
-            <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${e.title}</span>
-            ${typeToLabel(e.type)}
-          </div>`;
-        }).join('')}
+  // Badge da entidade
+  const hasMeta = next.entidade && typeof ENTIDADE_META !== 'undefined' && ENTIDADE_META[next.entidade];
+  const entColor = hasMeta ? ENTIDADE_META[next.entidade].cor : 'var(--text-dim)';
+  const entHtml = hasMeta
+    ? `<div style="font-size:11px;font-weight:600;color:${entColor};letter-spacing:0.3px;margin-bottom:6px;position:relative;z-index:2">
+        ${ENTIDADE_META[next.entidade].emoji} ${ENTIDADE_META[next.entidade].nome}
       </div>`
-    : '';
+    : `<div style="font-size:11px;color:var(--text-dim);margin-bottom:6px;position:relative;z-index:2">Evento geral</div>`;
 
   container.innerHTML = `
     <div style="position:relative;z-index:2">
+      ${entHtml}
       <div class="countdown-event-name" onclick="navigateTo('calendar');setTimeout(()=>{if(typeof calYear!=='undefined'){const d=parseDate('${next.date}');calYear=d.getFullYear();calMonth=d.getMonth();calSelectedDate='${next.date}';renderCalendar();renderCalendarSidebar('${next.date}',getFilteredEvents('${next.date}'));}},150)" style="cursor:pointer">${next.title}</div>
       <div class="countdown-units">
         <div class="countdown-unit">
@@ -747,7 +743,6 @@ function renderCountdown() {
       </div>
       <div style="font-family:var(--font-mono);font-size:10.5px;color:var(--text-dim);margin-top:8px;position:relative;z-index:2">${formatDate(next.date)}</div>
     </div>
-    ${moreHtml}
   `;
 }
 
