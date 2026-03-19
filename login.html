@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Login — DaSIboard</title>
+  <meta name="description" content="Acesse sua conta no DaSIboard — SI/USP" />
+  <link rel="icon" type="image/png" href="./assets/logo-dasi.jpg">
+  <link rel="stylesheet" href="css/style.css" />
+  <script>
+    (function(){
+      var t=localStorage.getItem('dasitheme')||'padrao';
+      document.documentElement.setAttribute('data-theme',t);
+    })();
+  </script>
+  <style>
+    body { min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+    .auth-wrapper {
+      width: 100%; max-width: 420px; padding: 24px 16px;
+    }
+    .auth-logo {
+      display: flex; align-items: center; gap: 10px; justify-content: center;
+      margin-bottom: 32px; text-decoration: none;
+    }
+    .auth-logo img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--glass-border); }
+    .auth-logo-text { font-family: var(--font-display); font-size: 22px; font-weight: 700; font-style: italic;
+      background: linear-gradient(135deg, var(--text), var(--secondary)); -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent; background-clip: text; }
+    .auth-card {
+      background: var(--bg-card); border: 1px solid var(--glass-border); border-radius: var(--radius-lg);
+      padding: 32px; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 16px 48px rgba(0,0,0,.25);
+    }
+    .auth-tabs { display: flex; gap: 4px; background: var(--glass-tint); border-radius: 10px;
+      padding: 4px; margin-bottom: 28px; }
+    .auth-tab { flex: 1; padding: 9px; border: none; background: none; border-radius: 8px;
+      font-size: 14px; font-weight: 600; color: var(--text-muted); cursor: pointer;
+      transition: all var(--transition); font-family: var(--font-body); }
+    .auth-tab.active { background: var(--bg-card); color: var(--text); box-shadow: 0 2px 8px rgba(0,0,0,.15); }
+    .auth-form { display: none; flex-direction: column; gap: 16px; }
+    .auth-form.active { display: flex; }
+    .auth-label { font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 6px;
+      text-transform: uppercase; letter-spacing: .5px; display: block; }
+    .auth-input {
+      width: 100%; padding: 11px 14px; background: var(--glass-tint); border: 1px solid var(--glass-border);
+      border-radius: var(--radius-sm); color: var(--text); font-size: 14px; font-family: var(--font-body);
+      transition: border-color var(--transition), box-shadow var(--transition); box-sizing: border-box;
+    }
+    .auth-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(124,58,237,.15); }
+    .auth-input::placeholder { color: var(--text-dim); }
+    .auth-btn {
+      width: 100%; padding: 12px; background: linear-gradient(135deg, var(--primary), var(--highlight));
+      border: none; border-radius: var(--radius-sm); color: white; font-size: 15px; font-weight: 700;
+      cursor: pointer; transition: all var(--transition-bounce); font-family: var(--font-body);
+      box-shadow: 0 4px 16px rgba(124,58,237,.3); margin-top: 4px;
+    }
+    .auth-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(124,58,237,.4); }
+    .auth-btn:active { transform: translateY(0); }
+    .auth-btn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+    .auth-error {
+      background: rgba(248,113,113,.12); border: 1px solid rgba(248,113,113,.3); border-radius: 8px;
+      padding: 10px 14px; font-size: 13px; color: #f87171; display: none; line-height: 1.5;
+    }
+    .auth-success {
+      background: rgba(52,211,153,.12); border: 1px solid rgba(52,211,153,.3); border-radius: 8px;
+      padding: 10px 14px; font-size: 13px; color: #34d399; display: none; line-height: 1.5;
+    }
+    .auth-back { text-align: center; margin-top: 20px; }
+    .auth-back a { font-size: 13px; color: var(--text-muted); text-decoration: none; transition: color var(--transition); }
+    .auth-back a:hover { color: var(--primary); }
+    .auth-divider { border: none; border-top: 1px solid var(--glass-border); margin: 4px 0; }
+    .input-group { display: flex; flex-direction: column; }
+    .pass-wrap { position: relative; }
+    .pass-toggle {
+      position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; cursor: pointer; color: var(--text-muted); padding: 0;
+      display: flex; align-items: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-orbs" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <div class="auth-wrapper">
+    <a class="auth-logo" href="index.html">
+      <img src="assets/logo-dasi.jpg" alt="DaSI" />
+      <span class="auth-logo-text">DaSIboard</span>
+    </a>
+
+    <div class="auth-card">
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tab-login" onclick="switchTab('login')">Entrar</button>
+        <button class="auth-tab" id="tab-signup" onclick="switchTab('signup')">Cadastrar</button>
+      </div>
+
+      <!-- FORM LOGIN -->
+      <form class="auth-form active" id="form-login" onsubmit="handleLogin(event)">
+        <div id="login-error" class="auth-error"></div>
+        <div class="input-group">
+          <label class="auth-label" for="login-email">Email</label>
+          <input id="login-email" class="auth-input" type="email" placeholder="seu@email.com" required autocomplete="email" />
+        </div>
+        <div class="input-group">
+          <label class="auth-label" for="login-password">Senha</label>
+          <div class="pass-wrap">
+            <input id="login-password" class="auth-input" type="password" placeholder="••••••••" required autocomplete="current-password" style="padding-right:44px" />
+            <button type="button" class="pass-toggle" onclick="togglePass('login-password', this)" tabindex="-1">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+        <button class="auth-btn" type="submit" id="login-btn">Entrar</button>
+      </form>
+
+      <!-- FORM CADASTRO -->
+      <form class="auth-form" id="form-signup" onsubmit="handleSignup(event)">
+        <div id="signup-error" class="auth-error"></div>
+        <div id="signup-success" class="auth-success"></div>
+        <div class="input-group">
+          <label class="auth-label" for="signup-name">Nome</label>
+          <input id="signup-name" class="auth-input" type="text" placeholder="Seu nome" required autocomplete="name" />
+        </div>
+        <div class="input-group">
+          <label class="auth-label" for="signup-email">Email</label>
+          <input id="signup-email" class="auth-input" type="email" placeholder="seu@email.com" required autocomplete="email" />
+        </div>
+        <div class="input-group">
+          <label class="auth-label" for="signup-password">Senha</label>
+          <div class="pass-wrap">
+            <input id="signup-password" class="auth-input" type="password" placeholder="Mínimo 6 caracteres" required autocomplete="new-password" style="padding-right:44px" minlength="6" />
+            <button type="button" class="pass-toggle" onclick="togglePass('signup-password', this)" tabindex="-1">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+        <button class="auth-btn" type="submit" id="signup-btn">Criar conta</button>
+      </form>
+    </div>
+
+    <div class="auth-back">
+      <a href="index.html">← Voltar ao DaSIboard</a>
+    </div>
+  </div>
+
+  <!-- Firebase v8 compat -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+  <script src="js/firebase-config.js"></script>
+
+  <script>
+    // Redirecionar se já logado
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) window.location.href = 'index.html';
+    });
+
+    function switchTab(tab) {
+      document.getElementById('tab-login').classList.toggle('active', tab === 'login');
+      document.getElementById('tab-signup').classList.toggle('active', tab === 'signup');
+      document.getElementById('form-login').classList.toggle('active', tab === 'login');
+      document.getElementById('form-signup').classList.toggle('active', tab === 'signup');
+      clearErrors();
+    }
+
+    function clearErrors() {
+      ['login-error', 'signup-error', 'signup-success'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) { el.style.display = 'none'; el.textContent = ''; }
+      });
+    }
+
+    function showError(id, msg) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.textContent = msg;
+      el.style.display = 'block';
+    }
+
+    function showSuccess(id, msg) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.textContent = msg;
+      el.style.display = 'block';
+    }
+
+    function togglePass(inputId, btn) {
+      const input = document.getElementById(inputId);
+      const isText = input.type === 'text';
+      input.type = isText ? 'password' : 'text';
+      btn.innerHTML = isText
+        ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>'
+        : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
+    }
+
+    async function handleLogin(e) {
+      e.preventDefault();
+      clearErrors();
+      const btn = document.getElementById('login-btn');
+      const email = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value;
+
+      btn.disabled = true;
+      btn.textContent = 'Entrando...';
+
+      try {
+        await firebase.auth().signInWithEmailAndPassword(email, password);
+        window.location.href = 'index.html';
+      } catch (error) {
+        console.error('Login error:', error.code, error.message);
+        const msgs = {
+          'auth/user-not-found': 'Usuário não encontrado.',
+          'auth/wrong-password': 'Senha incorreta.',
+          'auth/invalid-credential': 'Email ou senha incorretos.',
+          'auth/invalid-email': 'Email inválido.',
+          'auth/too-many-requests': 'Muitas tentativas. Aguarde um momento.',
+          'auth/user-disabled': 'Conta desativada.',
+          'auth/network-request-failed': 'Erro de rede. Verifique sua conexão.'
+        };
+        showError('login-error', msgs[error.code] || `Erro: ${error.message}`);
+        btn.disabled = false;
+        btn.textContent = 'Entrar';
+      }
+    }
+
+    async function handleSignup(e) {
+      e.preventDefault();
+      clearErrors();
+      const btn = document.getElementById('signup-btn');
+      const name = document.getElementById('signup-name').value.trim();
+      const email = document.getElementById('signup-email').value.trim();
+      const password = document.getElementById('signup-password').value;
+
+      if (!name) { showError('signup-error', 'Informe seu nome.'); return; }
+      if (password.length < 6) { showError('signup-error', 'A senha precisa ter pelo menos 6 caracteres.'); return; }
+
+      btn.disabled = true;
+      btn.textContent = 'Criando conta...';
+
+      try {
+        const result = await firebase.auth().createUserWithEmailAndPassword(email, password);
+        await result.user.updateProfile({ displayName: name });
+
+        // Tentar salvar no Firestore (não bloqueia se falhar)
+        try {
+          await firebase.firestore().collection('users').doc(result.user.uid).set({
+            email, displayName: name, photoURL: null,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            bio: '', universidade: 'USP', curso: 'Sistemas de Informação'
+          });
+        } catch (fsErr) {
+          console.warn('Firestore write skipped:', fsErr);
+        }
+
+        showSuccess('signup-success', '✅ Conta criada! Redirecionando...');
+        setTimeout(() => { window.location.href = 'index.html'; }, 1500);
+      } catch (error) {
+        console.error('Signup error:', error.code, error.message);
+        const msgs = {
+          'auth/email-already-in-use': 'Este email já está cadastrado.',
+          'auth/invalid-email': 'Email inválido.',
+          'auth/weak-password': 'Senha muito fraca. Use pelo menos 6 caracteres.',
+          'auth/operation-not-allowed': 'Cadastro desativado. Contate o administrador.',
+          'auth/network-request-failed': 'Erro de rede. Verifique sua conexão.'
+        };
+        showError('signup-error', msgs[error.code] || `Erro: ${error.message}`);
+        btn.disabled = false;
+        btn.textContent = 'Criar conta';
+      }
+    }
+  </script>
+</body>
+</html>
