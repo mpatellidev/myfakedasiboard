@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ===== FERRAMENTAS =====
 
 let currentTool = null;

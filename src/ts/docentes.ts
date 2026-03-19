@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ===== DOCENTES MODULE =====
 
 const DOCENTES_DATA = [

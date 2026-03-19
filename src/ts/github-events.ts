@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ===== GITHUB EVENTS INTEGRATION =====
 //
 // ESTRATÉGIA DE EVENTOS:

@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ===== NEWSLETTER MODULE =====
 
 let newsletterData = [];

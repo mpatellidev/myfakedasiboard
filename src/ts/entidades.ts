@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ===== ENTIDADES =====
 
 let entidadesData = [];

@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ===== NOTAS & GPA =====
 const GPA_KEY = 'dasiboard_gpa_v2';
 

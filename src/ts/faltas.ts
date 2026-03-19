@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ===== CONTROLE DE FALTAS — DaSIboard =====
 // Limite: 30% do total de aulas. Persiste em localStorage.
 

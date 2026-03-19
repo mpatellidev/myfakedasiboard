@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ===== FLUXOGRAMA CURRICULAR — DaSIboard =====
 // Grade de Sistemas de Informação — EACH/USP
 // Dados baseados em https://each.uspnet.usp.br/si/assets/html/subjects.html

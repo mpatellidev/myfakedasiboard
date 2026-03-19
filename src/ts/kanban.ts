@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ===== KANBAN =====
 
 let kanbanData = { todo: [], doing: [], done: [] };

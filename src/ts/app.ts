@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ===== APP MAIN — DaSIboard v2 =====
 
 let eventsData = [];

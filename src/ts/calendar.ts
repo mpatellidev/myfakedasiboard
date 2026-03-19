@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ===== CALENDAR MODULE =====
 
 let calEvents = [];

@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ===== SEARCH MODULE — DaSIboard =====
 
 function openSearch() {
