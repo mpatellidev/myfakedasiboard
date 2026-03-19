@@ -247,6 +247,7 @@ function navigateTo(page) {
     setTimeout(applyD20GameFlavor, 120);
   }
   if (page === 'calendar') initCalendar();
+  if (page === 'home') initHome();
   if (page === 'schedule') initSchedule();
   if (page === 'newsletter') initNewsletter();
   if (page === 'docentes') initDocentes();
@@ -603,7 +604,6 @@ document.addEventListener('DOMContentLoaded', () => {
   createSidebarOverlay();
   const hash = window.location.hash.replace('#','') || 'home';
   navigateTo(hash);
-  initHome();
   initModals();
   updateTime();
 
