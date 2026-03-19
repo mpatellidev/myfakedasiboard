@@ -3097,6 +3097,7 @@ body.lite-mode #d20-pixel-layer { display: none !important; }
   text-decoration:none; font-size:13.5px; font-weight:600;
   font-family:var(--font-body); transition:all .22s;
   border:1px solid var(--glass-border); backdrop-filter:blur(8px);
+  cursor:pointer; position:relative; z-index:10;
 }
 .dev-link-ig { background:rgba(236,72,153,.1); color:#ec4899; border-color:rgba(236,72,153,.25); }
 .dev-link-ig:hover { background:rgba(236,72,153,.18); transform:translateX(4px); box-shadow:0 4px 16px rgba(236,72,153,.2); }
