@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cadastro — DaSIboard</title>
+  <meta name="theme-color" content="#0b0b0f" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" href="css/style.css" as="style" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" type="image/png" href="./assets/logo-dasi.jpg">
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 16px;
+    }
+    .auth-container {
+      width: 100%;
+      max-width: 400px;
+      animation: fadeInUp 0.6s ease-out;
+    }
+    .auth-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .auth-header img {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 16px;
+      border-radius: 16px;
+    }
+    .auth-header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      margin: 8px 0;
+    }
+    .auth-header p {
+      color: var(--text-secondary);
+      font-size: 13px;
+      margin-top: 4px;
+    }
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .form-group label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .form-group input {
+      padding: 12px 16px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg-secondary);
+      color: var(--text);
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+    .form-group input::placeholder {
+      color: var(--text-tertiary);
+    }
+    .password-hints {
+      font-size: 11px;
+      color: var(--text-tertiary);
+      margin-top: 4px;
+      padding: 8px;
+      border-radius: 6px;
+      background: var(--bg-tertiary);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .password-hints li {
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .password-hints.valid li {
+      color: var(--success);
+    }
+    .btn-signup {
+      padding: 12px 16px;
+      border: 1px solid var(--primary);
+      border-radius: 8px;
+      background: var(--primary);
+      color: white;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 8px;
+    }
+    .btn-signup:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
+    .btn-signup:active {
+      transform: translateY(0);
+    }
+    .btn-signup:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+    .btn-signup.loading {
+      opacity: 0.7;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+    .error-message {
+      padding: 12px 16px;
+      border-radius: 8px;
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid var(--danger);
+      color: var(--danger);
+      font-size: 13px;
+      margin-bottom: 12px;
+      display: none;
+    }
+    .error-message.show {
+      display: block;
+      animation: slideDown 0.2s ease-out;
+    }
+    .success-message {
+      padding: 12px 16px;
+      border-radius: 8px;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid var(--success);
+      color: var(--success);
+      font-size: 13px;
+      margin-bottom: 12px;
+      display: none;
+    }
+    .success-message.show {
+      display: block;
+      animation: slideDown 0.2s ease-out;
+    }
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 20px 0;
+      color: var(--text-tertiary);
+      font-size: 12px;
+    }
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+    .auth-footer {
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 13px;
+    }
+    .auth-footer a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    .auth-footer a:hover {
+      color: var(--primary-hover);
+      text-decoration: underline;
+    }
+    .home-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 12px;
+      margin-top: 16px;
+      transition: all 0.2s;
+    }
+    .home-link:hover {
+      color: var(--primary);
+    }
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-orbs" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <div class="auth-container">
+    <a href="index.html" class="home-link">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+      Voltar
+    </a>
+
+    <div class="auth-header">
+      <img src="assets/logo-dasi.jpg" alt="DaSI" />
+      <h1>DaSIboard</h1>
+      <p>Crie sua conta</p>
+    </div>
+
+    <div class="auth-form">
+      <div class="error-message" id="error-msg"></div>
+      <div class="success-message" id="success-msg"></div>
+
+      <div class="form-group">
+        <label for="displayName">Nome completo</label>
+        <input type="text" id="displayName" placeholder="João Silva" required />
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="seu@email.com" required />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Senha</label>
+        <input type="password" id="password" placeholder="••••••••" required />
+        <ul class="password-hints" id="password-hints">
+          <li><span id="hint-length">○</span> Mínimo 6 caracteres</li>
+          <li><span id="hint-letter">○</span> Pelo menos 1 letra</li>
+          <li><span id="hint-number">○</span> Pelo menos 1 número</li>
+        </ul>
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword">Confirmar senha</label>
+        <input type="password" id="confirmPassword" placeholder="••••••••" required />
+      </div>
+
+      <button class="btn-signup" id="signup-btn" onclick="handleSignup()">Criar conta</button>
+    </div>
+
+    <div class="divider">ou</div>
+
+    <div class="auth-footer">
+      Já tem conta? <a href="login.html">Faça login</a>
+    </div>
+
+    <div style="text-align: center; margin-top: 24px; font-size: 11px; color: var(--text-tertiary);">
+      Ao se registrar, você concorda com a coleta básica de dados para uso no dashboard.
+    </div>
+  </div>
+
+  <script>
+    // Verificar se já está logado
+    document.addEventListener('DOMContentLoaded', async () => {
+      const user = await authManager.init();
+      if (user) {
+        window.location.href = 'index.html';
+      }
+    });
+
+    // Validar força da senha em tempo real
+    document.getElementById('password').addEventListener('input', (e) => {
+      const password = e.target.value;
+      const hints = document.getElementById('password-hints');
+      
+      const hasLength = password.length >= 6;
+      const hasLetter = /[a-zA-Z]/.test(password);
+      const hasNumber = /[0-9]/.test(password);
+
+      document.getElementById('hint-length').textContent = hasLength ? '✓' : '○';
+      document.getElementById('hint-letter').textContent = hasLetter ? '✓' : '○';
+      document.getElementById('hint-number').textContent = hasNumber ? '✓' : '○';
+
+      if (hasLength && hasLetter && hasNumber) {
+        hints.classList.add('valid');
+      } else {
+        hints.classList.remove('valid');
+      }
+    });
+
+    async function handleSignup() {
+      const displayName = document.getElementById('displayName').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+      const errorMsg = document.getElementById('error-msg');
+      const successMsg = document.getElementById('success-msg');
+      const signupBtn = document.getElementById('signup-btn');
+
+      // Limpar mensagens
+      errorMsg.classList.remove('show');
+      successMsg.classList.remove('show');
+
+      // Validação básica
+      if (!displayName || !email || !password || !confirmPassword) {
+        showError('Preencha todos os campos');
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        showError('As senhas não correspondem');
+        return;
+      }
+
+      if (password.length < 6) {
+        showError('Senha deve ter no mínimo 6 caracteres');
+        return;
+      }
+
+      if (!/[a-zA-Z]/.test(password) || !/[0-9]/.test(password)) {
+        showError('Senha deve conter letras e números');
+        return;
+      }
+
+      // Mostrar carregamento
+      signupBtn.classList.add('loading');
+      signupBtn.textContent = 'Criando conta...';
+
+      // Fazer signup
+      const result = await authManager.signup(email, password, displayName);
+
+      if (result.success) {
+        successMsg.textContent = '✓ Conta criada com sucesso!';
+        successMsg.classList.add('show');
+        signupBtn.textContent = '✓ Bem-vindo!';
+        setTimeout(() => {
+          window.location.href = 'profile.html';
+        }, 800);
+      } else {
+        showError(result.error);
+        signupBtn.classList.remove('loading');
+        signupBtn.textContent = 'Criar conta';
+      }
+    }
+
+    function showError(message) {
+      const errorMsg = document.getElementById('error-msg');
+      errorMsg.textContent = message;
+      errorMsg.classList.add('show');
+    }
+
+    // Permitir Enter para enviar
+    document.getElementById('confirmPassword').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') handleSignup();
+    });
+  </script>
+  <script type="module" src="/src/ts/main-login.ts"></script>
+</body>
+</html>
